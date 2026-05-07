@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Get My Estimate — MindHome</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0b132b;
+            min-height: 100vh;
+            color: #e0e6f1;
+            padding: 20px;
+        }
+
+        /* ── Top bar ── */
+        .top-bar {
+            max-width: 700px;
+            margin: 0 auto 1rem auto;
+        }
+        .btn-go-back {
+            padding: 12px 24px;
+            background-color: rgba(255,255,255,0.95);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #333;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-go-back:hover { background-color: white; transform: translateX(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
+        .btn-go-back:active { transform: translateX(-1px); }
+
+        /* ── Main container — identical to original ── */
+        .main-container {
+            background: #1c2541;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        .heading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1.5em;
+        }
+        .main-title { font-size: 28px; text-align: center; color: #e0e6f1; }
+
+        /* ── Step progress bar ── */
+        .step-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .step-dot {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            border: 2px solid rgba(91,192,190,0.25);
+            background: transparent;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700;
+            color: rgba(224,230,241,0.35);
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+        .step-dot.active { border-color: #5bc0be; background: #5bc0be; color: #062c43; }
+        .step-dot.done   { border-color: #5bc0be; background: rgba(91,192,190,0.18); color: #5bc0be; }
+        .step-line {
+            flex: 1; height: 2px;
+            background: rgba(91,192,190,0.18);
+            transition: background 0.3s;
+        }
+        .step-line.done { background: #5bc0be; }
+
+        /* ── Section title — matches original ── */
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #5bc0be;
+            margin-bottom: 8px;
+        }
+        .section-sub {
+            font-size: 14px;
+            color: #a0a6b1;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        /* ── Wizard page visibility ── */
+        .q-page { display: none; animation: fadeUp 0.3s ease; }
+        .q-page.active { display: block; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Option cards ── */
+        .options-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+        .opt-card {
+            background: rgba(255,255,255,0.03);
+            border: 2px solid rgba(224,230,241,0.1);
+            border-radius: 10px;
+            padding: 15px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .opt-card:hover { border-color: rgba(91,192,190,0.45); background: rgba(91,192,190,0.05); }
+        .opt-card.selected { border-color: #5bc0be; background: rgba(91,192,190,0.1); }
+
+        .opt-left { display: flex; align-items: center; gap: 14px; }
+        .opt-emoji { font-size: 20px; width: 28px; text-align: center; flex-shrink: 0; }
+        .opt-text h3 { font-size: 15px; font-weight: 600; color: #e0e6f1; margin-bottom: 2px; }
+        .opt-text p  { font-size: 12px; color: #a0a6b1; }
+        .opt-value   { font-size: 16px; font-weight: 700; color: #5bc0be; white-space: nowrap; }
+
+        /* ── Custom / plain number inputs — match original form-input ── */
+        .custom-section {
+            border: 1px solid rgba(224,230,241,0.08);
+            border-radius: 10px;
+            padding: 16px 18px;
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 20px;
+        }
+        .custom-label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: #e0e6f1;
+            margin-bottom: 10px;
+        }
+
+        /* White inputs matching original .form-input style */
+        .plain-input,
+        .dollar-field {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: max(16px, 1rem);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+            color: #333;
+            outline: none;
+        }
+        .plain-input:focus, .dollar-field:focus {
+            background: white;
+            box-shadow: 0 0 0 3px rgba(91,192,190,0.2);
+            border-color: #5bc0be;
+        }
+
+        .dollar-row {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+        .dollar-row:focus-within {
+            border-color: #5bc0be;
+            box-shadow: 0 0 0 3px rgba(91,192,190,0.2);
+            background: white;
+        }
+        .dollar-symbol {
+            padding: 12px 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            border-right: 2px solid #e0e0e0;
+            background: #f3f4f6;
+        }
+        .dollar-field { border: none; border-radius: 0; box-shadow: none; flex: 1; width: auto; }
+        .dollar-field:focus { box-shadow: none; }
+        .field-suffix { padding: 0 14px; font-size: 13px; color: #6b7280; white-space: nowrap; }
+
+        /* ── Address section ── */
+        .form-label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: #e0e6f1; }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: max(16px, 1rem);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+            color: #333;
+            outline: none;
+        }
+        .form-input:focus { background: white; box-shadow: 0 0 0 3px rgba(91,192,190,0.2); border-color: #5bc0be; }
+        .hint { font-size: 12px; color: #a0a6b1; margin-top: 4px; }
+
+        .suggestions-dropdown {
+            position: absolute;
+            background: white;
+            border-radius: 10px;
+            margin-top: 4px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-height: 280px;
+            overflow-y: auto;
+            display: none;
+            z-index: 9999;
+            width: 100%;
+        }
+        .suggestion-item { padding: 12px 16px; cursor: pointer; border-bottom: 1px solid #f0f0f0; color: #333; font-size: 14px; transition: background-color 0.2s; }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background: #f5f5f5; }
+
+        .msg { padding: 12px; border-radius: 8px; margin-top: 12px; display: none; }
+        .msg.show { display: block; animation: fadeUp 0.3s ease; }
+        .msg-error   { background: rgba(255,100,100,0.1); border: 2px solid rgba(255,100,100,0.3); }
+        .msg-error ul { margin-left: 1.25rem; color: #ff6464; font-size: 14px; }
+        .msg-success { background: rgba(91,192,190,0.1); border: 2px solid rgba(91,192,190,0.3); }
+        .msg-success p { color: #5bc0be; font-weight: 600; margin-bottom: 0.5rem; }
+        .msg-success .addr-preview { color: #e0e6f1; font-size: 0.875rem; }
+
+        /* ── Summary ── */
+        .summary-box {
+            background: rgba(91,192,190,0.08);
+            border: 2px solid rgba(91,192,190,0.25);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .summary-box h3 { font-size: 16px; font-weight: 600; color: #5bc0be; margin-bottom: 14px; }
+        .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .summary-item { font-size: 14px; color: #a0a6b1; }
+        .summary-item strong { color: #e0e6f1; font-weight: 600; }
+
+        /* ── Result — identical to original .result ── */
+        .result {
+            margin-top: 20px;
+            padding: 24px;
+            background: rgba(91,192,190,0.1);
+            border: 2px solid #5bc0be;
+            border-radius: 12px;
+            display: none;
+            animation: fadeUp 0.3s ease;
+        }
+        .result.show { display: block; }
+        .result-label { font-size: 14px; margin-bottom: 8px; color: #e0e6f1; }
+        .result-value { font-size: 36px; font-weight: bold; color: #5bc0be; }
+        .result-currency { font-size: 24px; }
+
+        .calc-error {
+            background: rgba(255,100,100,0.1);
+            color: #ff6464;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+            font-size: 14px;
+            border: 2px solid rgba(255,100,100,0.3);
+            display: none;
+        }
+        .calc-error.show { display: block; }
+
+        /* ── Nav buttons — match original btn-calculate ── */
+        .nav-row { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+
+        .btn-back {
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.06);
+            border: 2px solid rgba(224,230,241,0.15);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e6f1;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-back:hover { border-color: rgba(91,192,190,0.5); }
+
+        .btn-next {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            background: #5bc0be;
+            color: #062c43;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(91,192,190,0.25);
+        }
+        .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91,192,190,0.35); }
+        .btn-next:disabled { background: rgba(91,192,190,0.25); color: rgba(6,44,67,0.4); box-shadow: none; cursor: default; transform: none; }
+
+        .btn-next.loading { position: relative; color: transparent; }
+        .btn-next.loading::after {
+            content: "";
+            position: absolute;
+            width: 18px; height: 18px;
+            top: 50%; left: 50%;
+            margin-left: -9px; margin-top: -9px;
+            border: 3px solid rgba(6,44,67,0.3);
+            border-radius: 50%;
+            border-top-color: #062c43;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .btn-full {
+            width: 100%;
+            margin-top: 12px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            background: rgba(91,192,190,0.15);
+            border: 2px solid rgba(91,192,190,0.4);
+            color: #5bc0be;
+            transition: all 0.3s ease;
+        }
+        .btn-full:hover { background: rgba(91,192,190,0.25); }
+
+        .divider { height: 2px; background: rgba(91,192,190,0.15); margin: 28px 0; }
+
+        @media (max-width: 640px) {
+            body { padding: 10px; }
+            .main-container { padding: 24px; }
+            .main-title { font-size: 22px; }
+            .heading-container { flex-direction: column; row-gap: 0.5em; margin-bottom: 0; }
+            .result-value { font-size: 28px; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 400px) { .main-container { padding: 20px; } }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <a href="index.html" class="btn-go-back">← Back to Calculator</a>
+</div>
+
+<div class="main-container">
+
+    <div class="heading-container">
+        <img src="/mindhomeco_logo.jpg" alt="Mindhome logo" />
+        <h1 class="main-title">Get My Estimate</h1>
+    </div>
+
+    <!-- Step progress -->
+    <div class="step-bar">
+        <div class="step-dot active" id="dot-1">1</div>
+        <div class="step-line"       id="line-1"></div>
+        <div class="step-dot"        id="dot-2">2</div>
+        <div class="step-line"       id="line-2"></div>
+        <div class="step-dot"        id="dot-3">3</div>
+        <div class="step-line"       id="line-3"></div>
+        <div class="step-dot"        id="dot-4">4</div>
+        <div class="step-line"       id="line-4"></div>
+        <div class="step-dot"        id="dot-5">5</div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 1 — Property Address
+    ══════════════════════════════════ -->
+    <div class="q-page active" id="q1">
+        <h2 class="section-title">Property Address</h2>
+        <p class="section-sub">Search for the home you'd like to insure. We use this to verify the property location.</p>
+
+        <div style="position: relative; margin-bottom: 16px;">
+            <label class="form-label" for="autocomplete">Search Address</label>
+            <input type="text" id="autocomplete" class="form-input"
+                   placeholder="Start typing your address..." autocomplete="off">
+            <p class="hint">Type your address and select from the dropdown</p>
+            <div id="suggestionsDropdown" class="suggestions-dropdown"></div>
+        </div>
+
+        <div id="errorMessage" class="msg msg-error"><ul id="errorList"></ul></div>
+        <div id="successMessage" class="msg msg-success">
+            <p>✓ Address verified successfully</p>
+            <div class="addr-preview" id="addressPreview"></div>
+        </div>
+
+        <div class="nav-row" style="margin-top: 20px;">
+            <button class="btn-next" id="next-1" onclick="goTo(2)" disabled>Continue →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 2 — Bedrooms
+    ══════════════════════════════════ -->
+    <div class="q-page" id="q2">
+        <h2 class="section-title">Number of Bedrooms</h2>
+        <p class="section-sub">How many bedrooms does your home have? Select below or enter an exact number (1–10).</p>
+
+        <div class="options-list">
+            <div class="opt-card" onclick="pick('bedrooms',1,this)">
+                <div class="opt-left"><span class="opt-emoji">🛏️</span><div class="opt-text"><h3>1 Bedroom</h3><p>Studio or one-bedroom home.</p></div></div>
+                <div class="opt-value">1</div>
+            </div>
+            <div class="opt-card" onclick="pick('bedrooms',2,this)">
+                <div class="opt-left"><span class="opt-emoji">🛏️</span><div class="opt-text"><h3>2 Bedrooms</h3><p>Compact family or couple's home.</p></div></div>
+                <div class="opt-value">2</div>
+            </div>
+            <div class="opt-card" onclick="pick('bedrooms',3,this)">
+                <div class="opt-left"><span class="opt-emoji">🛏️</span><div class="opt-text"><h3>3 Bedrooms</h3><p>The most common family home size.</p></div></div>
+                <div class="opt-value">3</div>
+            </div>
+            <div class="opt-card" onclick="pick('bedrooms',4,this)">
+                <div class="opt-left"><span class="opt-emoji">🛏️</span><div class="opt-text"><h3>4 Bedrooms</h3><p>Larger family home.</p></div></div>
+                <div class="opt-value">4</div>
+            </div>
+            <div class="opt-card" onclick="pick('bedrooms',5,this)">
+                <div class="opt-left"><span class="opt-emoji">🛏️</span><div class="opt-text"><h3>5+ Bedrooms</h3><p>Large or luxury property.</p></div></div>
+                <div class="opt-value">5+</div>
+            </div>
+        </div>
+
+        <div class="custom-section">
+            <label class="custom-label">Or enter exact number (1–10):</label>
+            <input class="plain-input" id="bedroomsInput" type="number" min="1" max="10" step="1"
+                   placeholder="e.g. 6" oninput="customInput('bedrooms',this.value,1,10)"/>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-back" onclick="goTo(1)">← Back</button>
+            <button class="btn-next" id="next-2" onclick="goTo(3)" disabled>Continue →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 3 — Square footage
+    ══════════════════════════════════ -->
+    <div class="q-page" id="q3">
+        <h2 class="section-title">Square Footage</h2>
+        <p class="section-sub">What is the square footage of your home? The calculator accepts 500–10,000 sq ft.</p>
+
+        <div class="options-list">
+            <div class="opt-card" onclick="pick('sqft',800,this)">
+                <div class="opt-left"><span class="opt-emoji">🏠</span><div class="opt-text"><h3>Under 1,000 sq ft</h3><p>Small or starter home.</p></div></div>
+                <div class="opt-value">~800</div>
+            </div>
+            <div class="opt-card" onclick="pick('sqft',1250,this)">
+                <div class="opt-left"><span class="opt-emoji">🏠</span><div class="opt-text"><h3>1,000 – 1,500 sq ft</h3><p>Average-sized home.</p></div></div>
+                <div class="opt-value">~1,250</div>
+            </div>
+            <div class="opt-card" onclick="pick('sqft',2000,this)">
+                <div class="opt-left"><span class="opt-emoji">🏡</span><div class="opt-text"><h3>1,500 – 2,500 sq ft</h3><p>Comfortably sized family home.</p></div></div>
+                <div class="opt-value">~2,000</div>
+            </div>
+            <div class="opt-card" onclick="pick('sqft',3500,this)">
+                <div class="opt-left"><span class="opt-emoji">🏡</span><div class="opt-text"><h3>2,500 – 5,000 sq ft</h3><p>Large family home.</p></div></div>
+                <div class="opt-value">~3,500</div>
+            </div>
+            <div class="opt-card" onclick="pick('sqft',7000,this)">
+                <div class="opt-left"><span class="opt-emoji">🏰</span><div class="opt-text"><h3>Over 5,000 sq ft</h3><p>Large or luxury property.</p></div></div>
+                <div class="opt-value">~7,000</div>
+            </div>
+        </div>
+
+        <div class="custom-section">
+            <label class="custom-label">Or enter exact square footage (500–10,000):</label>
+            <input class="plain-input" id="sqftInput" type="number" min="500" max="10000" step="100"
+                   placeholder="e.g. 1,850" oninput="customInput('sqft',this.value,500,10000)"/>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-back" onclick="goTo(2)">← Back</button>
+            <button class="btn-next" id="next-3" onclick="goTo(4)" disabled>Continue →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 4 — Coverage A
+    ══════════════════════════════════ -->
+    <div class="q-page" id="q4">
+        <h2 class="section-title">Coverage A (Property Value)</h2>
+        <p class="section-sub">This is the estimated replacement cost of your home's structure. The calculator accepts $50,000–$2,000,000.</p>
+
+        <div class="options-list">
+            <div class="opt-card" onclick="pick('coverage',150000,this)">
+                <div class="opt-left"><span class="opt-emoji">💲</span><div class="opt-text"><h3>Up to $200,000</h3><p>Modest or older home.</p></div></div>
+                <div class="opt-value">$150k</div>
+            </div>
+            <div class="opt-card" onclick="pick('coverage',350000,this)">
+                <div class="opt-left"><span class="opt-emoji">💲</span><div class="opt-text"><h3>$200,000 – $500,000</h3><p>Mid-range family home.</p></div></div>
+                <div class="opt-value">$350k</div>
+            </div>
+            <div class="opt-card" onclick="pick('coverage',750000,this)">
+                <div class="opt-left"><span class="opt-emoji">💰</span><div class="opt-text"><h3>$500,000 – $1,000,000</h3><p>Above-average home value.</p></div></div>
+                <div class="opt-value">$750k</div>
+            </div>
+            <div class="opt-card" onclick="pick('coverage',1500000,this)">
+                <div class="opt-left"><span class="opt-emoji">🏆</span><div class="opt-text"><h3>Over $1,000,000</h3><p>High-value or luxury property.</p></div></div>
+                <div class="opt-value">$1.5M</div>
+            </div>
+        </div>
+
+        <div class="custom-section">
+            <label class="custom-label">Or enter exact property value ($50,000–$2,000,000):</label>
+            <div class="dollar-row">
+                <div class="dollar-symbol">$</div>
+                <input class="dollar-field" id="coverageInput" type="number"
+                       min="50000" max="2000000" step="10000"
+                       placeholder="e.g. 420,000"
+                       oninput="customInput('coverage',this.value,50000,2000000)"/>
+            </div>
+        </div>
+
+        <div class="nav-row">
+            <button class="btn-back" onclick="goTo(3)">← Back</button>
+            <button class="btn-next" id="next-4" onclick="goTo(5)" disabled>Continue →</button>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         STEP 5 — Age of home + result
+    ══════════════════════════════════ -->
+    <div class="q-page" id="q5">
+        <h2 class="section-title">Age of Home (years)</h2>
+        <p class="section-sub">How old is the home? Newer homes typically qualify for lower premiums. The calculator accepts 0–150 years.</p>
+
+        <div class="options-list">
+            <div class="opt-card" onclick="pick('age',2,this)">
+                <div class="opt-left"><span class="opt-emoji">🆕</span><div class="opt-text"><h3>Brand new (0–5 years)</h3><p>Recently built or newly constructed.</p></div></div>
+                <div class="opt-value">~2 yrs</div>
+            </div>
+            <div class="opt-card" onclick="pick('age',12,this)">
+                <div class="opt-left"><span class="opt-emoji">🏠</span><div class="opt-text"><h3>6–20 years old</h3><p>Modern home, relatively recent build.</p></div></div>
+                <div class="opt-value">~12 yrs</div>
+            </div>
+            <div class="opt-card" onclick="pick('age',35,this)">
+                <div class="opt-left"><span class="opt-emoji">🏡</span><div class="opt-text"><h3>21–50 years old</h3><p>Established neighbourhood home.</p></div></div>
+                <div class="opt-value">~35 yrs</div>
+            </div>
+            <div class="opt-card" onclick="pick('age',70,this)">
+                <div class="opt-left"><span class="opt-emoji">🏛️</span><div class="opt-text"><h3>Over 50 years old</h3><p>Older home, possibly with updates.</p></div></div>
+                <div class="opt-value">~70 yrs</div>
+            </div>
+        </div>
+
+        <div class="custom-section">
+            <label class="custom-label">Or enter exact age (0–150 years):</label>
+            <div class="dollar-row">
+                <input class="dollar-field" id="ageInput" type="number" min="0" max="150" step="1"
+                       placeholder="e.g. 18"
+                       oninput="customInput('age',this.value,0,150)"
+                       style="border-left:none; border-radius:0 10px 10px 0;"/>
+                <span class="field-suffix">years old</span>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Summary of all 5 answers -->
+        <div class="summary-box" id="summaryBox" style="display:none;">
+            <h3>Your Property Details</h3>
+            <div class="summary-grid" id="summaryGrid"></div>
+        </div>
+
+        <!-- Errors + result (matches original styling) -->
+        <div class="calc-error" id="calcError"></div>
+        <div class="result" id="resultBox">
+            <div class="result-label">Estimated Annual Premium</div>
+            <div class="result-value">
+                <span class="result-currency">$</span><span id="premiumValue">0.00</span>
+            </div>
+        </div>
+
+        <div class="nav-row" style="margin-top: 20px;">
+            <button class="btn-back" onclick="goTo(4)">← Back</button>
+            <button class="btn-next" id="next-5" onclick="calculateAndShow()" disabled>
+                Calculate Premium →
+            </button>
+        </div>
+
+        <!-- After result: offer to open full calculator pre-filled -->
+        <div id="afterResult" style="display:none;">
+            <button class="btn-full" onclick="goToCalculator()">
+                Open Full Calculator with These Numbers →
+            </button>
+        </div>
+    </div>
+
+</div><!-- end .main-container -->
+
+<script>
+    // ==========================================
+    // CONFIG — same token as index.html
+    // ==========================================
+    const MAPBOX_TOKEN = 'pk.eyJ1IjoibWluZGhvbWUiLCJhIjoiY21sZ3p2bnd6MDN5YjNlcHh0eG0yc3VxNSJ9.p5uKGoe-j7kdXjl73ewguw';
+
+    // ==========================================
+    // STATE
+    // ==========================================
+    const answers = { address: null, bedrooms: null, sqft: null, coverage: null, age: null };
+
+    // ==========================================
+    // WIZARD NAVIGATION
+    // ==========================================
+    function goTo(n) {
+        document.querySelectorAll('.q-page').forEach(p => p.classList.remove('active'));
+        document.getElementById('q' + n).classList.add('active');
+        updateStepBar(n);
+        window.scrollTo(0, 0);
+        if (n === 5) buildSummary();
+    }
+
+    function updateStepBar(active) {
+        for (let i = 1; i <= 5; i++) {
+            const dot  = document.getElementById('dot-' + i);
+            const line = document.getElementById('line-' + i);
+            if (i < active)        { dot.className = 'step-dot done';   dot.textContent = '✓'; }
+            else if (i === active) { dot.className = 'step-dot active'; dot.textContent = i; }
+            else                   { dot.className = 'step-dot';        dot.textContent = i; }
+            if (line) line.className = 'step-line' + (i < active ? ' done' : '');
+        }
+    }
+
+    // ==========================================
+    // INPUT HELPERS
+    // ==========================================
+    function pick(key, val, el) {
+        el.closest('.options-list').querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        answers[key] = val;
+        const inp = document.getElementById(key + 'Input');
+        if (inp) inp.value = '';
+        enableBtn(key);
+        if (key === 'age') buildSummary();
+    }
+
+    function customInput(key, val, min, max) {
+        const num = parseFloat(val);
+        if (!isNaN(num) && num >= min && num <= max) {
+            document.querySelectorAll('#q' + pageOf(key) + ' .opt-card').forEach(c => c.classList.remove('selected'));
+            answers[key] = num;
+        } else {
+            answers[key] = null;
+        }
+        enableBtn(key);
+        if (key === 'age') buildSummary();
+    }
+
+    function pageOf(key) {
+        return { address:1, bedrooms:2, sqft:3, coverage:4, age:5 }[key];
+    }
+
+    function enableBtn(key) {
+        const ids = { address:'next-1', bedrooms:'next-2', sqft:'next-3', coverage:'next-4', age:'next-5' };
+        const btn = document.getElementById(ids[key]);
+        if (btn) btn.disabled = (answers[key] === null);
+    }
+
+    // ==========================================
+    // SUMMARY
+    // ==========================================
+    function buildSummary() {
+        const box  = document.getElementById('summaryBox');
+        const grid = document.getElementById('summaryGrid');
+        const all  = Object.values(answers).every(v => v !== null);
+        if (!all) { box.style.display = 'none'; return; }
+        box.style.display = 'block';
+        grid.innerHTML = `
+            <div class="summary-item">Address:<br><strong>${answers.address}</strong></div>
+            <div class="summary-item">Bedrooms: <strong>${answers.bedrooms}</strong></div>
+            <div class="summary-item">Square footage: <strong>${Number(answers.sqft).toLocaleString()} sq ft</strong></div>
+            <div class="summary-item">Property value: <strong>$${Number(answers.coverage).toLocaleString()}</strong></div>
+            <div class="summary-item">Age of home: <strong>${answers.age} years</strong></div>
+        `;
+    }
+
+    // ==========================================
+    // PREMIUM MODEL — identical to index.html
+    // ==========================================
+    const MODEL = {
+        coefficients: [61.09909107103789, 247.32495465316828, 6.444056303890775, 40.239270399724056],
+        intercept: 1750.1500895522388,
+        scaler: {
+            mean:  [3.5164179104477613, 2470.3014925373136, 442130.93919402984, 39.25970149253731],
+            scale: [1.1416925135517493, 851.6019470776408, 160375.7009750736, 20.13887648751911]
+        },
+        calibration: { a: 2.2688583723656337, b: -1806.3973226313328 }
+    };
+
+    function predict(features) {
+        const scaled = features.map((v, i) => (v - MODEL.scaler.mean[i]) / MODEL.scaler.scale[i]);
+        let p = MODEL.intercept;
+        scaled.forEach((s, i) => p += MODEL.coefficients[i] * s);
+        return Math.max(0, MODEL.calibration.a * p + MODEL.calibration.b);
+    }
+
+    function calculateAndShow() {
+        const btn    = document.getElementById('next-5');
+        const errDiv = document.getElementById('calcError');
+        const resBox = document.getElementById('resultBox');
+
+        errDiv.classList.remove('show');
+        resBox.classList.remove('show');
+        document.getElementById('afterResult').style.display = 'none';
+
+        btn.classList.add('loading');
+        btn.disabled = true;
+
+        setTimeout(() => {
+            try {
+                const premium = predict([answers.bedrooms, answers.sqft, answers.coverage, answers.age]);
+                document.getElementById('premiumValue').textContent = premium.toFixed(2);
+                resBox.classList.add('show');
+                document.getElementById('afterResult').style.display = 'block';
+                resBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } catch(e) {
+                errDiv.textContent = 'An error occurred while calculating the premium. Please try again.';
+                errDiv.classList.add('show');
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }, 300);
+    }
+
+    function goToCalculator() {
+        const p = new URLSearchParams({
+            bedrooms: answers.bedrooms,
+            sqft:     answers.sqft,
+            coverage: answers.coverage,
+            age:      answers.age,
+            address:  encodeURIComponent(answers.address || '')
+        });
+        window.location.href = 'index.html?' + p.toString();
+    }
+
+    // ==========================================
+    // MAPBOX ADDRESS AUTOCOMPLETE
+    // ==========================================
+    let selectedAddress = null;
+    let debounceTimer   = null;
+
+    const autocompleteInput   = document.getElementById('autocomplete');
+    const errorMessageEl      = document.getElementById('errorMessage');
+    const errorListEl         = document.getElementById('errorList');
+    const successMessageEl    = document.getElementById('successMessage');
+    const addressPreviewEl    = document.getElementById('addressPreview');
+    const suggestionsDropdown = document.getElementById('suggestionsDropdown');
+
+    function initAutocomplete() {
+        if (!MAPBOX_TOKEN || MAPBOX_TOKEN === 'YOUR_MAPBOX_TOKEN_HERE') {
+            autocompleteInput.disabled = true;
+            autocompleteInput.placeholder = 'MapBox API key required — see index.html';
+            autocompleteInput.style.backgroundColor = '#ffe0e0';
+            return;
+        }
+        autocompleteInput.addEventListener('input', handleInput);
+        autocompleteInput.addEventListener('focus', handleInput);
+        document.addEventListener('click', function(e) {
+            if (!autocompleteInput.contains(e.target) && !suggestionsDropdown.contains(e.target)) {
+                suggestionsDropdown.style.display = 'none';
+            }
+        });
+    }
+
+    function handleInput(e) {
+        const query = e.target.value.trim();
+        clearTimeout(debounceTimer);
+        selectedAddress = null;
+        answers.address = null;
+        enableBtn('address');
+        clearMsgs();
+        if (query.length < 3) { suggestionsDropdown.style.display = 'none'; return; }
+        debounceTimer = setTimeout(() => searchAddress(query), 300);
+    }
+
+    async function searchAddress(query) {
+        try {
+            const res = await fetch(
+                `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?` +
+                `country=us&types=address&limit=5&access_token=${MAPBOX_TOKEN}`
+            );
+            if (!res.ok) throw new Error('Search failed');
+            const data = await res.json();
+            displaySuggestions(data.features || []);
+        } catch(err) {
+            showErr(['Failed to search addresses. Please try again.']);
+        }
+    }
+
+    function displaySuggestions(features) {
+        suggestionsDropdown.innerHTML = '';
+        if (!features.length) { suggestionsDropdown.style.display = 'none'; return; }
+        features.forEach(f => {
+            const item = document.createElement('div');
+            item.className = 'suggestion-item';
+            item.textContent = f.place_name;
+            item.addEventListener('click', () => handleSelect(f));
+            suggestionsDropdown.appendChild(item);
+        });
+        suggestionsDropdown.style.display = 'block';
+    }
+
+    function handleSelect(feature) {
+        clearMsgs();
+        suggestionsDropdown.style.display = 'none';
+        autocompleteInput.value = feature.place_name;
+        const addr = parseAddr(feature);
+        const v = validateAddr(addr);
+        if (!v.isValid) { showErr(v.errors); return; }
+        selectedAddress = addr;
+        answers.address = feature.place_name;
+        enableBtn('address');
+        showSuccess(addr);
+    }
+
+    function parseAddr(feature) {
+        const ctx = {};
+        if (feature.context) {
+            feature.context.forEach(c => {
+                if (c.id.startsWith('postcode')) ctx.zipCode = c.text;
+                if (c.id.startsWith('place'))    ctx.city    = c.text;
+                if (c.id.startsWith('region'))   ctx.state   = c.short_code ? c.short_code.replace('US-','') : c.text;
+            });
+        }
+        const street = feature.address ? `${feature.address} ${feature.text}` : feature.text;
+        return { street, city: ctx.city||'', state: ctx.state||'', zipCode: ctx.zipCode||'' };
+    }
+
+    function validateAddr(a) {
+        const errors = [];
+        if (!a.street)  errors.push('Street address is required');
+        if (!a.city)    errors.push('City is required');
+        if (!a.state)   errors.push('State is required');
+        if (!a.zipCode) errors.push('ZIP code is required');
+        else if (!/^\d{5}(-\d{4})?$/.test(a.zipCode)) errors.push('Invalid ZIP code format');
+        return { isValid: errors.length === 0, errors };
+    }
+
+    function showErr(errors) {
+        errorListEl.innerHTML = '';
+        errors.forEach(e => { const li = document.createElement('li'); li.textContent = e; errorListEl.appendChild(li); });
+        errorMessageEl.classList.add('show');
+        successMessageEl.classList.remove('show');
+    }
+    function showSuccess(a) {
+        addressPreviewEl.textContent = `${a.street}, ${a.city}, ${a.state} ${a.zipCode}`;
+        successMessageEl.classList.add('show');
+        errorMessageEl.classList.remove('show');
+    }
+    function clearMsgs() {
+        errorMessageEl.classList.remove('show');
+        successMessageEl.classList.remove('show');
+    }
+
+    autocompleteInput.addEventListener('input', function() {
+        if (selectedAddress && autocompleteInput.value !== addressPreviewEl.textContent) {
+            selectedAddress = null; answers.address = null; enableBtn('address'); clearMsgs();
+        }
+    });
+
+    window.addEventListener('load', initAutocomplete);
+</script>
+</body>
+</html>

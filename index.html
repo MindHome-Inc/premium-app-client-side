@@ -54,6 +54,28 @@
             transform: translateX(-1px);
         }
 
+        .btn-wizard {
+            padding: 12px 24px;
+            background-color: #5bc0be;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #062c43;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(91, 192, 190, 0.3);
+        }
+        .btn-wizard:hover {
+            background-color: #4aa9a7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 192, 190, 0.4);
+        }
+
         /* ========================================== */
         /* MAIN CONTAINER */
         /* ========================================== */
@@ -388,10 +410,13 @@
     <!-- ========================================== -->
     <!-- GO BACK BUTTON -->
     <!-- ========================================== -->
-    <div class="back-button-wrapper">
+    <div class="back-button-wrapper" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;">
         <button onclick="goBack()" class="btn-go-back" type="button">
             ← Go Back
         </button>
+        <a href="questionnaire.html" class="btn-wizard">
+            ✨ Get My Estimate →
+        </a>
     </div>
 
     <!-- ========================================== -->
@@ -483,6 +508,18 @@
         function goBack() {
             window.history.back();
         }
+
+        // Pre-fill form from questionnaire URL params
+        (function prefillFromParams() {
+            const p = new URLSearchParams(window.location.search);
+            if (p.get('bedrooms')) document.getElementById('bedrooms').value  = p.get('bedrooms');
+            if (p.get('sqft'))     document.getElementById('sqft').value      = p.get('sqft');
+            if (p.get('coverage')) document.getElementById('coverage').value  = p.get('coverage');
+            if (p.get('age'))      document.getElementById('age').value       = p.get('age');
+            if (p.get('address'))  {
+                document.getElementById('autocomplete').value = decodeURIComponent(p.get('address'));
+            }
+        })();
 
         // ==========================================
         // ADDRESS FORM LOGIC (MapBox Version)
