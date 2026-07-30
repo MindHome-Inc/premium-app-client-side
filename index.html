@@ -1,1130 +1,1319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <!-- MindHome — Protection bolt-on checkout with live Shopify Storefront handoff -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MindHome — Protect &amp; Save</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
-        rel="stylesheet">
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        :root {
-            --navy: #0C2340;
-            /* structural ink */
-            --navy-2: #13315C;
-            --purple: #8A288F;
-            /* MindHome accent */
-            --purple-2: #B23AB8;
-            --grad: linear-gradient(120deg, #0C2340 0%, #4A1E5C 55%, #8A288F 100%);
-            --grad-soft: linear-gradient(120deg, #F4F6FB, #F6EEF7);
-            --save: #0E9E6E;
-            --save-soft: #E4F5EE;
-            --bg: #F5F7FB;
-            --card: #FFFFFF;
-            --line: #E2E8F1;
-            --line-2: #D7DEEA;
-            --muted: #5C6B82;
-            --ink: #0C2340;
-            --warn: #9A5B00;
-            --radius: 16px;
-            --shadow: 0 1px 2px rgba(12, 35, 64, .05), 0 10px 30px rgba(12, 35, 64, .07);
-        }
+      :root {
+        --navy: #0c2340;
+        /* structural ink */
+        --navy-2: #13315c;
+        --purple: #8a288f;
+        /* MindHome accent */
+        --purple-2: #b23ab8;
+        --grad: linear-gradient(120deg, #0c2340 0%, #4a1e5c 55%, #8a288f 100%);
+        --grad-soft: linear-gradient(120deg, #f4f6fb, #f6eef7);
+        --save: #0e9e6e;
+        --save-soft: #e4f5ee;
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --line: #e2e8f1;
+        --line-2: #d7deea;
+        --muted: #5c6b82;
+        --ink: #0c2340;
+        --warn: #9a5b00;
+        --radius: 16px;
+        --shadow:
+          0 1px 2px rgba(12, 35, 64, 0.05), 0 10px 30px rgba(12, 35, 64, 0.07);
+      }
 
-        * {
-            box-sizing: border-box
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        html,
-        body {
-            margin: 0
-        }
+      html,
+      body {
+        margin: 0;
+      }
 
-        body {
-            font-family: Inter, system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--ink);
-            -webkit-font-smoothing: antialiased;
-            line-height: 1.5
-        }
+      body {
+        font-family: Inter, system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+        line-height: 1.5;
+      }
 
-        .num {
-            font-family: "Space Grotesk", Inter, sans-serif;
-            font-variant-numeric: tabular-nums
-        }
+      .num {
+        font-family: "Space Grotesk", Inter, sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
 
-        /* top bar */
-        .topbar {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 0 24px;
-            height: 60px;
-            background: var(--navy);
-            color: #fff;
-            position: relative
-        }
+      /* top bar */
+      .topbar {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 0 24px;
+        height: 60px;
+        background: var(--navy);
+        color: #fff;
+        position: relative;
+      }
 
-        .topbar::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 2px;
-            background: var(--grad)
-        }
+      .topbar::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 2px;
+        background: var(--grad);
+      }
 
-        .lockup {
-            font-family: "Space Grotesk";
-            font-weight: 700;
-            font-size: 17px;
-            letter-spacing: .2px;
-            display: flex;
-            align-items: center;
-            gap: 9px
-        }
+      .lockup {
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        font-size: 17px;
+        letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
 
-        .lockup .m {
-            background: linear-gradient(90deg, #C77FCB, #E8B6EC);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent
-        }
+      .lockup .m {
+        background: linear-gradient(90deg, #c77fcb, #e8b6ec);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
 
-        .topbar .ref {
-            margin-left: auto;
-            font-size: 12.5px;
-            color: #9FB0C9;
-            display: flex;
-            gap: 18px
-        }
+      .topbar .ref {
+        margin-left: auto;
+        font-size: 12.5px;
+        color: #9fb0c9;
+        display: flex;
+        gap: 18px;
+      }
 
-        .topbar .ref b {
-            color: #fff;
-            font-weight: 600
-        }
+      .topbar .ref b {
+        color: #fff;
+        font-weight: 600;
+      }
 
-        @media(max-width:680px) {
-            .topbar .ref span.hideS {
-                display: none
-            }
+      @media (max-width: 680px) {
+        .topbar .ref span.hideS {
+          display: none;
         }
+      }
 
-        /* progress rail */
-        .rail {
-            display: flex;
-            gap: 6px;
-            padding: 16px 24px 0;
-            max-width: 1120px;
-            margin: 0 auto;
-            width: 100%
-        }
+      /* progress rail */
+      .rail {
+        display: flex;
+        gap: 6px;
+        padding: 16px 24px 0;
+        max-width: 1120px;
+        margin: 0 auto;
+        width: 100%;
+      }
 
-        .rail .seg {
-            flex: 1;
-            height: 5px;
-            border-radius: 99px;
-            background: var(--line)
-        }
+      .rail .seg {
+        flex: 1;
+        height: 5px;
+        border-radius: 99px;
+        background: var(--line);
+      }
 
-        .rail .seg.done {
-            background: var(--navy-2)
-        }
+      .rail .seg.done {
+        background: var(--navy-2);
+      }
 
-        .rail .seg.active {
-            background: var(--grad)
-        }
+      .rail .seg.active {
+        background: var(--grad);
+      }
 
-        .railcap {
-            max-width: 1120px;
-            margin: 7px auto 0;
-            padding: 0 24px;
-            width: 100%;
-            font-size: 12px;
-            color: var(--muted);
-            display: flex;
-            justify-content: space-between;
-            font-weight: 500
-        }
+      .railcap {
+        max-width: 1120px;
+        margin: 7px auto 0;
+        padding: 0 24px;
+        width: 100%;
+        font-size: 12px;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        font-weight: 500;
+      }
 
-        /* layout */
+      /* layout */
+      .wrap {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 1fr 372px;
+        gap: 28px;
+        align-items: start;
+      }
+
+      @media (max-width: 880px) {
         .wrap {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 24px;
-            display: grid;
-            grid-template-columns: 1fr 372px;
-            gap: 28px;
-            align-items: start
+          grid-template-columns: 1fr;
+          padding-bottom: 118px;
+        }
+      }
+
+      .step {
+        display: none;
+        animation: fade 0.26s ease;
+      }
+
+      .step.show {
+        display: block;
+      }
+
+      @keyframes fade {
+        from {
+          opacity: 0;
+          transform: translateY(7px);
         }
 
-        @media(max-width:880px) {
-            .wrap {
-                grid-template-columns: 1fr;
-                padding-bottom: 118px
-            }
+        to {
+          opacity: 1;
+          transform: none;
         }
+      }
 
-        .step {
-            display: none;
-            animation: fade .26s ease
+      .eyebrow {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        background: var(--grad);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        display: inline-block;
+      }
+
+      h1 {
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        color: var(--navy);
+        font-size: 27px;
+        line-height: 1.18;
+        margin: 7px 0 7px;
+        letter-spacing: -0.3px;
+      }
+
+      .sub {
+        color: var(--muted);
+        margin: 0 0 22px;
+        max-width: 48ch;
+      }
+
+      /* option cards */
+      .opt {
+        display: flex;
+        gap: 15px;
+        align-items: flex-start;
+        width: 100%;
+        background: var(--card);
+        border: 1.5px solid var(--line);
+        border-radius: var(--radius);
+        padding: 17px 19px;
+        margin-bottom: 13px;
+        cursor: pointer;
+        text-align: left;
+        transition:
+          border-color 0.15s,
+          box-shadow 0.15s,
+          background 0.15s;
+        position: relative;
+      }
+
+      .opt:hover {
+        border-color: var(--line-2);
+      }
+
+      .opt.sel {
+        border-color: var(--purple);
+        background: var(--grad-soft);
+        box-shadow: var(--shadow);
+      }
+
+      .opt .ic {
+        font-size: 23px;
+        line-height: 1;
+        margin-top: 2px;
+      }
+
+      .opt h3 {
+        margin: 0 0 3px;
+        font-size: 16px;
+        color: var(--navy);
+      }
+
+      .opt p {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .opt .tag {
+        position: absolute;
+        top: 15px;
+        right: 17px;
+        font-size: 11.5px;
+        font-weight: 600;
+        color: var(--save);
+        background: var(--save-soft);
+        padding: 3px 10px;
+        border-radius: 99px;
+      }
+
+      .opt .price {
+        font-family: "Space Grotesk";
+        font-weight: 600;
+        color: var(--navy);
+        white-space: nowrap;
+        margin-top: 3px;
+        font-size: 14px;
+      }
+
+      .opt .price .strike {
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 12px;
+        text-decoration: line-through;
+        margin-left: 6px;
+      }
+
+      .opt .chk {
+        margin-left: auto;
+        width: 23px;
+        height: 23px;
+        border-radius: 50%;
+        border: 2px solid var(--line);
+        flex: none;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 13px;
+        transition: 0.15s;
+      }
+
+      .opt.sel .chk {
+        background: var(--purple);
+        border-color: var(--purple);
+      }
+
+      /* device rows */
+      .dev {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 13px 15px;
+        margin-bottom: 10px;
+      }
+
+      .dev .meta {
+        flex: 1;
+      }
+
+      .dev .meta h4 {
+        margin: 0 0 2px;
+        font-size: 14px;
+        color: var(--navy);
+      }
+
+      .dev .meta span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .pill {
+        font-size: 10.5px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 99px;
+        margin-left: 7px;
+        vertical-align: 1px;
+      }
+
+      .pill.fire {
+        background: #fbe7df;
+        color: #b6431a;
+      }
+
+      .pill.water {
+        background: #deebfb;
+        color: #1a57b6;
+      }
+
+      .pill.none {
+        background: #ece4f2;
+        color: #6b2e86;
+      }
+
+      .stepper {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      .stepper button {
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: #fff;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--purple);
+      }
+
+      .stepper button:hover {
+        background: var(--grad-soft);
+      }
+
+      .stepper .q {
+        width: 36px;
+        text-align: center;
+        font-family: "Space Grotesk";
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      /* savings ledger */
+      .ledger {
+        position: sticky;
+        top: 18px;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .ledger::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--grad);
+      }
+
+      .ledger h2 {
+        font-family: "Space Grotesk";
+        font-size: 12.5px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin: 4px 0 14px;
+        font-weight: 600;
+      }
+
+      .big {
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        color: var(--save);
+        font-size: 42px;
+        line-height: 1;
+        letter-spacing: -1.4px;
+      }
+
+      .biglab {
+        font-size: 12.5px;
+        color: var(--muted);
+        margin: 5px 0 17px;
+      }
+
+      .lrow {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 9px 0;
+        font-size: 13.5px;
+        border-top: 1px dashed var(--line);
+      }
+
+      .lrow:first-of-type {
+        border-top: none;
+      }
+
+      .lrow .k {
+        color: var(--muted);
+      }
+
+      .lrow .v {
+        font-family: "Space Grotesk";
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .lrow .v.save {
+        color: var(--save);
+      }
+
+      .credits {
+        display: flex;
+        gap: 9px;
+        margin: 15px 0 5px;
+      }
+
+      .credit {
+        flex: 1;
+        border: 1px solid var(--line);
+        border-radius: 11px;
+        padding: 10px;
+        text-align: center;
+        font-size: 11.5px;
+        transition: 0.15s;
+      }
+
+      .credit .pct {
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        font-size: 18px;
+        display: block;
+      }
+
+      .credit.on {
+        border-color: var(--save);
+        background: var(--save-soft);
+      }
+
+      .credit.on .pct {
+        color: var(--save);
+      }
+
+      .credit.off {
+        opacity: 0.5;
+      }
+
+      .credit.off .pct {
+        color: var(--muted);
+      }
+
+      .payback {
+        margin-top: 15px;
+        background: var(--grad);
+        color: #fff;
+        border-radius: 13px;
+        padding: 15px 17px;
+      }
+
+      .payback .p1 {
+        font-size: 12px;
+        color: #e5d2ea;
+        margin-bottom: 3px;
+      }
+
+      .payback .p2 {
+        font-family: "Space Grotesk";
+        font-weight: 700;
+        font-size: 19px;
+      }
+
+      .hint {
+        margin-top: 13px;
+        font-size: 12px;
+        color: var(--warn);
+        background: #fff8ec;
+        border: 1px solid #f3e2be;
+        border-radius: 11px;
+        padding: 10px 12px;
+        display: none;
+      }
+
+      .hint.show {
+        display: block;
+      }
+
+      /* buttons */
+      .nav {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+        align-items: center;
+      }
+
+      .btn {
+        font-family: Inter;
+        font-size: 14.5px;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 14px 24px;
+        cursor: pointer;
+        border: 1.5px solid transparent;
+        transition:
+          transform 0.08s,
+          filter 0.15s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .btn.primary {
+        background: var(--grad);
+        color: #fff;
+      }
+
+      .btn.primary:hover {
+        filter: brightness(1.08);
+      }
+
+      .btn.ghost {
+        background: transparent;
+        color: var(--navy);
+        border-color: var(--line-2);
+      }
+
+      .btn.wide {
+        width: 100%;
+        justify-content: center;
+        padding: 16px;
+      }
+
+      .btn[disabled] {
+        opacity: 0.4;
+        cursor: not-allowed;
+        filter: none;
+      }
+
+      .skip {
+        margin-left: auto;
+        font-size: 13px;
+        color: var(--muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      .spin {
+        width: 15px;
+        height: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: sp 0.7s linear infinite;
+        display: inline-block;
+      }
+
+      @keyframes sp {
+        to {
+          transform: rotate(360deg);
         }
+      }
 
-        .step.show {
-            display: block
-        }
+      /* prefilled form */
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 13px;
+      }
 
-        @keyframes fade {
-            from {
-                opacity: 0;
-                transform: translateY(7px)
-            }
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 0 0 5px;
+      }
 
-            to {
-                opacity: 1;
-                transform: none
-            }
-        }
+      .field input {
+        width: 100%;
+        padding: 12px 13px;
+        border: 1.5px solid var(--line);
+        border-radius: 11px;
+        font-family: Inter;
+        font-size: 14px;
+        background: #fff;
+        color: var(--ink);
+      }
 
-        .eyebrow {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: .13em;
-            text-transform: uppercase;
-            background: var(--grad);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block
-        }
+      .field input:focus {
+        outline: none;
+        border-color: var(--purple);
+      }
 
-        h1 {
-            font-family: "Space Grotesk";
-            font-weight: 700;
-            color: var(--navy);
-            font-size: 27px;
-            line-height: 1.18;
-            margin: 7px 0 7px;
-            letter-spacing: -.3px
-        }
+      .prefill {
+        font-size: 11px;
+        color: var(--save);
+        font-weight: 600;
+        margin-left: 6px;
+      }
 
-        .sub {
-            color: var(--muted);
-            margin: 0 0 22px;
-            max-width: 48ch
-        }
+      /* address autocomplete (Mapbox Geocoding API) */
+      .addr-wrap {
+        position: relative;
+      }
 
-        /* option cards */
-        .opt {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            width: 100%;
-            background: var(--card);
-            border: 1.5px solid var(--line);
-            border-radius: var(--radius);
-            padding: 17px 19px;
-            margin-bottom: 13px;
-            cursor: pointer;
-            text-align: left;
-            transition: border-color .15s, box-shadow .15s, background .15s;
-            position: relative
-        }
+      .suggest-list {
+        position: absolute;
+        top: calc(100% + 6px);
+        left: 0;
+        right: 0;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        max-height: 240px;
+        overflow-y: auto;
+        z-index: 30;
+        display: none;
+      }
 
-        .opt:hover {
-            border-color: var(--line-2)
-        }
+      .suggest-list.show {
+        display: block;
+      }
 
-        .opt.sel {
-            border-color: var(--purple);
-            background: var(--grad-soft);
-            box-shadow: var(--shadow)
-        }
+      .suggest-item {
+        padding: 10px 13px;
+        font-size: 13px;
+        color: var(--ink);
+        cursor: pointer;
+        border-bottom: 1px solid var(--line);
+      }
 
-        .opt .ic {
-            font-size: 23px;
-            line-height: 1;
-            margin-top: 2px
-        }
+      .suggest-item:last-child {
+        border-bottom: none;
+      }
 
-        .opt h3 {
-            margin: 0 0 3px;
-            font-size: 16px;
-            color: var(--navy)
-        }
+      .suggest-item:hover {
+        background: var(--grad-soft);
+      }
 
-        .opt p {
-            margin: 0;
-            font-size: 13px;
-            color: var(--muted)
-        }
+      .addr-status {
+        font-size: 12px;
+        margin-top: 6px;
+        display: none;
+      }
 
-        .opt .tag {
-            position: absolute;
-            top: 15px;
-            right: 17px;
-            font-size: 11.5px;
-            font-weight: 600;
-            color: var(--save);
-            background: var(--save-soft);
-            padding: 3px 10px;
-            border-radius: 99px
-        }
+      .addr-status.show {
+        display: block;
+      }
 
-        .opt .price {
-            font-family: "Space Grotesk";
-            font-weight: 600;
-            color: var(--navy);
-            white-space: nowrap;
-            margin-top: 3px;
-            font-size: 14px
-        }
+      .addr-status.ok {
+        color: var(--save);
+      }
 
-        .opt .price .strike {
-            color: var(--muted);
-            font-weight: 400;
-            font-size: 12px;
-            text-decoration: line-through;
-            margin-left: 6px
-        }
+      .addr-status.err {
+        color: #c0392b;
+      }
 
-        .opt .chk {
-            margin-left: auto;
-            width: 23px;
-            height: 23px;
-            border-radius: 50%;
-            border: 2px solid var(--line);
-            flex: none;
-            display: grid;
-            place-items: center;
-            color: #fff;
-            font-size: 13px;
-            transition: .15s
-        }
+      .panelnote {
+        background: var(--grad-soft);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 14px 16px;
+        font-size: 13px;
+        color: var(--navy);
+        margin-bottom: 18px;
+        display: flex;
+        gap: 11px;
+      }
 
-        .opt.sel .chk {
-            background: var(--purple);
-            border-color: var(--purple)
-        }
+      /* finance */
+      .fin {
+        display: flex;
+        gap: 11px;
+        margin: 7px 0 4px;
+      }
 
-        /* device rows */
-        .dev {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            padding: 13px 15px;
-            margin-bottom: 10px
-        }
+      .fin .o {
+        flex: 1;
+        border: 1.5px solid var(--line);
+        border-radius: 13px;
+        padding: 14px;
+        cursor: pointer;
+        background: #fff;
+      }
 
-        .dev .meta {
-            flex: 1
-        }
+      .fin .o.sel {
+        border-color: var(--purple);
+        background: var(--grad-soft);
+      }
 
-        .dev .meta h4 {
-            margin: 0 0 2px;
-            font-size: 14px;
-            color: var(--navy)
-        }
+      .fin .o b {
+        font-family: "Space Grotesk";
+        display: block;
+        color: var(--navy);
+        font-size: 17px;
+      }
 
-        .dev .meta span {
-            font-size: 12px;
-            color: var(--muted)
-        }
+      .fin .o span {
+        font-size: 12px;
+        color: var(--muted);
+      }
 
-        .pill {
-            font-size: 10.5px;
-            font-weight: 600;
-            padding: 2px 8px;
-            border-radius: 99px;
-            margin-left: 7px;
-            vertical-align: 1px
-        }
+      /* confirmation */
+      .done {
+        text-align: center;
+        padding: 32px 10px;
+      }
 
-        .pill.fire {
-            background: #FBE7DF;
-            color: #B6431A
-        }
+      .done .badge {
+        width: 66px;
+        height: 66px;
+        border-radius: 50%;
+        background: var(--grad);
+        color: #fff;
+        display: grid;
+        place-items: center;
+        font-size: 30px;
+        margin: 0 auto 17px;
+      }
 
-        .pill.water {
-            background: #DEEBFB;
-            color: #1A57B6
-        }
+      .timeline {
+        max-width: 430px;
+        margin: 24px auto 0;
+        text-align: left;
+      }
 
-        .pill.none {
-            background: #ECE4F2;
-            color: #6B2E86
-        }
+      .ti {
+        display: flex;
+        gap: 13px;
+        padding: 12px 0;
+        border-top: 1px dashed var(--line);
+        font-size: 13.5px;
+      }
 
-        .stepper {
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--line);
-            border-radius: 10px;
-            overflow: hidden
-        }
+      .ti:first-child {
+        border-top: none;
+      }
 
-        .stepper button {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            color: var(--purple)
-        }
+      .ti .d {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--purple);
+        margin-top: 5px;
+        flex: none;
+      }
 
-        .stepper button:hover {
-            background: var(--grad-soft)
-        }
+      .ti b {
+        color: var(--navy);
+      }
 
-        .stepper .q {
-            width: 36px;
-            text-align: center;
-            font-family: "Space Grotesk";
-            font-weight: 600;
-            font-size: 14px
-        }
+      /* mobile sticky */
+      .mbar {
+        display: none;
+      }
 
-        /* savings ledger */
+      @media (max-width: 880px) {
         .ledger {
-            position: sticky;
-            top: 18px;
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 20px;
-            padding: 22px;
-            box-shadow: var(--shadow);
-            overflow: hidden
+          display: none;
         }
 
-        .ledger::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--grad)
-        }
-
-        .ledger h2 {
-            font-family: "Space Grotesk";
-            font-size: 12.5px;
-            letter-spacing: .07em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin: 4px 0 14px;
-            font-weight: 600
-        }
-
-        .big {
-            font-family: "Space Grotesk";
-            font-weight: 700;
-            color: var(--save);
-            font-size: 42px;
-            line-height: 1;
-            letter-spacing: -1.4px
-        }
-
-        .biglab {
-            font-size: 12.5px;
-            color: var(--muted);
-            margin: 5px 0 17px
-        }
-
-        .lrow {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            padding: 9px 0;
-            font-size: 13.5px;
-            border-top: 1px dashed var(--line)
-        }
-
-        .lrow:first-of-type {
-            border-top: none
-        }
-
-        .lrow .k {
-            color: var(--muted)
-        }
-
-        .lrow .v {
-            font-family: "Space Grotesk";
-            font-weight: 600;
-            color: var(--ink)
-        }
-
-        .lrow .v.save {
-            color: var(--save)
-        }
-
-        .credits {
-            display: flex;
-            gap: 9px;
-            margin: 15px 0 5px
-        }
-
-        .credit {
-            flex: 1;
-            border: 1px solid var(--line);
-            border-radius: 11px;
-            padding: 10px;
-            text-align: center;
-            font-size: 11.5px;
-            transition: .15s
-        }
-
-        .credit .pct {
-            font-family: "Space Grotesk";
-            font-weight: 700;
-            font-size: 18px;
-            display: block
-        }
-
-        .credit.on {
-            border-color: var(--save);
-            background: var(--save-soft)
-        }
-
-        .credit.on .pct {
-            color: var(--save)
-        }
-
-        .credit.off {
-            opacity: .5
-        }
-
-        .credit.off .pct {
-            color: var(--muted)
-        }
-
-        .payback {
-            margin-top: 15px;
-            background: var(--grad);
-            color: #fff;
-            border-radius: 13px;
-            padding: 15px 17px
-        }
-
-        .payback .p1 {
-            font-size: 12px;
-            color: #E5D2EA;
-            margin-bottom: 3px
-        }
-
-        .payback .p2 {
-            font-family: "Space Grotesk";
-            font-weight: 700;
-            font-size: 19px
-        }
-
-        .hint {
-            margin-top: 13px;
-            font-size: 12px;
-            color: var(--warn);
-            background: #FFF8EC;
-            border: 1px solid #F3E2BE;
-            border-radius: 11px;
-            padding: 10px 12px;
-            display: none
-        }
-
-        .hint.show {
-            display: block
-        }
-
-        /* buttons */
-        .nav {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            align-items: center
-        }
-
-        .btn {
-            font-family: Inter;
-            font-size: 14.5px;
-            font-weight: 600;
-            border-radius: 12px;
-            padding: 14px 24px;
-            cursor: pointer;
-            border: 1.5px solid transparent;
-            transition: transform .08s, filter .15s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px
-        }
-
-        .btn:active {
-            transform: translateY(1px)
-        }
-
-        .btn.primary {
-            background: var(--grad);
-            color: #fff
-        }
-
-        .btn.primary:hover {
-            filter: brightness(1.08)
-        }
-
-        .btn.ghost {
-            background: transparent;
-            color: var(--navy);
-            border-color: var(--line-2)
-        }
-
-        .btn.wide {
-            width: 100%;
-            justify-content: center;
-            padding: 16px
-        }
-
-        .btn[disabled] {
-            opacity: .4;
-            cursor: not-allowed;
-            filter: none
-        }
-
-        .skip {
-            margin-left: auto;
-            font-size: 13px;
-            color: var(--muted);
-            background: none;
-            border: none;
-            cursor: pointer;
-            text-decoration: underline
-        }
-
-        .spin {
-            width: 15px;
-            height: 15px;
-            border: 2px solid rgba(255, 255, 255, .4);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: sp .7s linear infinite;
-            display: inline-block
-        }
-
-        @keyframes sp {
-            to {
-                transform: rotate(360deg)
-            }
-        }
-
-        /* prefilled form */
-        .grid2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 13px
-        }
-
-        .field label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--muted);
-            margin: 0 0 5px
-        }
-
-        .field input {
-            width: 100%;
-            padding: 12px 13px;
-            border: 1.5px solid var(--line);
-            border-radius: 11px;
-            font-family: Inter;
-            font-size: 14px;
-            background: #fff;
-            color: var(--ink)
-        }
-
-        .field input:focus {
-            outline: none;
-            border-color: var(--purple)
-        }
-
-        .prefill {
-            font-size: 11px;
-            color: var(--save);
-            font-weight: 600;
-            margin-left: 6px
-        }
-
-        /* address autocomplete (Mapbox Geocoding API) */
-        .addr-wrap {
-            position: relative
-        }
-
-        .suggest-list {
-            position: absolute;
-            top: calc(100% + 6px);
-            left: 0;
-            right: 0;
-            background: var(--card);
-            border: 1px solid var(--line);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            max-height: 240px;
-            overflow-y: auto;
-            z-index: 30;
-            display: none
-        }
-
-        .suggest-list.show {
-            display: block
-        }
-
-        .suggest-item {
-            padding: 10px 13px;
-            font-size: 13px;
-            color: var(--ink);
-            cursor: pointer;
-            border-bottom: 1px solid var(--line)
-        }
-
-        .suggest-item:last-child {
-            border-bottom: none
-        }
-
-        .suggest-item:hover {
-            background: var(--grad-soft)
-        }
-
-        .addr-status {
-            font-size: 12px;
-            margin-top: 6px;
-            display: none
-        }
-
-        .addr-status.show {
-            display: block
-        }
-
-        .addr-status.ok {
-            color: var(--save)
-        }
-
-        .addr-status.err {
-            color: #C0392B
-        }
-
-        .panelnote {
-            background: var(--grad-soft);
-            border: 1px solid var(--line);
-            border-radius: 13px;
-            padding: 14px 16px;
-            font-size: 13px;
-            color: var(--navy);
-            margin-bottom: 18px;
-            display: flex;
-            gap: 11px
-        }
-
-        /* finance */
-        .fin {
-            display: flex;
-            gap: 11px;
-            margin: 7px 0 4px
-        }
-
-        .fin .o {
-            flex: 1;
-            border: 1.5px solid var(--line);
-            border-radius: 13px;
-            padding: 14px;
-            cursor: pointer;
-            background: #fff
-        }
-
-        .fin .o.sel {
-            border-color: var(--purple);
-            background: var(--grad-soft)
-        }
-
-        .fin .o b {
-            font-family: "Space Grotesk";
-            display: block;
-            color: var(--navy);
-            font-size: 17px
-        }
-
-        .fin .o span {
-            font-size: 12px;
-            color: var(--muted)
-        }
-
-        /* confirmation */
-        .done {
-            text-align: center;
-            padding: 32px 10px
-        }
-
-        .done .badge {
-            width: 66px;
-            height: 66px;
-            border-radius: 50%;
-            background: var(--grad);
-            color: #fff;
-            display: grid;
-            place-items: center;
-            font-size: 30px;
-            margin: 0 auto 17px
-        }
-
-        .timeline {
-            max-width: 430px;
-            margin: 24px auto 0;
-            text-align: left
-        }
-
-        .ti {
-            display: flex;
-            gap: 13px;
-            padding: 12px 0;
-            border-top: 1px dashed var(--line);
-            font-size: 13.5px
-        }
-
-        .ti:first-child {
-            border-top: none
-        }
-
-        .ti .d {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: var(--purple);
-            margin-top: 5px;
-            flex: none
-        }
-
-        .ti b {
-            color: var(--navy)
-        }
-
-        /* mobile sticky */
         .mbar {
-            display: none
+          display: flex;
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: #fff;
+          border-top: 1px solid var(--line);
+          padding: 13px 18px;
+          align-items: center;
+          gap: 14px;
+          z-index: 20;
+          box-shadow: 0 -7px 22px rgba(12, 35, 64, 0.09);
         }
 
-        @media(max-width:880px) {
-            .ledger {
-                display: none
-            }
-
-            .mbar {
-                display: flex;
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: #fff;
-                border-top: 1px solid var(--line);
-                padding: 13px 18px;
-                align-items: center;
-                gap: 14px;
-                z-index: 20;
-                box-shadow: 0 -7px 22px rgba(12, 35, 64, .09)
-            }
-
-            .mbar .ms {
-                flex: 1
-            }
-
-            .mbar .ms b {
-                font-family: "Space Grotesk";
-                color: var(--save);
-                font-size: 20px;
-                display: block
-            }
-
-            .mbar .ms span {
-                font-size: 11px;
-                color: var(--muted)
-            }
+        .mbar .ms {
+          flex: 1;
         }
 
-        .toast {
-            position: fixed;
-            left: 50%;
-            bottom: 26px;
-            transform: translateX(-50%) translateY(80px);
-            background: var(--navy);
-            color: #fff;
-            padding: 13px 20px;
-            border-radius: 12px;
-            font-size: 13.5px;
-            box-shadow: var(--shadow);
-            transition: transform .3s;
-            z-index: 50;
-            max-width: 90%
+        .mbar .ms b {
+          font-family: "Space Grotesk";
+          color: var(--save);
+          font-size: 20px;
+          display: block;
         }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0)
+        .mbar .ms span {
+          font-size: 11px;
+          color: var(--muted);
         }
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 26px;
+        transform: translateX(-50%) translateY(80px);
+        background: var(--navy);
+        color: #fff;
+        padding: 13px 20px;
+        border-radius: 12px;
+        font-size: 13.5px;
+        box-shadow: var(--shadow);
+        transition: transform 0.3s;
+        z-index: 50;
+        max-width: 90%;
+      }
+
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <div class="topbar">
-        <div class="lockup"><span class="m">MindHome</span></div>
-        <div class="ref">
-            <span class="hideS">Quote <b id="refTop">HQ-4815</b></span>
-            <span>Est. premium <b id="premTop">$1,840/yr</b></span>
-        </div>
+      <div class="lockup"><span class="m">MindHome</span></div>
+      <div class="ref">
+        <span class="hideS">Quote <b id="refTop">HQ-4815</b></span>
+        <span>Est. premium <b id="premTop">$1,840/yr</b></span>
+      </div>
     </div>
 
     <div class="rail" id="rail"></div>
-    <div class="railcap"><span id="capLeft">Protection</span><span id="capRight">Step 1 of 4</span></div>
+    <div class="railcap">
+      <span id="capLeft">Protection</span><span id="capRight">Step 1 of 4</span>
+    </div>
 
     <div class="wrap">
-        <div class="col">
+      <div class="col">
+        <!-- STEP 0 -->
+        <section class="step show" data-step="0">
+          <div class="eyebrow">Your quote is ready</div>
+          <h1>You qualify for up to 50% off your premium</h1>
+          <p class="sub">
+            MindHome devices that actively prevent water and fire losses can
+            lower your home insurance premium. Add them now and your agent
+            applies the credit when your policy binds.
+          </p>
+          <div class="panelnote">
+            <span>💡</span>
+            <div>
+              Insurers reward <b>active mitigation</b>, not just alarms. A valve
+              that shuts off a leak, or an extinguisher that puts out a fire, is
+              what unlocks the credit — so the kit is built around devices that
+              act, not just notify.
+            </div>
+          </div>
 
-            <!-- STEP 0 -->
-            <section class="step show" data-step="0">
-                <div class="eyebrow">Your quote is ready</div>
-                <h1>You qualify for up to 50% off your premium</h1>
-                <p class="sub">MindHome devices that actively prevent
-                    water and fire losses can lower your home insurance premium. Add them now and your agent applies the
-                    credit
-                    when your policy binds.</p>
-                <div class="panelnote"><span>💡</span>
-                    <div>Insurers reward <b>active mitigation</b>, not just alarms.
-                        A valve that shuts off a leak, or an extinguisher that puts out a fire, is what unlocks the
-                        credit —
-                        so the kit is built around devices that act, not just notify.</div>
+          <div style="margin-bottom: 18px">
+            <div
+              style="
+                font-weight: 600;
+                color: var(--navy);
+                font-size: 14px;
+                margin-bottom: 10px;
+              "
+            >
+              Your name &amp; property
+            </div>
+            <div class="grid2" style="margin-bottom: 13px">
+              <div class="field">
+                <label>First name</label
+                ><input
+                  id="hqFirst"
+                  value="Jordan"
+                  required
+                  oninput="syncHeroAndForm()"
+                />
+              </div>
+              <div class="field">
+                <label>Last name</label
+                ><input
+                  id="hqLast"
+                  value="Maxwell"
+                  required
+                  oninput="syncHeroAndForm()"
+                />
+              </div>
+            </div>
+            <div class="field addr-wrap">
+              <label>Property address</label>
+              <input
+                id="hqAddrSearch"
+                value="482 Marigold Ln, Boulder, CO 80302"
+                autocomplete="off"
+                required
+                oninput="handleAddrInput(event)"
+                onfocus="handleAddrInput(event)"
+              />
+              <div id="hqAddrSuggestions" class="suggest-list"></div>
+              <div id="hqAddrStatus" class="addr-status"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 18px">
+            <div
+              style="
+                font-weight: 600;
+                color: var(--navy);
+                font-size: 14px;
+                margin-bottom: 10px;
+              "
+            >
+              Your home details
+              <span class="prefill">edit to update your quote</span>
+            </div>
+            <div class="grid2" style="margin-bottom: 13px">
+              <div class="field">
+                <label>Bedrooms</label
+                ><input
+                  id="hqBedrooms"
+                  type="number"
+                  min="1"
+                  max="10"
+                  value="3"
+                  required
+                  oninput="recalcPremium()"
+                />
+              </div>
+              <div class="field">
+                <label>Square footage</label
+                ><input
+                  id="hqSqft"
+                  type="number"
+                  min="200"
+                  max="20000"
+                  step="10"
+                  value="2100"
+                  required
+                  oninput="recalcPremium()"
+                />
+              </div>
+            </div>
+            <div class="grid2">
+              <div class="field">
+                <label>Estimated home value</label
+                ><input
+                  id="hqHomeValue"
+                  type="number"
+                  min="10000"
+                  max="10000000"
+                  step="1000"
+                  value="400000"
+                  required
+                  oninput="recalcPremium()"
+                />
+              </div>
+              <div class="field">
+                <label>Year built</label
+                ><input
+                  id="hqYearBuilt"
+                  type="number"
+                  min="1800"
+                  max="2026"
+                  value="1995"
+                  required
+                  oninput="recalcPremium()"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="nav">
+            <button
+              class="btn primary"
+              onclick="if (validateRequiredIn(0)) go(1);"
+            >
+              See my protection options →
+            </button>
+            <button
+              class="skip"
+              onclick="if (validateRequiredIn(0)) go(4, true);"
+            >
+              No thanks, just submit my quote
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 1 -->
+        <section class="step" data-step="1">
+          <div class="eyebrow">Choose your protection</div>
+          <h1>Pick a kit — watch your savings update</h1>
+          <p class="sub">
+            The Complete Bundle unlocks both credits and caps your savings at
+            50%. Or protect one risk, or build your own. The ledger recalculates
+            live.
+          </p>
+
+          <button class="opt" data-pkg="bundle" onclick="pick('bundle')">
+            <span class="ic">🛡️</span>
+            <div>
+              <h3>Complete Protection Bundle</h3>
+              <p>
+                2 auto fire extinguishers · Ting arc monitor · water shutoff +
+                leak detector · 5 leak sensors
+              </p>
+              <div class="price">
+                $599.99<span class="strike">$921 separately</span>
+              </div>
+            </div>
+            <span class="tag">Unlocks 50%</span><span class="chk">✓</span>
+          </button>
+
+          <button class="opt" data-pkg="fire" onclick="pick('fire')">
+            <span class="ic">🔥</span>
+            <div>
+              <h3>Fire Protection Kit</h3>
+              <p>2 auto fire extinguishers · Ting arc fault monitor</p>
+              <div class="price">$397.00</div>
+            </div>
+            <span class="tag">Unlocks 20%</span><span class="chk">✓</span>
+          </button>
+
+          <button class="opt" data-pkg="water" onclick="pick('water')">
+            <span class="ic">💧</span>
+            <div>
+              <h3>Water Protection Kit</h3>
+              <p>Water shutoff + leak detector · 5 leak sensors</p>
+              <div class="price">$524.00</div>
+            </div>
+            <span class="tag">Unlocks 30%</span><span class="chk">✓</span>
+          </button>
+
+          <button class="opt" data-pkg="custom" onclick="pick('custom')">
+            <span class="ic">🧩</span>
+            <div>
+              <h3>Build your own</h3>
+              <p>
+                Choose devices à la carte — the ledger shows which credit you've
+                unlocked.
+              </p>
+            </div>
+            <span class="chk">✓</span>
+          </button>
+
+          <div id="customPicker" style="display: none; margin-top: 8px"></div>
+
+          <div class="nav">
+            <button class="btn ghost" onclick="go(0)">← Back</button>
+            <button class="btn primary" id="toReview" onclick="go(2)" disabled>
+              Continue →
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="step" data-step="2">
+          <div class="eyebrow">Review &amp; payment</div>
+          <h1>Your protection plan</h1>
+          <p class="sub">
+            One-time device cost, or spread it with PowerPay. Either way the
+            premium credit is annual and recurring.
+          </p>
+          <div id="reviewList"></div>
+          <div
+            style="
+              margin-top: 18px;
+              font-weight: 600;
+              color: var(--navy);
+              font-size: 14px;
+            "
+          >
+            How would you like to pay?
+          </div>
+          <div class="fin">
+            <div class="o sel" data-fin="once" onclick="setFin('once')">
+              <b id="finOnce">$599.99</b><span>One-time</span>
+            </div>
+            <div class="o" data-fin="mo" onclick="setFin('mo')">
+              <b id="finMo">$50/mo</b><span>12 mo · PowerPay · 0% intro</span>
+            </div>
+          </div>
+          <div class="nav">
+            <button class="btn ghost" onclick="go(1)">← Back</button>
+            <button class="btn primary" onclick="go(3)">
+              Continue to shipping →
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="step" data-step="3">
+          <div class="eyebrow">Where should we ship it</div>
+          <h1>Confirm your details</h1>
+          <p class="sub">
+            Pulled from your quote — just check it over. Nothing to retype.
+          </p>
+          <div class="panelnote">
+            <span>🔗</span>
+            <div>
+              We'll attach quote ref <b id="refForm">HQ-4815</b> to this order
+              so your agent links the devices to your policy and applies the
+              credit at binding.
+            </div>
+          </div>
+          <div class="grid2" style="margin-bottom: 13px">
+            <div class="field">
+              <label>First name <span class="prefill">prefilled</span></label
+              ><input id="fFirst" required value="Jordan" />
+            </div>
+            <div class="field">
+              <label>Last name <span class="prefill">prefilled</span></label
+              ><input id="fLast" required value="Maxwell" />
+            </div>
+          </div>
+          <div class="field" style="margin-bottom: 13px">
+            <label
+              >Shipping address <span class="prefill">from step 1</span></label
+            ><input
+              id="fAddr"
+              value="482 Marigold Ln, Boulder, CO 80302"
+              required
+            />
+          </div>
+          <div class="grid2" style="margin-bottom: 13px">
+            <div class="field">
+              <label>Email</label
+              ><input
+                id="fEmail"
+                type="email"
+                placeholder="you@email.com"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Phone</label
+              ><input
+                id="fPhone"
+                type="tel"
+                placeholder="(555) 555-5555"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="nav">
+            <button class="btn ghost" onclick="go(2)">← Back</button>
+            <button class="btn primary" id="placeBtn" onclick="placeOrder()">
+              Place order &amp; submit quote →
+            </button>
+          </div>
+          <p style="font-size: 11.5px; color: var(--muted); margin-top: 14px">
+            Continuing creates a Shopify cart via the Storefront API and
+            redirects to secure checkout with your quote ref and credit
+            attached. PowerPay financing is available at checkout. Premium
+            credit is applied by a licensed agent at binding, subject to
+            underwriting and jurisdiction.
+          </p>
+        </section>
+
+        <!-- STEP 4 -->
+        <section class="step" data-step="4">
+          <div class="done">
+            <div class="badge">✓</div>
+            <h1 style="margin-bottom: 4px">You're protected — and saving</h1>
+            <p class="sub" style="margin: 0 auto" id="doneSub">
+              Cart created and handed off to checkout. Your quote and protection
+              plan are linked for your agent.
+            </p>
+            <div class="timeline" id="timeline">
+              <div class="ti">
+                <span class="d"></span>
+                <div>
+                  <b>Devices ship in 2–3 business days</b><br /><span
+                    style="color: var(--muted)"
+                    >To 482 Marigold Ln · tracking sent to your email</span
+                  >
                 </div>
-
-                <div style="margin-bottom:18px">
-                    <div style="font-weight:600;color:var(--navy);font-size:14px;margin-bottom:10px">Your name &amp;
-                        property</div>
-                    <div class="grid2" style="margin-bottom:13px">
-                        <div class="field"><label>First name</label><input id="hqFirst" value="Jordan" required
-                                oninput="syncHeroAndForm()"></div>
-                        <div class="field"><label>Last name</label><input id="hqLast" value="Maxwell" required
-                                oninput="syncHeroAndForm()"></div>
-                    </div>
-                    <div class="field addr-wrap">
-                        <label>Property address</label>
-                        <input id="hqAddrSearch" value="482 Marigold Ln, Boulder, CO 80302" autocomplete="off" required
-                            oninput="handleAddrInput(event)" onfocus="handleAddrInput(event)">
-                        <div id="hqAddrSuggestions" class="suggest-list"></div>
-                        <div id="hqAddrStatus" class="addr-status"></div>
-                    </div>
+              </div>
+              <div class="ti">
+                <span class="d"></span>
+                <div>
+                  <b>Agent reviews your application</b><br /><span
+                    style="color: var(--muted)"
+                    >Quote ref
+                    <span id="refDone">HQ-4815</span>
+                    linked to your device order</span
+                  >
                 </div>
-
-                <div style="margin-bottom:18px">
-                    <div style="font-weight:600;color:var(--navy);font-size:14px;margin-bottom:10px">Your home details
-                        <span class="prefill">edit to update your quote</span>
-                    </div>
-                    <div class="grid2" style="margin-bottom:13px">
-                        <div class="field"><label>Bedrooms</label><input id="hqBedrooms" type="number" min="1" max="10"
-                                value="3" required oninput="recalcPremium()"></div>
-                        <div class="field"><label>Square footage</label><input id="hqSqft" type="number" min="200"
-                                max="20000" step="10" value="2100" required oninput="recalcPremium()"></div>
-                    </div>
-                    <div class="grid2">
-                        <div class="field"><label>Estimated home value</label><input id="hqHomeValue" type="number"
-                                min="10000" max="10000000" step="1000" value="400000" required
-                                oninput="recalcPremium()"></div>
-                        <div class="field"><label>Year built</label><input id="hqYearBuilt" type="number" min="1800"
-                                max="2026" value="1995" required oninput="recalcPremium()"></div>
-                    </div>
+              </div>
+              <div class="ti">
+                <span class="d"></span>
+                <div>
+                  <b>Premium credit applied at binding</b><br /><span
+                    style="color: var(--muted)"
+                    id="doneSave"
+                    >Up to $920/yr off your homeowners premium</span
+                  >
                 </div>
+              </div>
+            </div>
+            <button
+              class="btn primary"
+              style="margin-top: 24px"
+              onclick="go(0)"
+            >
+              ↺ Run the demo again
+            </button>
+          </div>
+        </section>
+      </div>
 
-                <div class="nav">
-                    <button class="btn primary" onclick="if (validateRequiredIn(0)) go(1)">See my protection options
-                        →</button>
-                    <button class="skip" onclick="if (validateRequiredIn(0)) go(4,true)">No thanks, just submit my
-                        quote</button>
-                </div>
-            </section>
-
-            <!-- STEP 1 -->
-            <section class="step" data-step="1">
-                <div class="eyebrow">Choose your protection</div>
-                <h1>Pick a kit — watch your savings update</h1>
-                <p class="sub">The Complete Bundle unlocks both credits and caps your savings at 50%. Or protect one
-                    risk,
-                    or build your own. The ledger recalculates live.</p>
-
-                <button class="opt" data-pkg="bundle" onclick="pick('bundle')">
-                    <span class="ic">🛡️</span>
-                    <div>
-                        <h3>Complete Protection Bundle</h3>
-                        <p>2 auto fire extinguishers · Ting arc monitor · water shutoff + leak detector · 5 leak sensors
-                        </p>
-                        <div class="price">$599.99<span class="strike">$921 separately</span></div>
-                    </div>
-                    <span class="tag">Unlocks 50%</span><span class="chk">✓</span>
-                </button>
-
-                <button class="opt" data-pkg="fire" onclick="pick('fire')">
-                    <span class="ic">🔥</span>
-                    <div>
-                        <h3>Fire Protection Kit</h3>
-                        <p>2 auto fire extinguishers · Ting arc fault monitor</p>
-                        <div class="price">$397.00</div>
-                    </div>
-                    <span class="tag">Unlocks 20%</span><span class="chk">✓</span>
-                </button>
-
-                <button class="opt" data-pkg="water" onclick="pick('water')">
-                    <span class="ic">💧</span>
-                    <div>
-                        <h3>Water Protection Kit</h3>
-                        <p>Water shutoff + leak detector · 5 leak sensors</p>
-                        <div class="price">$524.00</div>
-                    </div>
-                    <span class="tag">Unlocks 30%</span><span class="chk">✓</span>
-                </button>
-
-                <button class="opt" data-pkg="custom" onclick="pick('custom')">
-                    <span class="ic">🧩</span>
-                    <div>
-                        <h3>Build your own</h3>
-                        <p>Choose devices à la carte — the ledger shows which credit you've unlocked.</p>
-                    </div>
-                    <span class="chk">✓</span>
-                </button>
-
-                <div id="customPicker" style="display:none; margin-top:8px"></div>
-
-                <div class="nav">
-                    <button class="btn ghost" onclick="go(0)">← Back</button>
-                    <button class="btn primary" id="toReview" onclick="go(2)" disabled>Continue →</button>
-                </div>
-            </section>
-
-            <!-- STEP 2 -->
-            <section class="step" data-step="2">
-                <div class="eyebrow">Review &amp; payment</div>
-                <h1>Your protection plan</h1>
-                <p class="sub">One-time device cost, or spread it with PowerPay. Either way the premium credit is annual
-                    and
-                    recurring.</p>
-                <div id="reviewList"></div>
-                <div style="margin-top:18px; font-weight:600; color:var(--navy); font-size:14px">How would you like to
-                    pay?
-                </div>
-                <div class="fin">
-                    <div class="o sel" data-fin="once" onclick="setFin('once')"><b
-                            id="finOnce">$599.99</b><span>One-time</span></div>
-                    <div class="o" data-fin="mo" onclick="setFin('mo')"><b id="finMo">$50/mo</b><span>12 mo · PowerPay ·
-                            0%
-                            intro</span></div>
-                </div>
-                <div class="nav">
-                    <button class="btn ghost" onclick="go(1)">← Back</button>
-                    <button class="btn primary" onclick="go(3)">Continue to shipping →</button>
-                </div>
-            </section>
-
-            <!-- STEP 3 -->
-            <section class="step" data-step="3">
-                <div class="eyebrow">Where should we ship it</div>
-                <h1>Confirm your details</h1>
-                <p class="sub">Pulled from your quote — just check it over. Nothing to retype.</p>
-                <div class="panelnote"><span>🔗</span>
-                    <div>We'll attach quote ref <b id="refForm">HQ-4815</b> to this order so your agent links the
-                        devices to
-                        your policy and applies the credit at binding.</div>
-                </div>
-                <div class="grid2" style="margin-bottom:13px">
-                    <div class="field"><label>First name <span class="prefill">prefilled</span></label><input
-                            id="fFirst" required value="Jordan"></div>
-                    <div class="field"><label>Last name <span class="prefill">prefilled</span></label><input id="fLast"
-                            required value="Maxwell"></div>
-                </div>
-                <div class="field" style="margin-bottom:13px"><label>Shipping address <span class="prefill">from step
-                            1</span></label><input id="fAddr" value="482 Marigold Ln, Boulder, CO 80302" required></div>
-                <div class="grid2" style="margin-bottom:13px">
-                    <div class="field"><label>Email</label><input id="fEmail" type="email" placeholder="you@email.com"
-                            required></div>
-                    <div class="field"><label>Phone</label><input id="fPhone" type="tel" placeholder="(555) 555-5555"
-                            required></div>
-                </div>
-
-                <div class="nav">
-                    <button class="btn ghost" onclick="go(2)">← Back</button>
-                    <button class="btn primary" id="placeBtn" onclick="placeOrder()">Place order &amp; submit quote
-                        →</button>
-                </div>
-                <p style="font-size:11.5px;color:var(--muted);margin-top:14px">
-                    Continuing creates a Shopify cart via the Storefront API and redirects to secure checkout with your
-                    quote ref and credit attached.
-                    PowerPay financing is available at checkout. Premium credit is applied by a licensed agent at
-                    binding,
-                    subject to underwriting and jurisdiction.</p>
-            </section>
-
-            <!-- STEP 4 -->
-            <section class="step" data-step="4">
-                <div class="done">
-                    <div class="badge">✓</div>
-                    <h1 style="margin-bottom:4px">You're protected — and saving</h1>
-                    <p class="sub" style="margin:0 auto" id="doneSub">Cart created and handed off to checkout. Your
-                        quote
-                        and protection plan are linked for your agent.</p>
-                    <div class="timeline" id="timeline">
-                        <div class="ti"><span class="d"></span>
-                            <div><b>Devices ship in 2–3 business days</b><br><span style="color:var(--muted)">To 482
-                                    Marigold Ln · tracking sent to your email</span></div>
-                        </div>
-                        <div class="ti"><span class="d"></span>
-                            <div><b>Agent reviews your application</b><br><span style="color:var(--muted)">Quote ref
-                                    <span id="refDone">HQ-4815</span>
-                                    linked to your device order</span></div>
-                        </div>
-                        <div class="ti"><span class="d"></span>
-                            <div><b>Premium credit applied at binding</b><br><span style="color:var(--muted)"
-                                    id="doneSave">Up to $920/yr off your homeowners premium</span></div>
-                        </div>
-                    </div>
-                    <button class="btn primary" style="margin-top:24px" onclick="go(0)">↺ Run the demo again</button>
-                </div>
-            </section>
+      <!-- LEDGER -->
+      <aside class="ledger" id="ledger">
+        <h2>Your savings</h2>
+        <div class="big num" id="bigSave">$0</div>
+        <div class="biglab">estimated off your premium per year</div>
+        <div class="credits">
+          <div class="credit off" id="cFire">
+            <span class="pct num">20%</span>Fire credit
+          </div>
+          <div class="credit off" id="cWater">
+            <span class="pct num">30%</span>Water credit
+          </div>
         </div>
-
-        <!-- LEDGER -->
-        <aside class="ledger" id="ledger">
-            <h2>Your savings</h2>
-            <div class="big num" id="bigSave">$0</div>
-            <div class="biglab">estimated off your premium per year</div>
-            <div class="credits">
-                <div class="credit off" id="cFire"><span class="pct num">20%</span>Fire credit</div>
-                <div class="credit off" id="cWater"><span class="pct num">30%</span>Water credit</div>
-            </div>
-            <div class="lrow"><span class="k">Annual premium</span><span class="v num" id="lPremium">$1,840</span></div>
-            <div class="lrow"><span class="k">Premium credit</span><span class="v save num" id="lCredit">–$0</span>
-            </div>
-            <div class="lrow"><span class="k">Device cost (once)</span><span class="v num" id="lDevice">$0</span></div>
-            <div class="payback" id="paybackBox" style="display:none">
-                <div class="p1">Devices pay for themselves in</div>
-                <div class="p2 num" id="paybackVal">—</div>
-            </div>
-            <div class="hint" id="hint"></div>
-        </aside>
+        <div class="lrow">
+          <span class="k">Annual premium</span
+          ><span class="v num" id="lPremium">$1,840</span>
+        </div>
+        <div class="lrow">
+          <span class="k">Premium credit</span
+          ><span class="v save num" id="lCredit">–$0</span>
+        </div>
+        <div class="lrow">
+          <span class="k">Device cost (once)</span
+          ><span class="v num" id="lDevice">$0</span>
+        </div>
+        <div class="payback" id="paybackBox" style="display: none">
+          <div class="p1">Devices pay for themselves in</div>
+          <div class="p2 num" id="paybackVal">—</div>
+        </div>
+        <div class="hint" id="hint"></div>
+      </aside>
     </div>
 
     <div class="mbar">
-        <div class="ms"><b class="num" id="mSave">$0</b><span>saved per year</span></div>
-        <button class="btn primary" onclick="mobileNext()" id="mBtn">Continue →</button>
+      <div class="ms">
+        <b class="num" id="mSave">$0</b><span>saved per year</span>
+      </div>
+      <button class="btn primary" onclick="mobileNext()" id="mBtn">
+        Continue →
+      </button>
     </div>
     <div class="toast" id="toast"></div>
 
     <script>
-        /* ============================================================
+      /* ============================================================
            SHOPIFY STOREFRONT CONFIG  —  fill these two, ship it.
            ------------------------------------------------------------
            1. storefrontToken: Shopify admin → Settings → Apps and sales
@@ -1138,529 +1327,752 @@
            The numeric checkout token in the site's <meta> is NOT this
            token and will not authenticate GraphQL.
            ============================================================ */
-        const MAPBOX_TOKEN = 'pk.eyJ1IjoibWluZGhvbWUiLCJhIjoiY21sZ3p2bnd6MDN5YjNlcHh0eG0yc3VxNSJ9.p5uKGoe-j7kdXjl73ewguw';
+      const MAPBOX_TOKEN =
+        "pk.eyJ1IjoibWluZGhvbWUiLCJhIjoiY21sZ3p2bnd6MDN5YjNlcHh0eG0yc3VxNSJ9.p5uKGoe-j7kdXjl73ewguw";
 
-        const SHOPIFY = {
-            domain: "smartinsure.myshopify.com",
-            apiVersion: "2025-10",
-            storefrontToken: "0008290012b4c56663667bcdf738b411",            // <-- PASTE Storefront API token
-        };
+      const SHOPIFY = {
+        domain: "test-store-11233.myshopify.com",
+        apiVersion: "2025-10",
+        storefrontToken: "e8de7baf086b3b869bed1b3f87d45c03", // <-- PASTE Storefront API token
+      };
 
-        /* Product handles, confirmed against the live mindhome.co/collections/all
+      /* Product handles, confirmed against the live mindhome.co/collections/all
            catalog (both pages) on 2026-07-12. Variant IDs are resolved from
            these at runtime — no ID hunting needed.
            ⚠ "ting" resolves fine but the Ting Arc Monitor is currently SOLD OUT
            on the live store — this will block both the Fire Protection Kit and
            Complete Bundle at checkout until it's restocked in Shopify admin. */
-        const HANDLES = {
-            ext: "mindhome-fire-extinguisher",
-            ting: "electric-arc-monitor",
-            smoke: "mindhome-smoke-alarm",
-            shutoff: "mindhome-water-shutoff-and-leak-monitor",
-            sensor: "mindhome-leak-sensor",
-            presence: "mindhome-presence-detector",      // confirmed via live catalog on mindhome.co
-            bundle: "mindhome-risk-services-bundle",
-        };
+      const HANDLES = {
+        ext: "mindhome-fire-extinguisher",
+        ting: "electric-arc-monitor",
+        smoke: "mindhome-smoke-alarm",
+        shutoff: "mindhome-water-shutoff-and-leak-monitor",
+        sensor: "mindhome-leak-sensor",
+        presence: "mindhome-presence-detector", // confirmed via live catalog on mindhome.co
+        bundle: "mindhome-risk-services-bundle",
+      };
 
-        const CATALOG = {
-            ext: { name: "Auto Fire Extinguisher", price: 149, risk: "fire", sub: "Suppresses a fire automatically" },
-            ting: { name: "Ting Arc Fault Monitor", price: 99, risk: "fire", sub: "Stops electrical fires 24/7" },
-            smoke: { name: "Smart Smoke Detector", price: 59, risk: "fire", sub: "Instant phone + siren alert" },
-            shutoff: { name: "Water Shutoff + Leak Detector", price: 399, risk: "water", sub: "Cuts water on a leak" },
-            sensor: { name: "Leak Sensor", price: 25, risk: "water", sub: "Catches leaks room by room" },
-            presence: { name: "Presence Detector", price: 69, risk: "none", sub: "mmWave occupancy sensing" },
-        };
-        const PKGS = {
-            bundle: { ext: 2, ting: 1, shutoff: 1, sensor: 5 },
-            fire: { ext: 2, ting: 1 },
-            water: { shutoff: 1, sensor: 5 },
-            custom: {},
-        };
-        let PREMIUM = 1840; // recalculated live by recalcPremium() below
+      const CATALOG = {
+        ext: {
+          name: "Auto Fire Extinguisher",
+          price: 149,
+          risk: "fire",
+          sub: "Suppresses a fire automatically",
+        },
+        ting: {
+          name: "Ting Arc Fault Monitor",
+          price: 99,
+          risk: "fire",
+          sub: "Stops electrical fires 24/7",
+        },
+        smoke: {
+          name: "Smart Smoke Detector",
+          price: 59,
+          risk: "fire",
+          sub: "Instant phone + siren alert",
+        },
+        shutoff: {
+          name: "Water Shutoff + Leak Detector",
+          price: 399,
+          risk: "water",
+          sub: "Cuts water on a leak",
+        },
+        sensor: {
+          name: "Leak Sensor",
+          price: 25,
+          risk: "water",
+          sub: "Catches leaks room by room",
+        },
+        presence: {
+          name: "Presence Detector",
+          price: 69,
+          risk: "none",
+          sub: "mmWave occupancy sensing",
+        },
+      };
+      const PKGS = {
+        bundle: { ext: 2, ting: 1, shutoff: 1, sensor: 5 },
+        fire: { ext: 2, ting: 1 },
+        water: { shutoff: 1, sensor: 5 },
+        custom: {},
+      };
+      let PREMIUM = 1840; // recalculated live by recalcPremium() below
 
-        /* ---------- Premium prediction model (ported from the "Get My Quote" wizard) ---------- */
-        const PREMIUM_MODEL = {
-            coefficients: [61.09909107103789, 247.32495465316828, 6.444056303890775, 40.239270399724056],
-            intercept: 1750.1500895522388,
-            scaler: {
-                mean: [3.5164179104477613, 2470.3014925373136, 442130.93919402984, 39.25970149253731],
-                scale: [1.1416925135517493, 851.6019470776408, 160375.7009750736, 20.13887648751911]
-            },
-            calibration: { a: 2.2688583723656337, b: -1806.3973226313328 }
-        };
-        function predictPremium(features) {
-            const scaled = features.map((v, i) => (v - PREMIUM_MODEL.scaler.mean[i]) / PREMIUM_MODEL.scaler.scale[i]);
-            let p = PREMIUM_MODEL.intercept;
-            scaled.forEach((s, i) => p += PREMIUM_MODEL.coefficients[i] * s);
-            return Math.max(0, PREMIUM_MODEL.calibration.a * p + PREMIUM_MODEL.calibration.b);
-        }
+      /* ---------- Premium prediction model (ported from the "Get My Quote" wizard) ---------- */
+      const PREMIUM_MODEL = {
+        coefficients: [
+          61.09909107103789, 247.32495465316828, 6.444056303890775,
+          40.239270399724056,
+        ],
+        intercept: 1750.1500895522388,
+        scaler: {
+          mean: [
+            3.5164179104477613, 2470.3014925373136, 442130.93919402984,
+            39.25970149253731,
+          ],
+          scale: [
+            1.1416925135517493, 851.6019470776408, 160375.7009750736,
+            20.13887648751911,
+          ],
+        },
+        calibration: { a: 2.2688583723656337, b: -1806.3973226313328 },
+      };
+      function predictPremium(features) {
+        const scaled = features.map(
+          (v, i) =>
+            (v - PREMIUM_MODEL.scaler.mean[i]) / PREMIUM_MODEL.scaler.scale[i],
+        );
+        let p = PREMIUM_MODEL.intercept;
+        scaled.forEach((s, i) => (p += PREMIUM_MODEL.coefficients[i] * s));
+        return Math.max(
+          0,
+          PREMIUM_MODEL.calibration.a * p + PREMIUM_MODEL.calibration.b,
+        );
+      }
 
-        /* Reads the Step 0 home-detail fields, recomputes PREMIUM via the model,
+      /* Reads the Step 0 home-detail fields, recomputes PREMIUM via the model,
            updates the quote display in the top-right of the page, then re-renders
            the ledger (credits/savings/payback all derive from PREMIUM). */
-        function recalcPremium() {
-            const bedrooms = parseFloat(document.getElementById('hqBedrooms').value) || 0;
-            const sqft = parseFloat(document.getElementById('hqSqft').value) || 0;
-            const homeValue = parseFloat(document.getElementById('hqHomeValue').value) || 0;
-            const yearBuilt = parseInt(document.getElementById('hqYearBuilt').value) || 1990;
-            const age = new Date().getFullYear() - yearBuilt;
+      function recalcPremium() {
+        const bedrooms =
+          parseFloat(document.getElementById("hqBedrooms").value) || 0;
+        const sqft = parseFloat(document.getElementById("hqSqft").value) || 0;
+        const homeValue =
+          parseFloat(document.getElementById("hqHomeValue").value) || 0;
+        const yearBuilt =
+          parseInt(document.getElementById("hqYearBuilt").value) || 1990;
+        const age = new Date().getFullYear() - yearBuilt;
 
-            PREMIUM = Math.round(predictPremium([bedrooms, sqft, homeValue, age]));
+        PREMIUM = Math.round(predictPremium([bedrooms, sqft, homeValue, age]));
 
-            const premTop = document.getElementById('premTop');
-            if (premTop) premTop.textContent = '$' + PREMIUM.toLocaleString() + '/yr';
-            const lPremium = document.getElementById('lPremium');
-            if (lPremium) lPremium.textContent = '$' + PREMIUM.toLocaleString();
+        const premTop = document.getElementById("premTop");
+        if (premTop)
+          premTop.textContent = "$" + PREMIUM.toLocaleString() + "/yr";
+        const lPremium = document.getElementById("lPremium");
+        if (lPremium) lPremium.textContent = "$" + PREMIUM.toLocaleString();
 
-            render();
-        }
+        render();
+      }
 
-        /* Reads ?quote_ref=... from the URL, so this page works when linked to
+      /* Reads ?quote_ref=... from the URL, so this page works when linked to
            from the real insurance quote flow (which generates a real HQ-######
            ref). Falls back to a demo value when opened directly/standalone. */
-        function generateQuoteRef() {
-            return 'HQ-' + Math.floor(100000 + Math.random() * 900000);
-        }
+      function generateQuoteRef() {
+        return "HQ-" + Math.floor(100000 + Math.random() * 900000);
+      }
 
-        /* Priority: URL param (from the real quote flow) > cached in this
+      /* Priority: URL param (from the real quote flow) > cached in this
            browser session (so a page refresh mid-checkout keeps the same ref)
            > freshly generated. Every customer who lands here without a ref
            gets their own unique HQ-######, instead of everyone sharing one
            static demo value. */
-        function getQuoteRefFromURL() {
-            const fromUrl = new URLSearchParams(window.location.search).get('quote_ref');
-            try {
-                if (fromUrl) { sessionStorage.setItem('quote_ref', fromUrl); return fromUrl; }
-                const cached = sessionStorage.getItem('quote_ref');
-                if (cached) return cached;
-                const generated = generateQuoteRef();
-                sessionStorage.setItem('quote_ref', generated);
-                return generated;
-            } catch (e) {
-                // sessionStorage unavailable (private browsing, etc.) — fall back to in-memory only
-                return fromUrl || generateQuoteRef();
-            }
+      function getQuoteRefFromURL() {
+        const fromUrl = new URLSearchParams(window.location.search).get(
+          "quote_ref",
+        );
+        try {
+          if (fromUrl) {
+            sessionStorage.setItem("quote_ref", fromUrl);
+            return fromUrl;
+          }
+          const cached = sessionStorage.getItem("quote_ref");
+          if (cached) return cached;
+          const generated = generateQuoteRef();
+          sessionStorage.setItem("quote_ref", generated);
+          return generated;
+        } catch (e) {
+          // sessionStorage unavailable (private browsing, etc.) — fall back to in-memory only
+          return fromUrl || generateQuoteRef();
         }
+      }
 
-        let state = {
-            step: 0, pkg: null, cart: {}, fin: "once",
-            quoteRef: getQuoteRefFromURL(), email: ""
-        };
+      let state = {
+        step: 0,
+        pkg: null,
+        cart: {},
+        fin: "once",
+        quoteRef: getQuoteRefFromURL(),
+        email: "",
+      };
 
-        /* Pushes state.quoteRef into every place it's displayed as static text */
-        function syncQuoteRefDisplay() {
-            const refTop = document.getElementById('refTop');
-            const refForm = document.getElementById('refForm');
-            if (refTop) refTop.textContent = state.quoteRef;
-            if (refForm) refForm.textContent = state.quoteRef;
-        }
+      /* Pushes state.quoteRef into every place it's displayed as static text */
+      function syncQuoteRefDisplay() {
+        const refTop = document.getElementById("refTop");
+        const refForm = document.getElementById("refForm");
+        if (refTop) refTop.textContent = state.quoteRef;
+        if (refForm) refForm.textContent = state.quoteRef;
+      }
 
-        /* ---------- Storefront API ---------- */
-        const SF_ENDPOINT = () => `https://${SHOPIFY.domain}/api/${SHOPIFY.apiVersion}/graphql.json`;
+      /* ---------- Storefront API ---------- */
+      const SF_ENDPOINT = () =>
+        `https://${SHOPIFY.domain}/api/${SHOPIFY.apiVersion}/graphql.json`;
 
-        async function sfFetch(query, variables) {
-            const res = await fetch(SF_ENDPOINT(), {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-Shopify-Storefront-Access-Token": SHOPIFY.storefrontToken,
-                },
-                body: JSON.stringify({ query, variables }),
-            });
-            if (!res.ok) throw new Error("Storefront API HTTP " + res.status);
-            const json = await res.json();
-            if (json.errors?.length) throw new Error(json.errors[0].message);
-            return json.data;
-        }
-        const Q_VARIANT = `query($h:String!){product(handle:$h){title variants(first:1){nodes{id}}}}`;
-        const M_CART = `mutation($input:CartInput!){cartCreate(input:$input){
+      async function sfFetch(query, variables) {
+        const res = await fetch(SF_ENDPOINT(), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Shopify-Storefront-Access-Token": SHOPIFY.storefrontToken,
+          },
+          body: JSON.stringify({ query, variables }),
+        });
+        if (!res.ok) throw new Error("Storefront API HTTP " + res.status);
+        const json = await res.json();
+        if (json.errors?.length) throw new Error(json.errors[0].message);
+        return json.data;
+      }
+      const Q_VARIANT = `query($h:String!){product(handle:$h){title variants(first:1){nodes{id}}}}`;
+      const M_CART = `mutation($input:CartInput!){cartCreate(input:$input){
   cart{id checkoutUrl} userErrors{field message} warnings{code message}}}`;
 
-        // Attaches a real delivery address to the cart so it's prefilled on
-        // Shopify's hosted checkout (not just carried as a side attribute).
-        // This is the current (2025-01+) mechanism — the older
-        // buyerIdentity.deliveryAddressPreferences approach is deprecated.
-        const M_DELIVERY_ADDR = `mutation($cartId:ID!,$addresses:[CartSelectableAddressInput!]!){
+      // Attaches a real delivery address to the cart so it's prefilled on
+      // Shopify's hosted checkout (not just carried as a side attribute).
+      // This is the current (2025-01+) mechanism — the older
+      // buyerIdentity.deliveryAddressPreferences approach is deprecated.
+      const M_DELIVERY_ADDR = `mutation($cartId:ID!,$addresses:[CartSelectableAddressInput!]!){
   cartDeliveryAddressesAdd(cartId:$cartId, addresses:$addresses){
     userErrors{message code field} warnings{message code target}}}`;
 
-        async function resolveVariant(handle) {
-            const d = await sfFetch(Q_VARIANT, { h: handle });
-            const id = d.product?.variants?.nodes?.[0]?.id;
-            if (!id) throw new Error("No purchasable variant for handle “" + handle + "”");
-            return id; // gid://shopify/ProductVariant/####
-        }
+      async function resolveVariant(handle) {
+        const d = await sfFetch(Q_VARIANT, { h: handle });
 
-        /* lines to buy, given current cart (bundle SKU if exact bundle) */
-        function lineSpec() {
-            if (isBundle(state.cart)) return [["bundle", 1]];
-            return Object.entries(state.cart).filter(([, q]) => q > 0);
-        }
-        /* Shopify's buyerIdentity.phone expects E.164 (+13035550148), but the
+        console.log("HANDLE:", handle);
+        console.log("PRODUCT RESPONSE:", JSON.stringify(d.product, null, 2));
+
+        const id = d.product?.variants?.nodes?.[0]?.id;
+
+        if (!id)
+          throw new Error("No purchasable variant for handle “" + handle + "”");
+
+        return id;
+      }
+
+      /* lines to buy, given current cart (bundle SKU if exact bundle) */
+      function lineSpec() {
+        if (isBundle(state.cart)) return [["bundle", 1]];
+        return Object.entries(state.cart).filter(([, q]) => q > 0);
+      }
+      /* Shopify's buyerIdentity.phone expects E.164 (+13035550148), but the
            form collects US-style formatting like "(303) 555-0148". Strips to
            digits and prefixes +1; returns {} (omit the field entirely) if
            what's there isn't a valid 10-digit US number, rather than send
            Shopify something it'll reject. */
-        function phoneE164() {
-            const digits = getVal('fPhone', '').replace(/\D/g, '');
-            return digits.length === 10 ? { phone: '+1' + digits } : {};
-        }
+      function phoneE164() {
+        const digits = getVal("fPhone", "").replace(/\D/g, "");
+        return digits.length === 10 ? { phone: "+1" + digits } : {};
+      }
 
-        function cartInput() {
-            const u = unlocked(state.cart), pct = creditPct(u), save = Math.round(PREMIUM * pct / 100);
-            return {
-                note: `Insurance bolt-on — quote ${state.quoteRef}`,
-                buyerIdentity: {
-                    email: getVal('fEmail', state.email),
-                    ...phoneE164(),
-                },
-                attributes: [
-                    { key: "quote_ref", value: state.quoteRef },
-                    { key: "premium_credit_pct", value: String(pct) },
-                    { key: "est_annual_savings", value: "$" + save },
-                    { key: "ship_to", value: getVal('fAddr', "") },
-                    { key: "source", value: "premium-app-bolton" },
-                ],
-                lines: lineSpec().map(([k, q]) => ({
-                    _handle: HANDLES[k],                 // resolved → merchandiseId before send
-                    quantity: q,
-                    attributes: [{ key: "risk", value: CATALOG[k] ? CATALOG[k].risk : "bundle" }],
-                })),
-            };
-        }
+      function cartInput() {
+        const u = unlocked(state.cart),
+          pct = creditPct(u),
+          save = Math.round((PREMIUM * pct) / 100);
+        return {
+          note: `Insurance bolt-on — quote ${state.quoteRef}`,
+          buyerIdentity: {
+            email: getVal("fEmail", state.email),
+            ...phoneE164(),
+          },
+          attributes: [
+            { key: "quote_ref", value: state.quoteRef },
+            { key: "premium_credit_pct", value: String(pct) },
+            { key: "est_annual_savings", value: "$" + save },
+            { key: "ship_to", value: getVal("fAddr", "") },
+            { key: "source", value: "premium-app-bolton" },
+          ],
+          lines: lineSpec().map(([k, q]) => ({
+            _handle: HANDLES[k], // resolved → merchandiseId before send
+            quantity: q,
+            attributes: [
+              { key: "risk", value: CATALOG[k] ? CATALOG[k].risk : "bundle" },
+            ],
+          })),
+        };
+      }
 
-        /* Sends the Mapbox-verified address (state.addr, set in selectAddress())
+      /* Sends the Mapbox-verified address (state.addr, set in selectAddress())
            to Shopify as a real delivery address on the cart. Only runs if a
            structured address is actually available — if someone typed the
            address field without picking a suggestion, state.addr is never set,
            and this is silently skipped (the raw string still rides along as
            the "ship_to" cart attribute either way). */
-        async function addDeliveryAddress(cartId) {
-            if (!state.addr) return;
-            const addresses = [{
-                selected: true,
-                address: {
-                    deliveryAddress: {
-                        firstName: getVal('fFirst', ''),
-                        lastName: getVal('fLast', ''),
-                        address1: state.addr.street,
-                        city: state.addr.city,
-                        provinceCode: state.addr.state,
-                        zip: state.addr.zip,
-                        countryCode: 'US',
-                    },
-                },
-            }];
-            const d = await sfFetch(M_DELIVERY_ADDR, { cartId, addresses });
-            const err = d.cartDeliveryAddressesAdd.userErrors?.[0];
-            if (err) throw new Error(err.message);
+      async function addDeliveryAddress(cartId) {
+        if (!state.addr) return;
+        const addresses = [
+          {
+            selected: true,
+            address: {
+              deliveryAddress: {
+                firstName: getVal("fFirst", ""),
+                lastName: getVal("fLast", ""),
+                address1: state.addr.street,
+                city: state.addr.city,
+                provinceCode: state.addr.state,
+                zip: state.addr.zip,
+                countryCode: "US",
+              },
+            },
+          },
+        ];
+        const d = await sfFetch(M_DELIVERY_ADDR, { cartId, addresses });
+        const err = d.cartDeliveryAddressesAdd.userErrors?.[0];
+        if (err) throw new Error(err.message);
+      }
+
+      async function createCheckout() {
+        const input = cartInput();
+        // resolve handles → variant gids
+        for (const line of input.lines) {
+          line.merchandiseId = await resolveVariant(line._handle);
+          delete line._handle;
+        }
+        const d = await sfFetch(M_CART, { input });
+        const err = d.cartCreate.userErrors?.[0];
+        if (err) throw new Error(err.message);
+
+        // Stock problems live in `warnings`, not `userErrors`, as of Shopify
+        // API 2024-10+ — a sold-out item won't fail the mutation, it just
+        // gets flagged here. Surface it now instead of letting the person
+        // discover it after landing on Shopify's actual checkout page.
+        const stockWarnings = (d.cartCreate.warnings || []).filter(
+          (w) =>
+            w.code === "MERCHANDISE_OUT_OF_STOCK" ||
+            w.code === "MERCHANDISE_NOT_ENOUGH_STOCK",
+        );
+        if (stockWarnings.length) {
+          throw new Error(stockWarnings.map((w) => w.message).join(" "));
         }
 
-        async function createCheckout() {
-            const input = cartInput();
-            // resolve handles → variant gids
-            for (const line of input.lines) {
-                line.merchandiseId = await resolveVariant(line._handle);
-                delete line._handle;
-            }
-            const d = await sfFetch(M_CART, { input });
-            const err = d.cartCreate.userErrors?.[0];
-            if (err) throw new Error(err.message);
+        const cart = d.cartCreate.cart;
 
-            // Stock problems live in `warnings`, not `userErrors`, as of Shopify
-            // API 2024-10+ — a sold-out item won't fail the mutation, it just
-            // gets flagged here. Surface it now instead of letting the person
-            // discover it after landing on Shopify's actual checkout page.
-            const stockWarnings = (d.cartCreate.warnings || []).filter(
-                w => w.code === 'MERCHANDISE_OUT_OF_STOCK' || w.code === 'MERCHANDISE_NOT_ENOUGH_STOCK'
-            );
-            if (stockWarnings.length) {
-                throw new Error(stockWarnings.map(w => w.message).join(' '));
-            }
-
-            const cart = d.cartCreate.cart;
-
-            // Non-fatal: if attaching the address fails for any reason, the
-            // cart/checkout still works fine — the customer just has to type
-            // their shipping address on Shopify's page instead of it being
-            // prefilled, same as the current behavior without this feature.
-            try {
-                await addDeliveryAddress(cart.id);
-            } catch (e) {
-                console.warn('Could not attach delivery address to cart:', e.message);
-            }
-
-            return cart.checkoutUrl;
+        // Non-fatal: if attaching the address fails for any reason, the
+        // cart/checkout still works fine — the customer just has to type
+        // their shipping address on Shopify's page instead of it being
+        // prefilled, same as the current behavior without this feature.
+        try {
+          await addDeliveryAddress(cart.id);
+        } catch (e) {
+          console.warn("Could not attach delivery address to cart:", e.message);
         }
 
-        /* no-token fallback: cart permalink (needs numeric ids; works once resolved) */
-        function cartPermalinkTemplate() {
-            const u = unlocked(state.cart), pct = creditPct(u);
-            const items = lineSpec().map(([k, q]) => `{${HANDLES[k]}→id}:${q}`).join(",");
-            return `https://${SHOPIFY.domain.replace('smartinsure.myshopify.com', 'www.mindhome.co')}/cart/${items}`
-                + `?attributes[quote_ref]=${state.quoteRef}&attributes[credit_pct]=${pct}`;
-        }
+        return cart.checkoutUrl;
+      }
 
-        /* ---------- place order ---------- */
-        async function placeOrder() {
-            if (!validateRequiredIn(3)) return;
-            const btn = document.getElementById('placeBtn');
-            if (!SHOPIFY.storefrontToken) {
-                toast("Demo mode — paste a Storefront token in SHOPIFY.storefrontToken to go live. Showing the real payload instead.");
-                go(4); return;
-            }
-            btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Creating secure cart…';
-            try {
-                const url = await createCheckout();
-                btn.innerHTML = 'Redirecting to checkout…';
-                window.top.location.href = url;     // hand off to Shopify checkout
-            } catch (e) {
-                btn.disabled = false; btn.innerHTML = 'Place order &amp; submit quote →';
-                toast("Checkout error: " + e.message);
-            }
-        }
+      async function createDiscount() {
+        const res = await fetch("/.netlify/functions/createDiscount", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            quoteRef: state.quoteRef,
+          }),
+        });
 
-        /* ---------- credit math ---------- */
-        function unlocked(cart) {
-            return {
-                fire: (cart.ext >= 1 && cart.ting >= 1),
-                water: (cart.shutoff >= 1 && (cart.sensor || 0) >= 3)
-            };
-        }
-        function creditPct(u) { return (u.fire ? 20 : 0) + (u.water ? 30 : 0); }
-        function deviceCost(cart) { return Object.entries(cart).reduce((s, [k, q]) => s + (CATALOG[k]?.price || 0) * q, 0); }
-        function isBundle(cart) {
-            const b = PKGS.bundle, keys = new Set([...Object.keys(b), ...Object.keys(cart)]);
-            for (const k of keys) { if ((cart[k] || 0) !== (b[k] || 0)) return false; } return true;
-        }
-        function getVal(id, fb) { const el = document.getElementById(id); return el ? el.value : fb; }
+        return res.json();
+      }
 
-        /* Checks every [required] input inside a given step section.
+      /* no-token fallback: cart permalink (needs numeric ids; works once resolved) */
+      function cartPermalinkTemplate() {
+        const u = unlocked(state.cart),
+          pct = creditPct(u);
+        const items = lineSpec()
+          .map(([k, q]) => `{${HANDLES[k]}→id}:${q}`)
+          .join(",");
+        return (
+          `https://${SHOPIFY.domain.replace("smartinsure.myshopify.com", "www.mindhome.co")}/cart/${items}` +
+          `?attributes[quote_ref]=${state.quoteRef}&attributes[credit_pct]=${pct}`
+        );
+      }
+
+      /* ---------- place order ---------- */
+      async function placeOrder() {
+        if (!validateRequiredIn(3)) return;
+        const btn = document.getElementById("placeBtn");
+        if (!SHOPIFY.storefrontToken) {
+          toast(
+            "Demo mode — paste a Storefront token in SHOPIFY.storefrontToken to go live. Showing the real payload instead.",
+          );
+          go(4);
+          return;
+        }
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spin"></span> Creating secure cart…';
+        try {
+          const discount = await createDiscount();
+
+          console.log("DISCOUNT RESPONSE", discount);
+
+          toast("Discount created successfully!");
+
+          btn.disabled = false;
+          btn.innerHTML = "Place order & submit quote →";
+        } catch (e) {
+          btn.disabled = false;
+          btn.innerHTML = "Place order &amp; submit quote →";
+          toast("Checkout error: " + e.message);
+        }
+      }
+
+      /* ---------- credit math ---------- */
+      function unlocked(cart) {
+        return {
+          fire: cart.ext >= 1 && cart.ting >= 1,
+          water: cart.shutoff >= 1 && (cart.sensor || 0) >= 3,
+        };
+      }
+      function creditPct(u) {
+        return (u.fire ? 20 : 0) + (u.water ? 30 : 0);
+      }
+      function deviceCost(cart) {
+        return Object.entries(cart).reduce(
+          (s, [k, q]) => s + (CATALOG[k]?.price || 0) * q,
+          0,
+        );
+      }
+      function isBundle(cart) {
+        const b = PKGS.bundle,
+          keys = new Set([...Object.keys(b), ...Object.keys(cart)]);
+        for (const k of keys) {
+          if ((cart[k] || 0) !== (b[k] || 0)) return false;
+        }
+        return true;
+      }
+      function getVal(id, fb) {
+        const el = document.getElementById(id);
+        return el ? el.value : fb;
+      }
+
+      /* Checks every [required] input inside a given step section.
            Uses each input's own reportValidity() so the browser's native
            "please fill out this field" bubble appears on the first empty
            or invalid one, and focuses it. Returns true only if all pass. */
-        function validateRequiredIn(stepNum) {
-            const container = document.querySelector('[data-step="' + stepNum + '"]');
-            if (!container) return true;
-            const fields = container.querySelectorAll('input[required]');
-            for (const el of fields) {
-                if (!el.checkValidity()) {
-                    el.reportValidity();
-                    el.focus();
-                    return false;
-                }
-            }
-            return true;
+      function validateRequiredIn(stepNum) {
+        const container = document.querySelector(
+          '[data-step="' + stepNum + '"]',
+        );
+        if (!container) return true;
+        const fields = container.querySelectorAll("input[required]");
+        for (const el of fields) {
+          if (!el.checkValidity()) {
+            el.reportValidity();
+            el.focus();
+            return false;
+          }
         }
+        return true;
+      }
 
-        /* ---------- Name + address (Mapbox Geocoding API) ---------- */
-        let addrDebounceTimer = null;
+      /* ---------- Name + address (Mapbox Geocoding API) ---------- */
+      let addrDebounceTimer = null;
 
-        function handleAddrInput(e) {
-            const query = e.target.value.trim();
-            clearTimeout(addrDebounceTimer);
-            hideAddrStatus();
-            if (query.length < 3) { hideSuggestions(); return; }
-            addrDebounceTimer = setTimeout(() => searchAddressMapbox(query), 300);
+      function handleAddrInput(e) {
+        const query = e.target.value.trim();
+        clearTimeout(addrDebounceTimer);
+        hideAddrStatus();
+        if (query.length < 3) {
+          hideSuggestions();
+          return;
         }
+        addrDebounceTimer = setTimeout(() => searchAddressMapbox(query), 300);
+      }
 
-        async function searchAddressMapbox(query) {
-            try {
-                const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?` +
-                    `country=us&types=address&limit=5&access_token=${MAPBOX_TOKEN}`;
-                const res = await fetch(url);
-                if (!res.ok) throw new Error('geocoding request failed');
-                const data = await res.json();
-                renderSuggestions(data.features || []);
-            } catch (err) {
-                showAddrStatus('Address search failed — try again.', 'err');
-            }
+      async function searchAddressMapbox(query) {
+        try {
+          const url =
+            `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?` +
+            `country=us&types=address&limit=5&access_token=${MAPBOX_TOKEN}`;
+          const res = await fetch(url);
+          if (!res.ok) throw new Error("geocoding request failed");
+          const data = await res.json();
+          renderSuggestions(data.features || []);
+        } catch (err) {
+          showAddrStatus("Address search failed — try again.", "err");
         }
+      }
 
-        function renderSuggestions(features) {
-            const box = document.getElementById('hqAddrSuggestions');
-            box.innerHTML = '';
-            if (!features.length) { hideSuggestions(); return; }
-            features.forEach(f => {
-                const item = document.createElement('div');
-                item.className = 'suggest-item';
-                item.textContent = f.place_name;
-                item.onclick = () => selectAddress(f);
-                box.appendChild(item);
-            });
-            box.classList.add('show');
+      function renderSuggestions(features) {
+        const box = document.getElementById("hqAddrSuggestions");
+        box.innerHTML = "";
+        if (!features.length) {
+          hideSuggestions();
+          return;
         }
-        function hideSuggestions() {
-            const box = document.getElementById('hqAddrSuggestions');
-            box.classList.remove('show'); box.innerHTML = '';
-        }
-        function showAddrStatus(msg, kind) {
-            const el = document.getElementById('hqAddrStatus');
-            el.textContent = msg; el.className = 'addr-status show ' + kind;
-        }
-        function hideAddrStatus() {
-            document.getElementById('hqAddrStatus').classList.remove('show');
-        }
-
-        function parseMapboxAddr(feature) {
-            const ctx = {};
-            (feature.context || []).forEach(c => {
-                if (c.id.startsWith('postcode')) ctx.zip = c.text;
-                if (c.id.startsWith('place')) ctx.city = c.text;
-                if (c.id.startsWith('region')) ctx.state = c.short_code ? c.short_code.replace('US-', '') : c.text;
-            });
-            const street = feature.address ? `${feature.address} ${feature.text}` : feature.text;
-            return { street, city: ctx.city || '', state: ctx.state || '', zip: ctx.zip || '' };
-        }
-        function validateMapboxAddr(a) {
-            const errors = [];
-            if (!a.street) errors.push('street address');
-            if (!a.city) errors.push('city');
-            if (!a.state) errors.push('state');
-            if (!a.zip) errors.push('ZIP code');
-            return errors;
-        }
-
-        function selectAddress(feature) {
-            hideSuggestions();
-            const a = parseMapboxAddr(feature);
-            const errors = validateMapboxAddr(a);
-            if (errors.length) {
-                showAddrStatus('Missing ' + errors.join(', ') + ' — try a more complete address.', 'err');
-                return;
-            }
-            document.getElementById('hqAddrSearch').value = feature.place_name;
-            state.addr = { ...a, full: feature.place_name };
-            showAddrStatus('✓ Address verified successfully', 'ok');
-            syncHeroAndForm();
-        }
-
-        document.addEventListener('click', (e) => {
-            const input = document.getElementById('hqAddrSearch');
-            const box = document.getElementById('hqAddrSuggestions');
-            if (input && box && !input.contains(e.target) && !box.contains(e.target)) hideSuggestions();
+        features.forEach((f) => {
+          const item = document.createElement("div");
+          item.className = "suggest-item";
+          item.textContent = f.place_name;
+          item.onclick = () => selectAddress(f);
+          box.appendChild(item);
         });
+        box.classList.add("show");
+      }
+      function hideSuggestions() {
+        const box = document.getElementById("hqAddrSuggestions");
+        box.classList.remove("show");
+        box.innerHTML = "";
+      }
+      function showAddrStatus(msg, kind) {
+        const el = document.getElementById("hqAddrStatus");
+        el.textContent = msg;
+        el.className = "addr-status show " + kind;
+      }
+      function hideAddrStatus() {
+        document.getElementById("hqAddrStatus").classList.remove("show");
+      }
 
-        /* Push Step 0's name/address into the hero copy and the prefilled Step 3 fields */
-        function syncHeroAndForm() {
-            const first = document.getElementById('hqFirst').value.trim() || 'there';
-            const last = document.getElementById('hqLast').value.trim();
-            const addr = document.getElementById('hqAddrSearch').value.trim();
+      function parseMapboxAddr(feature) {
+        const ctx = {};
+        (feature.context || []).forEach((c) => {
+          if (c.id.startsWith("postcode")) ctx.zip = c.text;
+          if (c.id.startsWith("place")) ctx.city = c.text;
+          if (c.id.startsWith("region"))
+            ctx.state = c.short_code ? c.short_code.replace("US-", "") : c.text;
+        });
+        const street = feature.address
+          ? `${feature.address} ${feature.text}`
+          : feature.text;
+        return {
+          street,
+          city: ctx.city || "",
+          state: ctx.state || "",
+          zip: ctx.zip || "",
+        };
+      }
+      function validateMapboxAddr(a) {
+        const errors = [];
+        if (!a.street) errors.push("street address");
+        if (!a.city) errors.push("city");
+        if (!a.state) errors.push("state");
+        if (!a.zip) errors.push("ZIP code");
+        return errors;
+      }
 
-            const fFirst = document.getElementById('fFirst');
-            const fLast = document.getElementById('fLast');
-            const fAddr = document.getElementById('fAddr');
-            if (fFirst) fFirst.value = first;
-            if (fLast) fLast.value = last;
-            if (fAddr) fAddr.value = addr;
+      function selectAddress(feature) {
+        hideSuggestions();
+        const a = parseMapboxAddr(feature);
+        const errors = validateMapboxAddr(a);
+        if (errors.length) {
+          showAddrStatus(
+            "Missing " + errors.join(", ") + " — try a more complete address.",
+            "err",
+          );
+          return;
         }
+        document.getElementById("hqAddrSearch").value = feature.place_name;
+        state.addr = { ...a, full: feature.place_name };
+        showAddrStatus("✓ Address verified successfully", "ok");
+        syncHeroAndForm();
+      }
 
-        /* ---------- render ---------- */
-        function render() {
-            const u = unlocked(state.cart), pct = creditPct(u), annualSave = Math.round(PREMIUM * pct / 100);
-            let dev = deviceCost(state.cart); if (isBundle(state.cart)) dev = 599.99;
-            const hasItems = Object.values(state.cart).some(q => q > 0);
+      document.addEventListener("click", (e) => {
+        const input = document.getElementById("hqAddrSearch");
+        const box = document.getElementById("hqAddrSuggestions");
+        if (
+          input &&
+          box &&
+          !input.contains(e.target) &&
+          !box.contains(e.target)
+        )
+          hideSuggestions();
+      });
 
-            document.getElementById('bigSave').textContent = '$' + annualSave.toLocaleString();
-            document.getElementById('mSave').textContent = '$' + annualSave.toLocaleString();
-            document.getElementById('lCredit').textContent = '–$' + annualSave.toLocaleString();
-            document.getElementById('lDevice').textContent = dev ? ('$' + dev.toLocaleString(undefined, { minimumFractionDigits: dev % 1 ? 2 : 0 })) : '$0';
-            document.getElementById('cFire').className = 'credit ' + (u.fire ? 'on' : 'off');
-            document.getElementById('cWater').className = 'credit ' + (u.water ? 'on' : 'off');
+      /* Push Step 0's name/address into the hero copy and the prefilled Step 3 fields */
+      function syncHeroAndForm() {
+        const first =
+          document.getElementById("hqFirst").value.trim() || "there";
+        const last = document.getElementById("hqLast").value.trim();
+        const addr = document.getElementById("hqAddrSearch").value.trim();
 
-            const pb = document.getElementById('paybackBox');
-            if (annualSave > 0 && dev > 0) {
-                const m = Math.max(1, Math.round(dev / annualSave * 12));
-                document.getElementById('paybackVal').textContent = m + ' month' + (m > 1 ? 's' : '');
-                pb.style.display = 'block';
-            } else pb.style.display = 'none';
+        const fFirst = document.getElementById("fFirst");
+        const fLast = document.getElementById("fLast");
+        const fAddr = document.getElementById("fAddr");
+        if (fFirst) fFirst.value = first;
+        if (fLast) fLast.value = last;
+        if (fAddr) fAddr.value = addr;
+      }
 
-            const hint = document.getElementById('hint');
-            if (hasItems && pct < 50) {
-                const t = []; if (!u.fire) t.push("add an extinguisher + Ting to unlock 20% fire credit");
-                if (!u.water) t.push("add the shutoff + 3 leak sensors to unlock 30% water credit");
-                hint.textContent = "You're leaving savings on the table — " + t.join(", and ") + ".";
-                hint.classList.add('show');
-            } else hint.classList.remove('show');
+      /* ---------- render ---------- */
+      function render() {
+        const u = unlocked(state.cart),
+          pct = creditPct(u),
+          annualSave = Math.round((PREMIUM * pct) / 100);
+        let dev = deviceCost(state.cart);
+        if (isBundle(state.cart)) dev = 599.99;
+        const hasItems = Object.values(state.cart).some((q) => q > 0);
 
-            document.getElementById('finOnce').textContent = '$' + dev.toLocaleString(undefined, { minimumFractionDigits: dev % 1 ? 2 : 0 });
-            document.getElementById('finMo').textContent = '$' + (Math.round(dev / 12)) + '/mo';
+        document.getElementById("bigSave").textContent =
+          "$" + annualSave.toLocaleString();
+        document.getElementById("mSave").textContent =
+          "$" + annualSave.toLocaleString();
+        document.getElementById("lCredit").textContent =
+          "–$" + annualSave.toLocaleString();
+        document.getElementById("lDevice").textContent = dev
+          ? "$" +
+            dev.toLocaleString(undefined, {
+              minimumFractionDigits: dev % 1 ? 2 : 0,
+            })
+          : "$0";
+        document.getElementById("cFire").className =
+          "credit " + (u.fire ? "on" : "off");
+        document.getElementById("cWater").className =
+          "credit " + (u.water ? "on" : "off");
 
-            const rv = document.getElementById('reviewList');
-            if (rv) {
-                let rows = Object.entries(state.cart).filter(([, q]) => q > 0).map(([k, q]) =>
-                    `<div class="dev"><div class="meta"><h4>${CATALOG[k].name}<span class="pill ${CATALOG[k].risk}">${CATALOG[k].risk === 'none' ? 'extra' : CATALOG[k].risk}</span></h4><span>${CATALOG[k].sub}</span></div><div class="num" style="font-weight:600;color:var(--navy)">× ${q}</div></div>`).join('');
-                rows += `<div class="dev" style="background:var(--save-soft);border-color:var(--save)"><div class="meta"><h4>Annual premium credit</h4><span>${pct}% off · applied at binding · recurring</span></div><div class="num" style="font-weight:700;color:var(--save)">–$${annualSave.toLocaleString()}/yr</div></div>`;
-                rv.innerHTML = rows;
-            }
-            document.getElementById('toReview').disabled = !hasItems;
-            document.getElementById('doneSave').textContent = `Up to $${annualSave.toLocaleString()}/yr off your homeowners premium`;
+        const pb = document.getElementById("paybackBox");
+        if (annualSave > 0 && dev > 0) {
+          const m = Math.max(1, Math.round((dev / annualSave) * 12));
+          document.getElementById("paybackVal").textContent =
+            m + " month" + (m > 1 ? "s" : "");
+          pb.style.display = "block";
+        } else pb.style.display = "none";
+
+        const hint = document.getElementById("hint");
+        if (hasItems && pct < 50) {
+          const t = [];
+          if (!u.fire)
+            t.push("add an extinguisher + Ting to unlock 20% fire credit");
+          if (!u.water)
+            t.push(
+              "add the shutoff + 3 leak sensors to unlock 30% water credit",
+            );
+          hint.textContent =
+            "You're leaving savings on the table — " + t.join(", and ") + ".";
+          hint.classList.add("show");
+        } else hint.classList.remove("show");
+
+        document.getElementById("finOnce").textContent =
+          "$" +
+          dev.toLocaleString(undefined, {
+            minimumFractionDigits: dev % 1 ? 2 : 0,
+          });
+        document.getElementById("finMo").textContent =
+          "$" + Math.round(dev / 12) + "/mo";
+
+        const rv = document.getElementById("reviewList");
+        if (rv) {
+          let rows = Object.entries(state.cart)
+            .filter(([, q]) => q > 0)
+            .map(
+              ([k, q]) =>
+                `<div class="dev"><div class="meta"><h4>${CATALOG[k].name}<span class="pill ${CATALOG[k].risk}">${CATALOG[k].risk === "none" ? "extra" : CATALOG[k].risk}</span></h4><span>${CATALOG[k].sub}</span></div><div class="num" style="font-weight:600;color:var(--navy)">× ${q}</div></div>`,
+            )
+            .join("");
+          rows += `<div class="dev" style="background:var(--save-soft);border-color:var(--save)"><div class="meta"><h4>Annual premium credit</h4><span>${pct}% off · applied at binding · recurring</span></div><div class="num" style="font-weight:700;color:var(--save)">–$${annualSave.toLocaleString()}/yr</div></div>`;
+          rv.innerHTML = rows;
         }
+        document.getElementById("toReview").disabled = !hasItems;
+        document.getElementById("doneSave").textContent =
+          `Up to $${annualSave.toLocaleString()}/yr off your homeowners premium`;
+      }
 
-        /* ---------- package pick ---------- */
-        function pick(pkg) {
-            state.pkg = pkg;
-            document.querySelectorAll('.opt[data-pkg]').forEach(o => o.classList.toggle('sel', o.dataset.pkg === pkg));
-            const picker = document.getElementById('customPicker');
-            if (pkg === 'custom') {
-                state.cart = {}; picker.style.display = 'block';
-                picker.innerHTML = Object.entries(CATALOG).map(([k, d]) => `
-      <div class="dev"><div class="meta"><h4>${d.name}<span class="pill ${d.risk}">${d.risk === 'none' ? 'extra' : d.risk}</span></h4><span>${d.sub} · $${d.price}</span></div>
-      <div class="stepper"><button onclick="qty('${k}',-1)">–</button><span class="q num" id="q-${k}">0</span><button onclick="qty('${k}',1)">+</button></div></div>`).join('');
-            } else { picker.style.display = 'none'; state.cart = { ...PKGS[pkg] }; }
-            render();
+      /* ---------- package pick ---------- */
+      function pick(pkg) {
+        state.pkg = pkg;
+        document
+          .querySelectorAll(".opt[data-pkg]")
+          .forEach((o) => o.classList.toggle("sel", o.dataset.pkg === pkg));
+        const picker = document.getElementById("customPicker");
+        if (pkg === "custom") {
+          state.cart = {};
+          picker.style.display = "block";
+          picker.innerHTML = Object.entries(CATALOG)
+            .map(
+              ([k, d]) => `
+      <div class="dev"><div class="meta"><h4>${d.name}<span class="pill ${d.risk}">${d.risk === "none" ? "extra" : d.risk}</span></h4><span>${d.sub} · $${d.price}</span></div>
+      <div class="stepper"><button onclick="qty('${k}',-1)">–</button><span class="q num" id="q-${k}">0</span><button onclick="qty('${k}',1)">+</button></div></div>`,
+            )
+            .join("");
+        } else {
+          picker.style.display = "none";
+          state.cart = { ...PKGS[pkg] };
         }
-        function qty(k, d) {
-            state.cart[k] = Math.max(0, (state.cart[k] || 0) + d);
-            if (state.cart[k] === 0) delete state.cart[k];
-            document.getElementById('q-' + k).textContent = state.cart[k] || 0; render();
-        }
-        function setFin(f) { state.fin = f; document.querySelectorAll('.fin .o').forEach(o => o.classList.toggle('sel', o.dataset.fin === f)); }
+        render();
+      }
+      function qty(k, d) {
+        state.cart[k] = Math.max(0, (state.cart[k] || 0) + d);
+        if (state.cart[k] === 0) delete state.cart[k];
+        document.getElementById("q-" + k).textContent = state.cart[k] || 0;
+        render();
+      }
+      function setFin(f) {
+        state.fin = f;
+        document
+          .querySelectorAll(".fin .o")
+          .forEach((o) => o.classList.toggle("sel", o.dataset.fin === f));
+      }
 
-        /* ---------- nav ---------- */
-        const CAPS = ["Protection", "Choose kit", "Review", "Shipping", "Done"];
-        function buildRail() { document.getElementById('rail').innerHTML = [0, 1, 2, 3].map(i => `<div class="seg" id="seg${i}"></div>`).join(''); }
-        function go(s, skipped) {
-            if (skipped) {
-                state.cart = {}; state.pkg = null; render();
-                document.getElementById('doneSub').textContent = `Quote ref ${state.quoteRef} submitted. A licensed agent will be in touch to finalize your policy.`;
-                document.getElementById('timeline').style.display = 'none';
-            } else if (s === 4) { document.getElementById('timeline').style.display = ''; }
-            if (s === 4) { const refDone = document.getElementById('refDone'); if (refDone) refDone.textContent = state.quoteRef; }
-            state.step = s;
-            document.querySelectorAll('.step').forEach(el => el.classList.toggle('show', +el.dataset.step === s));
-            for (let i = 0; i < 4; i++) { const seg = document.getElementById('seg' + i); seg.className = 'seg' + (i < s ? ' done' : i === s ? ' active' : ''); }
-            const ss = Math.min(s, 4);
-            document.getElementById('capLeft').textContent = CAPS[ss];
-            document.getElementById('capRight').textContent = s >= 4 ? 'Complete' : ('Step ' + (s + 1) + ' of 4');
-            document.getElementById('ledger').style.display = (s >= 4) ? 'none' : '';
-            document.querySelector('.mbar').style.display = (window.innerWidth <= 880 && s >= 1 && s <= 2) ? 'flex' : 'none';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+      /* ---------- nav ---------- */
+      const CAPS = ["Protection", "Choose kit", "Review", "Shipping", "Done"];
+      function buildRail() {
+        document.getElementById("rail").innerHTML = [0, 1, 2, 3]
+          .map((i) => `<div class="seg" id="seg${i}"></div>`)
+          .join("");
+      }
+      function go(s, skipped) {
+        if (skipped) {
+          state.cart = {};
+          state.pkg = null;
+          render();
+          document.getElementById("doneSub").textContent =
+            `Quote ref ${state.quoteRef} submitted. A licensed agent will be in touch to finalize your policy.`;
+          document.getElementById("timeline").style.display = "none";
+        } else if (s === 4) {
+          document.getElementById("timeline").style.display = "";
         }
-        function mobileNext() { if (state.step === 1 && Object.values(state.cart).some(q => q > 0)) go(2); else if (state.step === 2) go(3); }
-
-        let toastT;
-        function toast(msg) {
-            const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
-            clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 4200);
+        if (s === 4) {
+          const refDone = document.getElementById("refDone");
+          if (refDone) refDone.textContent = state.quoteRef;
         }
+        state.step = s;
+        document
+          .querySelectorAll(".step")
+          .forEach((el) => el.classList.toggle("show", +el.dataset.step === s));
+        for (let i = 0; i < 4; i++) {
+          const seg = document.getElementById("seg" + i);
+          seg.className = "seg" + (i < s ? " done" : i === s ? " active" : "");
+        }
+        const ss = Math.min(s, 4);
+        document.getElementById("capLeft").textContent = CAPS[ss];
+        document.getElementById("capRight").textContent =
+          s >= 4 ? "Complete" : "Step " + (s + 1) + " of 4";
+        document.getElementById("ledger").style.display = s >= 4 ? "none" : "";
+        document.querySelector(".mbar").style.display =
+          window.innerWidth <= 880 && s >= 1 && s <= 2 ? "flex" : "none";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      function mobileNext() {
+        if (state.step === 1 && Object.values(state.cart).some((q) => q > 0))
+          go(2);
+        else if (state.step === 2) go(3);
+      }
 
-        /* Resets the "Place order" button if the browser restores this page
+      let toastT;
+      function toast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        clearTimeout(toastT);
+        toastT = setTimeout(() => t.classList.remove("show"), 4200);
+      }
+
+      /* Resets the "Place order" button if the browser restores this page
            from its back/forward cache — e.g. the user clicked through to
            Shopify checkout, then hit the browser Back button. Without this,
            the button stays stuck disabled/"Redirecting…" because the page's
            JS never re-runs on a bfcache restore, it just reappears exactly
            as it looked at the moment we navigated away. */
-        window.addEventListener('pageshow', () => {
-            const btn = document.getElementById('placeBtn');
-            if (btn) {
-                btn.disabled = false;
-                btn.innerHTML = 'Place order &amp; submit quote →';
-            }
-        });
+      window.addEventListener("pageshow", () => {
+        const btn = document.getElementById("placeBtn");
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = "Place order &amp; submit quote →";
+        }
+      });
 
-        buildRail(); recalcPremium(); syncHeroAndForm(); syncQuoteRefDisplay(); go(0);
+      buildRail();
+      recalcPremium();
+      syncHeroAndForm();
+      syncQuoteRefDisplay();
+      go(0);
     </script>
-</body>
-
+  </body>
 </html>

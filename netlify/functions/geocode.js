@@ -1,5 +1,5 @@
 // Secure geocoding endpoint - API key hidden on server
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
 
 // Simple in-memory rate limiting
 const rateLimits = new Map();
