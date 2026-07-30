@@ -1,5 +1,19 @@
 exports.handler = async (event) => {
   try {
+    const scopeResponse = await fetch(
+      `https://${process.env.SHOPIFY_STORE}/admin/oauth/access_scopes.json`,
+      {
+        headers: {
+          "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_TOKEN
+        }
+      }
+    );
+
+    console.log(
+      "SCOPES:",
+      await scopeResponse.json()
+    );
+
     const { quoteRef } = JSON.parse(event.body);
 
     const code =
@@ -39,7 +53,7 @@ exports.handler = async (event) => {
 
         customerGets: {
           value: {
-            percentage: 100
+            percentage: 1
           },
           items: {
             all: true
@@ -72,10 +86,20 @@ exports.handler = async (event) => {
 
     const json = await response.json();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(json)
-    };
+    const discountCode =
+  json.data.discountCodeBasicCreate
+    .codeDiscountNode
+    .codeDiscount
+    .codes
+    .nodes[0]
+    .code;
+
+return {
+  statusCode: 200,
+  body: JSON.stringify({
+    discountCode
+  })
+};
 
   } catch (err) {
   console.error("CREATE DISCOUNT ERROR:", err);

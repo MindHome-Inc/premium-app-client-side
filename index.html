@@ -1687,32 +1687,56 @@
       /* ---------- place order ---------- */
       async function placeOrder() {
         if (!validateRequiredIn(3)) return;
+
         const btn = document.getElementById("placeBtn");
+
         if (!SHOPIFY.storefrontToken) {
           toast(
-            "Demo mode — paste a Storefront token in SHOPIFY.storefrontToken to go live. Showing the real payload instead.",
+            "Demo mode — paste a Storefront token in SHOPIFY.storefrontToken to go live.",
           );
-          go(4);
           return;
         }
+
         btn.disabled = true;
-        btn.innerHTML = '<span class="spin"></span> Creating secure cart…';
+        btn.innerHTML = '<span class="spin"></span> Creating secure checkout…';
+
         try {
+          // 1. Create single-use 100% Shopify discount
           const discount = await createDiscount();
 
           console.log("DISCOUNT RESPONSE", discount);
 
-          toast("Discount created successfully!");
+          if (discount.errors) {
+            throw new Error(
+              discount.errors[0]?.message || "Discount creation failed",
+            );
+          }
+
+          const discountCode = discount.discountCode;
+
+          console.log("DISCOUNT CODE:", discountCode);
+
+          // 2. Create Shopify cart
+          const checkoutUrl = await createCheckout();
+
+          console.log("CHECKOUT URL:", checkoutUrl);
+
+          // 3. Append discount code to checkout URL
+          const separator = checkoutUrl.includes("?") ? "&" : "?";
+
+          const checkoutWithDiscount = `${checkoutUrl}${separator}discount=${encodeURIComponent(discountCode)}`;
+
+          // 4. Send customer to Shopify checkout
+          window.location.href = checkoutWithDiscount;
+        } catch (e) {
+          console.error(e);
 
           btn.disabled = false;
-          btn.innerHTML = "Place order & submit quote →";
-        } catch (e) {
-          btn.disabled = false;
           btn.innerHTML = "Place order &amp; submit quote →";
+
           toast("Checkout error: " + e.message);
         }
       }
-
       /* ---------- credit math ---------- */
       function unlocked(cart) {
         return {
