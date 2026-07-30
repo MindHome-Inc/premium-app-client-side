@@ -86,13 +86,45 @@ exports.handler = async (event) => {
 
     const json = await response.json();
 
-    const discountCode =
-  json.data.discountCodeBasicCreate
-    .codeDiscountNode
+    if (json.errors?.length) {
+  console.error("SHOPIFY ERRORS:", json.errors);
+
+  return {
+    statusCode: 500,
+    body: JSON.stringify({
+      error: json.errors[0].message,
+      details: json.errors
+    })
+  };
+}
+
+const result = json.data.discountCodeBasicCreate;
+
+if (result.userErrors?.length) {
+  console.error("USER ERRORS:", result.userErrors);
+
+  return {
+    statusCode: 500,
+    body: JSON.stringify({
+      error: result.userErrors[0].message,
+      details: result.userErrors
+    })
+  };
+}
+
+const discountCode =
+  result.codeDiscountNode
     .codeDiscount
     .codes
     .nodes[0]
     .code;
+
+return {
+  statusCode: 200,
+  body: JSON.stringify({
+    discountCode
+  })
+};
 
 return {
   statusCode: 200,
