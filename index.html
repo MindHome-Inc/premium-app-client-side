@@ -1684,7 +1684,6 @@
         );
       }
 
-      /* ---------- place order ---------- */
       async function placeOrder() {
         if (!validateRequiredIn(3)) return;
 
@@ -1701,10 +1700,9 @@
         btn.innerHTML = '<span class="spin"></span> Creating secure checkout…';
 
         try {
-          // 1. Create single-use 100% Shopify discount
           const discount = await createDiscount();
 
-          console.log("DISCOUNT RESPONSE", discount);
+          //console.log("DISCOUNT RESPONSE", discount);
 
           if (discount.errors) {
             throw new Error(
@@ -1712,21 +1710,17 @@
             );
           }
 
-          const discountCode = discount.discountCode;
+          const discountCode = discount.discountCode; // extract the generated Shopify discount code
 
-          console.log("DISCOUNT CODE:", discountCode);
+          //console.log("DISCOUNT CODE:", discountCode);
 
-          // 2. Create Shopify cart
           const checkoutUrl = await createCheckout();
 
-          console.log("CHECKOUT URL:", checkoutUrl);
+          //console.log("CHECKOUT URL:", checkoutUrl);
 
-          // 3. Append discount code to checkout URL
-          const separator = checkoutUrl.includes("?") ? "&" : "?";
-
+          const separator = checkoutUrl.includes("?") ? "&" : "?"; // append discount code to checkout URL
           const checkoutWithDiscount = `${checkoutUrl}${separator}discount=${encodeURIComponent(discountCode)}`;
 
-          // 4. Send customer to Shopify checkout
           window.location.href = checkoutWithDiscount;
         } catch (e) {
           console.error(e);
@@ -1737,6 +1731,7 @@
           toast("Checkout error: " + e.message);
         }
       }
+
       /* ---------- credit math ---------- */
       function unlocked(cart) {
         return {
