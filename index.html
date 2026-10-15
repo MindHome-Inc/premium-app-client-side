@@ -1479,8 +1479,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ quoteRef: state.quoteRef, input }),
         });
-        if (!res.ok) throw new Error("rate HTTP " + res.status);
-        ev = (await res.json()).event;
+        ev = (await readFunctionJson(res, "rate")).event;
         ev.source = "server";
       } catch (e) {
         try {
@@ -1700,6 +1699,29 @@
       return cart.checkoutUrl;
     }
 
+    /* Parses a Netlify function response. An empty or non-JSON body
+         (function not deployed, page served without Netlify, a crash or
+         timeout) becomes a readable error naming the function and status,
+         instead of "Unexpected end of JSON input". */
+    async function readFunctionJson(res, name) {
+      const text = await res.text();
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch (e) { }
+      if (!data) {
+        throw new Error(
+          `${name} returned HTTP ${res.status} with ${text ? "a non-JSON" : "an empty"} response — ` +
+          `is the Netlify function deployed and is the page served by Netlify (or netlify dev)?`,
+        );
+      }
+      if (!res.ok || data.error || data.errors) {
+        const msg = data.error || data.errors?.[0]?.message || `HTTP ${res.status}`;
+        throw new Error(`${name} failed: ${msg}`);
+      }
+      return data;
+    }
+
     async function createDiscount() {
       const res = await fetch("/.netlify/functions/createDiscount", {
         method: "POST",
@@ -1711,7 +1733,7 @@
         }),
       });
 
-      return res.json();
+      return readFunctionJson(res, "createDiscount");
     }
 
     /* no-token fallback: cart permalink (needs numeric ids; works once resolved) */
@@ -1749,13 +1771,8 @@
 
         //console.log("DISCOUNT RESPONSE", discount);
 
-        if (discount.errors) {
-          throw new Error(
-            discount.errors[0]?.message || "Discount creation failed",
-          );
-        }
-
         const discountCode = discount.discountCode; // extract the generated Shopify discount code
+        if (!discountCode) throw new Error("createDiscount returned no discount code");
 
         //console.log("DISCOUNT CODE:", discountCode);
 
