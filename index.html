@@ -545,6 +545,37 @@
       display: block;
     }
 
+    /* professional valve install (required for the water credit) */
+    .proinstall {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      font-size: 13px;
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    .proinstall input {
+      margin-top: 2px;
+    }
+
+    .proinstall span {
+      color: var(--muted);
+      display: block;
+      font-size: 12px;
+    }
+
+    .illus {
+      margin-top: 13px;
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
     /* buttons */
     .nav {
       display: flex;
@@ -641,7 +672,8 @@
       margin: 0 0 5px;
     }
 
-    .field input {
+    .field input,
+    .field select {
       width: 100%;
       padding: 12px 13px;
       border: 1.5px solid var(--line);
@@ -652,7 +684,8 @@
       color: var(--ink);
     }
 
-    .field input:focus {
+    .field input:focus,
+    .field select:focus {
       outline: none;
       border-color: var(--purple);
     }
@@ -953,23 +986,61 @@
           </div>
           <div class="grid2" style="margin-bottom: 13px">
             <div class="field">
-              <label>Bedrooms</label><input id="hqBedrooms" type="number" min="1" max="10" value="3" required
-                oninput="recalcPremium()" />
+              <label>Square footage</label><input id="hqSqft" type="number" min="200" max="20000" step="10" value="2150"
+                required oninput="onSqftOrConstruction()" />
             </div>
             <div class="field">
-              <label>Square footage</label><input id="hqSqft" type="number" min="200" max="20000" step="10" value="2100"
-                required oninput="recalcPremium()" />
+              <label>Year built</label><input id="hqYearBuilt" type="number" min="1800" max="2026" value="1998" required
+                oninput="recalcPremium()" />
             </div>
           </div>
-          <div class="grid2">
+          <div class="grid2" style="margin-bottom: 13px">
             <div class="field">
-              <label>Estimated home value</label><input id="hqHomeValue" type="number" min="10000" max="10000000"
-                step="1000" value="400000" required oninput="recalcPremium()" />
+              <label>Construction type</label>
+              <select id="hqConstruction" required onchange="onSqftOrConstruction()">
+                <option value="frame" selected>Frame</option>
+                <option value="masonry_veneer">Masonry veneer</option>
+                <option value="masonry">Masonry</option>
+                <option value="fire_resistive">Fire resistive</option>
+              </select>
             </div>
             <div class="field">
-              <label>Year built</label><input id="hqYearBuilt" type="number" min="1800" max="2026" value="1995" required
+              <label>Protection class (PC)</label>
+              <select id="hqPC" required onchange="recalcPremium()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid2" style="margin-bottom: 13px">
+            <div class="field">
+              <label>Roof year</label><input id="hqRoofYear" type="number" min="1900" max="2026" value="2014" required
                 oninput="recalcPremium()" />
             </div>
+            <div class="field">
+              <label>Roof material</label>
+              <select id="hqRoofMaterial" required onchange="recalcPremium()">
+                <option value="asphalt" selected>Asphalt shingle</option>
+                <option value="impact_resistant">Impact-resistant shingle</option>
+                <option value="metal">Metal</option>
+                <option value="tile">Tile</option>
+                <option value="wood_shake">Wood shake</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Dwelling coverage (Coverage A)
+              <span class="prefill" id="covANote">estimated from square footage</span></label>
+            <input id="hqCovA" type="number" min="10000" max="10000000" step="1000" value="613000" required
+              oninput="onCovAInput()" />
           </div>
         </div>
 
@@ -1041,6 +1112,15 @@
         </button>
 
         <div id="customPicker" style="display: none; margin-top: 8px"></div>
+
+        <label class="proinstall" id="proInstallRow" style="display: none">
+          <input type="checkbox" id="proInstall" checked onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
+          <div>
+            Professional install of the water shutoff valve
+            <span>Required for the 30% water credit. Your agent confirms the
+              install when the credit is verified.</span>
+          </div>
+        </label>
 
         <div class="nav">
           <button class="btn ghost" onclick="go(0)">← Back</button>
@@ -1195,6 +1275,9 @@
         <span class="k">Premium credit</span><span class="v save num" id="lCredit">–$0</span>
       </div>
       <div class="lrow">
+        <span class="k">Premium with credits</span><span class="v num" id="lNet">$1,840</span>
+      </div>
+      <div class="lrow">
         <span class="k">Device cost (once)</span><span class="v num" id="lDevice">$0</span>
       </div>
       <div class="payback" id="paybackBox" style="display: none">
@@ -1202,6 +1285,10 @@
         <div class="p2 num" id="paybackVal">—</div>
       </div>
       <div class="hint" id="hint"></div>
+      <div class="illus" id="illusNote">
+        Illustrative rates, not filed factors. Credits are provisional at
+        binding (MH-100) and verified within 60 days.
+      </div>
     </aside>
   </div>
 
@@ -1215,6 +1302,7 @@
   </div>
   <div class="toast" id="toast"></div>
 
+  <script src="rating/engine.js"></script>
   <script>
     /* ============================================================
          SHOPIFY STOREFRONT CONFIG  —  fill these two, ship it.
@@ -1299,62 +1387,111 @@
       water: { shutoff: 1, sensor: 5 },
       custom: {},
     };
-    let PREMIUM = 1840; // recalculated live by recalcPremium() below
+    /* ---------- Premium rating engine (rating/engine.js) ----------
+         All factors are ILLUSTRATIVE until filed — see RATING_CONFIG in
+         rating/engine.js. PREMIUM is the annual premium before
+         mitigation credits; RATED is the full engine result for the
+         current form + cart. */
+    let PREMIUM = 0;
+    let RATED = null;
+    let covAEdited = false;
 
-    /* ---------- Premium prediction model (ported from the "Get My Quote" wizard) ---------- */
-    const PREMIUM_MODEL = {
-      coefficients: [
-        61.09909107103789, 247.32495465316828, 6.444056303890775,
-        40.239270399724056,
-      ],
-      intercept: 1750.1500895522388,
-      scaler: {
-        mean: [
-          3.5164179104477613, 2470.3014925373136, 442130.93919402984,
-          39.25970149253731,
-        ],
-        scale: [
-          1.1416925135517493, 851.6019470776408, 160375.7009750736,
-          20.13887648751911,
-        ],
-      },
-      calibration: { a: 2.2688583723656337, b: -1806.3973226313328 },
-    };
-    function predictPremium(features) {
-      const scaled = features.map(
-        (v, i) =>
-          (v - PREMIUM_MODEL.scaler.mean[i]) / PREMIUM_MODEL.scaler.scale[i],
-      );
-      let p = PREMIUM_MODEL.intercept;
-      scaled.forEach((s, i) => (p += PREMIUM_MODEL.coefficients[i] * s));
-      return Math.max(
-        0,
-        PREMIUM_MODEL.calibration.a * p + PREMIUM_MODEL.calibration.b,
-      );
+    function ratingInput() {
+      const num = (id) => parseFloat(document.getElementById(id).value) || 0;
+      return {
+        sqft: num("hqSqft"),
+        yearBuilt: num("hqYearBuilt"),
+        construction: document.getElementById("hqConstruction").value,
+        roofYear: num("hqRoofYear"),
+        roofMaterial: document.getElementById("hqRoofMaterial").value,
+        protectionClass: num("hqPC"),
+        coverageA: covAEdited ? num("hqCovA") || null : null, // null → engine estimates
+        // Pulled at quote time once vendors are chosen (Daniel's call).
+        insuranceScore: null,
+        lossHistory: null,
+        // HeyCapto has no real-time API; recorded when a licensed feed exists.
+        hazardGrades: null,
+        devices: { ...state.cart },
+        proInstall: !!state.proInstall,
+      };
     }
 
-    /* Reads the Step 0 home-detail fields, recomputes PREMIUM via the model,
-         updates the quote display in the top-right of the page, then re-renders
-         the ledger (credits/savings/payback all derive from PREMIUM). */
+    /* Coverage A follows square footage x construction until the
+         customer types their own figure. */
+    function onSqftOrConstruction() {
+      if (!covAEdited) {
+        const sqft = parseFloat(document.getElementById("hqSqft").value) || 0;
+        const c = document.getElementById("hqConstruction").value;
+        if (sqft > 0)
+          document.getElementById("hqCovA").value = MHRating.estimateCoverageA(sqft, c);
+      }
+      recalcPremium();
+    }
+    function onCovAInput() {
+      covAEdited = true;
+      document.getElementById("covANote").textContent = "your figure";
+      recalcPremium();
+    }
+
+    /* Re-rates from the Step 0 fields and the current cart, updates the
+         quote display, then re-renders the ledger. */
     function recalcPremium() {
-      const bedrooms =
-        parseFloat(document.getElementById("hqBedrooms").value) || 0;
-      const sqft = parseFloat(document.getElementById("hqSqft").value) || 0;
-      const homeValue =
-        parseFloat(document.getElementById("hqHomeValue").value) || 0;
-      const yearBuilt =
-        parseInt(document.getElementById("hqYearBuilt").value) || 1990;
-      const age = new Date().getFullYear() - yearBuilt;
-
-      PREMIUM = Math.round(predictPremium([bedrooms, sqft, homeValue, age]));
-
-      const premTop = document.getElementById("premTop");
-      if (premTop)
-        premTop.textContent = "$" + PREMIUM.toLocaleString() + "/yr";
+      try {
+        RATED = MHRating.rate(ratingInput());
+      } catch (e) {
+        return; // incomplete form; keep the last good rating on screen
+      }
+      PREMIUM = RATED.annualPremiumWithoutCredits;
       const lPremium = document.getElementById("lPremium");
       if (lPremium) lPremium.textContent = "$" + PREMIUM.toLocaleString();
-
       render();
+      scheduleQuoteRated();
+    }
+
+    /* ---------- quote.rated → integration log ----------
+         Posts the inputs to /api/rate, which re-rates server-side and
+         writes the quote.rated event to the integration log (Netlify
+         function logs). Debounced so typing doesn't flood the log, and
+         skipped when nothing changed. If the function can't be reached
+         (e.g. the page is opened from disk), the event is built locally
+         and marked source: "client". Every event is also kept in
+         window.MH_INTEGRATION_LOG and dispatched as a "quote.rated" DOM
+         event for anything else on the page that wants it. */
+    window.MH_INTEGRATION_LOG = window.MH_INTEGRATION_LOG || [];
+    let quoteRatedTimer = null;
+    let lastQuoteRatedKey = null;
+
+    function scheduleQuoteRated() {
+      clearTimeout(quoteRatedTimer);
+      quoteRatedTimer = setTimeout(emitQuoteRated, 1200);
+    }
+
+    async function emitQuoteRated(force) {
+      clearTimeout(quoteRatedTimer);
+      const input = ratingInput();
+      const key = JSON.stringify([state.quoteRef, input]);
+      if (!force && key === lastQuoteRatedKey) return;
+      lastQuoteRatedKey = key;
+      let ev;
+      try {
+        const res = await fetch("/api/rate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ quoteRef: state.quoteRef, input }),
+        });
+        ev = (await readFunctionJson(res, "rate")).event;
+        ev.source = "server";
+      } catch (e) {
+        try {
+          ev = MHRating.buildQuoteRatedEvent(state.quoteRef, input, MHRating.rate(input));
+          ev.source = "client";
+        } catch (_) {
+          return;
+        }
+      }
+      window.MH_INTEGRATION_LOG.push(ev);
+      window.dispatchEvent(new CustomEvent("quote.rated", { detail: ev }));
+      return ev;
     }
 
     /* Reads ?quote_ref=... from the URL, so this page works when linked to
@@ -1394,6 +1531,7 @@
       pkg: null,
       cart: {},
       fin: "once",
+      proInstall: true,
       quoteRef: getQuoteRefFromURL(),
       email: "",
     };
@@ -1468,7 +1606,7 @@
     function cartInput() {
       const u = unlocked(state.cart),
         pct = creditPct(u),
-        save = Math.round((PREMIUM * pct) / 100);
+        save = RATED ? RATED.annualSavings : 0;
       return {
         note: `Insurance bolt-on — quote ${state.quoteRef}`,
         buyerIdentity: {
@@ -1479,6 +1617,7 @@
           { key: "quote_ref", value: state.quoteRef },
           { key: "premium_credit_pct", value: String(pct) },
           { key: "est_annual_savings", value: "$" + save },
+          { key: "est_annual_premium", value: "$" + (RATED ? RATED.annualPremium : "") },
           { key: "ship_to", value: getVal("fAddr", "") },
           { key: "source", value: "premium-app-bolton" },
         ],
@@ -1560,6 +1699,29 @@
       return cart.checkoutUrl;
     }
 
+    /* Parses a Netlify function response. An empty or non-JSON body
+         (function not deployed, page served without Netlify, a crash or
+         timeout) becomes a readable error naming the function and status,
+         instead of "Unexpected end of JSON input". */
+    async function readFunctionJson(res, name) {
+      const text = await res.text();
+      let data = null;
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch (e) { }
+      if (!data) {
+        throw new Error(
+          `${name} returned HTTP ${res.status} with ${text ? "a non-JSON" : "an empty"} response — ` +
+          `is the Netlify function deployed and is the page served by Netlify (or netlify dev)?`,
+        );
+      }
+      if (!res.ok || data.error || data.errors) {
+        const msg = data.error || data.errors?.[0]?.message || `HTTP ${res.status}`;
+        throw new Error(`${name} failed: ${msg}`);
+      }
+      return data;
+    }
+
     async function createDiscount() {
       const res = await fetch("/.netlify/functions/createDiscount", {
         method: "POST",
@@ -1571,7 +1733,7 @@
         }),
       });
 
-      return res.json();
+      return readFunctionJson(res, "createDiscount");
     }
 
     /* no-token fallback: cart permalink (needs numeric ids; works once resolved) */
@@ -1602,18 +1764,15 @@
       btn.disabled = true;
       btn.innerHTML = '<span class="spin"></span> Creating secure checkout…';
 
+      await emitQuoteRated(true);
+
       try {
         const discount = await createDiscount();
 
         //console.log("DISCOUNT RESPONSE", discount);
 
-        if (discount.errors) {
-          throw new Error(
-            discount.errors[0]?.message || "Discount creation failed",
-          );
-        }
-
         const discountCode = discount.discountCode; // extract the generated Shopify discount code
+        if (!discountCode) throw new Error("createDiscount returned no discount code");
 
         //console.log("DISCOUNT CODE:", discountCode);
 
@@ -1637,13 +1796,15 @@
 
     /* ---------- credit math ---------- */
     function unlocked(cart) {
-      return {
-        fire: cart.ext >= 1 && cart.ting >= 1,
-        water: cart.shutoff >= 1 && (cart.sensor || 0) >= 3,
-      };
+      return MHRating.creditEligibility(cart, state.proInstall);
     }
+    /* Combined credit %, after the (illustrative) combined cap. */
     function creditPct(u) {
-      return (u.fire ? 20 : 0) + (u.water ? 30 : 0);
+      const c = MHRating.RATING_CONFIG.credits;
+      return Math.min(
+        (u.fire ? c.fire.pct : 0) + (u.water ? c.water.pct : 0),
+        c.combinedCapPct.value,
+      );
     }
     function deviceCost(cart) {
       return Object.entries(cart).reduce(
@@ -1815,9 +1976,13 @@
 
     /* ---------- render ---------- */
     function render() {
+      try {
+        RATED = MHRating.rate(ratingInput()); // cart changes move the credits
+      } catch (e) { }
       const u = unlocked(state.cart),
-        pct = creditPct(u),
-        annualSave = Math.round((PREMIUM * pct) / 100);
+        pct = RATED ? RATED.credits.pct : creditPct(u),
+        annualSave = RATED ? RATED.annualSavings : 0,
+        net = RATED ? RATED.annualPremium : PREMIUM;
       let dev = deviceCost(state.cart);
       if (isBundle(state.cart)) dev = 599.99;
       const hasItems = Object.values(state.cart).some((q) => q > 0);
@@ -1828,6 +1993,12 @@
         "$" + annualSave.toLocaleString();
       document.getElementById("lCredit").textContent =
         "–$" + annualSave.toLocaleString();
+      document.getElementById("lNet").textContent = "$" + net.toLocaleString();
+      const premTop = document.getElementById("premTop");
+      if (premTop) premTop.textContent = "$" + net.toLocaleString() + "/yr";
+      const hasValve = (state.cart.shutoff || 0) >= 1;
+      document.getElementById("proInstallRow").style.display = hasValve ? "" : "none";
+      document.getElementById("proInstall").checked = !!state.proInstall;
       document.getElementById("lDevice").textContent = dev
         ? "$" +
         dev.toLocaleString(undefined, {
@@ -1848,13 +2019,15 @@
       } else pb.style.display = "none";
 
       const hint = document.getElementById("hint");
-      if (hasItems && pct < 50) {
+      if (hasItems && !(u.fire && u.water)) {
         const t = [];
         if (!u.fire)
           t.push("add an extinguisher + Ting to unlock 20% fire credit");
-        if (!u.water)
+        if (u.waterDevicesOnly)
+          t.push("add professional install of the valve to unlock 30% water credit");
+        else if (!u.water)
           t.push(
-            "add the shutoff + 3 leak sensors to unlock 30% water credit",
+            "add the shutoff + 3 leak sensors (professionally installed) to unlock 30% water credit",
           );
         hint.textContent =
           "You're leaving savings on the table — " + t.join(", and ") + ".";
@@ -1908,12 +2081,14 @@
         state.cart = { ...PKGS[pkg] };
       }
       render();
+      scheduleQuoteRated();
     }
     function qty(k, d) {
       state.cart[k] = Math.max(0, (state.cart[k] || 0) + d);
       if (state.cart[k] === 0) delete state.cart[k];
       document.getElementById("q-" + k).textContent = state.cart[k] || 0;
       render();
+      scheduleQuoteRated();
     }
     function setFin(f) {
       state.fin = f;
@@ -1937,6 +2112,7 @@
         document.getElementById("doneSub").textContent =
           `Quote ref ${state.quoteRef} submitted. A licensed agent will be in touch to finalize your policy.`;
         document.getElementById("timeline").style.display = "none";
+        emitQuoteRated(true);
       } else if (s === 4) {
         document.getElementById("timeline").style.display = "";
       }
