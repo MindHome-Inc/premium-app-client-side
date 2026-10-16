@@ -1,6 +1,6 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { handler } = require("./rate");
+const { handler } = require("../netlify/functions/rate");
 
 test("rate function returns the premium and logs quote.rated", async () => {
   const logged = [];

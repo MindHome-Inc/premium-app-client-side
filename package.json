@@ -6,6 +6,6 @@
     "node-fetch": "^2.6.7"
   },
   "scripts": {
-    "test": "node --test rating/engine.test.js netlify/functions/rate.test.js"
+    "test": "node --test rating/engine.test.js test/rate-function.test.js"
   }
 }
