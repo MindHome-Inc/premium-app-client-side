@@ -1345,13 +1345,16 @@
     /* The test store's catalog uses different handles (read from its
          storefront on 2026-10-16). It has no leak sensor or presence
          detector yet, so those keep the live handles and fail until a
-         product with that handle is added and published to Netlify Headless. */
+         product with that handle is added and published to Netlify Headless.
+         A null handle means "no such product here". */
     const HANDLES_BY_STORE = {
       "test-store-11233.myshopify.com": {
         ...LIVE_HANDLES,
         ext: "turgel-fireball", // MindHome Fire Suppression Ball
         smoke: "mindhome-smoke-and-carbon-monoxide-alarm",
-        bundle: "enhanced", // Risk Management Bundle
+        // No device-bundle product: "starter" and "enhanced" are $999.99
+        // PayWhirl subscription plans, so the bundle checks out as its items.
+        bundle: null,
       },
     };
     const HANDLES = HANDLES_BY_STORE[SHOPIFY.domain] || LIVE_HANDLES;
@@ -1603,7 +1606,7 @@
 
     /* lines to buy, given current cart (bundle SKU if exact bundle) */
     function lineSpec() {
-      if (isBundle(state.cart)) return [["bundle", 1]];
+      if (isBundle(state.cart) && HANDLES.bundle) return [["bundle", 1]];
       return Object.entries(state.cart).filter(([, q]) => q > 0);
     }
     /* Shopify's buyerIdentity.phone expects E.164 (+13035550148), but the
