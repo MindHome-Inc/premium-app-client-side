@@ -1333,7 +1333,7 @@
          ⚠ "ting" resolves fine but the Ting Arc Monitor is currently SOLD OUT
          on the live store — this will block both the Fire Protection Kit and
          Complete Bundle at checkout until it's restocked in Shopify admin. */
-    const HANDLES = {
+    const LIVE_HANDLES = {
       ext: "mindhome-fire-extinguisher",
       ting: "electric-arc-monitor",
       smoke: "mindhome-smoke-alarm",
@@ -1342,6 +1342,19 @@
       presence: "mindhome-presence-detector", // confirmed via live catalog on mindhome.co
       bundle: "mindhome-risk-services-bundle",
     };
+    /* The test store's catalog uses different handles (read from its
+         storefront on 2026-10-16). It has no leak sensor or presence
+         detector yet, so those keep the live handles and fail until a
+         product with that handle is added and published to Netlify Headless. */
+    const HANDLES_BY_STORE = {
+      "test-store-11233.myshopify.com": {
+        ...LIVE_HANDLES,
+        ext: "turgel-fireball", // MindHome Fire Suppression Ball
+        smoke: "mindhome-smoke-and-carbon-monoxide-alarm",
+        bundle: "enhanced", // Risk Management Bundle
+      },
+    };
+    const HANDLES = HANDLES_BY_STORE[SHOPIFY.domain] || LIVE_HANDLES;
 
     const CATALOG = {
       ext: {
