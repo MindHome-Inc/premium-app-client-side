@@ -86,7 +86,20 @@ exports.handler = async (event) => {
       }
     );
 
-    const json = await response.json();
+    const text = await response.text();
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch (e) {
+      throw new Error(
+        `Shopify Admin API returned HTTP ${response.status} with ${text ? "a non-JSON" : "an empty"} body (check SHOPIFY_STORE and SHOPIFY_ADMIN_TOKEN)`,
+      );
+    }
+
+    if (!response.ok) {
+      const detail = typeof json.errors === "string" ? json.errors : JSON.stringify(json.errors || json);
+      throw new Error(`Shopify Admin API HTTP ${response.status}: ${detail}`);
+    }
 
     if (json.errors?.length) {
         console.error("SHOPIFY ERRORS:", json.errors);
