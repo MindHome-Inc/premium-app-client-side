@@ -1,3 +1,69 @@
+// Admin API credentials. Either:
+//   SHOPIFY_ADMIN_TOKEN                        a permanent shpat_ token (legacy custom app), or
+//   SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET  a Dev Dashboard app installed on the store.
+// Dev Dashboard apps use the client credentials grant: we exchange the ID and
+// secret for a token that lasts 24 hours, and cache it while the function is warm.
+// SHOPIFY_STORE is the store's myshopify.com domain, e.g. smartinsure.myshopify.com.
+let cachedToken = null; // { value, expiresAt }
+
+function shopDomain() {
+  const store = (process.env.SHOPIFY_STORE || "")
+    .trim()
+    .replace(/^https?:\/\//, "")
+    .replace(/\/.*$/, "");
+  if (!store) throw new Error("SHOPIFY_STORE is not set");
+  return store;
+}
+
+// Which credential the last Admin API call used, so errors can say so.
+function authPath() {
+  return process.env.SHOPIFY_ADMIN_TOKEN
+    ? "SHOPIFY_ADMIN_TOKEN"
+    : "token from SHOPIFY_CLIENT_ID/SHOPIFY_CLIENT_SECRET";
+}
+
+async function getAdminToken() {
+  if (process.env.SHOPIFY_ADMIN_TOKEN) return process.env.SHOPIFY_ADMIN_TOKEN;
+
+  const clientId = process.env.SHOPIFY_CLIENT_ID;
+  const clientSecret = process.env.SHOPIFY_CLIENT_SECRET;
+  if (!clientId || !clientSecret) {
+    throw new Error(
+      "No Shopify Admin API credentials: set SHOPIFY_CLIENT_ID and SHOPIFY_CLIENT_SECRET (or SHOPIFY_ADMIN_TOKEN)",
+    );
+  }
+
+  // Reuse the cached token until 5 minutes before it expires.
+  if (cachedToken && Date.now() < cachedToken.expiresAt - 5 * 60 * 1000) {
+    return cachedToken.value;
+  }
+
+  const response = await fetch(`https://${shopDomain()}/admin/oauth/access_token`, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+    }),
+  });
+  const text = await response.text();
+  let json = {};
+  try {
+    json = JSON.parse(text);
+  } catch (e) { }
+  if (!response.ok || !json.access_token) {
+    const detail = json.error_description || json.error || json.errors || text || "empty body";
+    throw new Error(`Shopify token request HTTP ${response.status}: ${typeof detail === "string" ? detail : JSON.stringify(detail)}`);
+  }
+
+  cachedToken = {
+    value: json.access_token,
+    expiresAt: Date.now() + (Number(json.expires_in) || 86399) * 1000,
+  };
+  return cachedToken.value;
+}
+
 exports.handler = async (event) => {
   try {
     // const scopeResponse = await fetch(
@@ -71,13 +137,15 @@ exports.handler = async (event) => {
     };
 
     // send the mutation to GraphQL API
+    const adminToken = await getAdminToken();
+
     const response = await fetch(
-      `https://${process.env.SHOPIFY_STORE}/admin/api/2026-07/graphql.json`,
+      `https://${shopDomain()}/admin/api/2026-07/graphql.json`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_TOKEN
+          "X-Shopify-Access-Token": adminToken
         },
         body: JSON.stringify({
           query: mutation,
@@ -92,13 +160,16 @@ exports.handler = async (event) => {
       json = JSON.parse(text);
     } catch (e) {
       throw new Error(
-        `Shopify Admin API returned HTTP ${response.status} with ${text ? "a non-JSON" : "an empty"} body (check SHOPIFY_STORE and SHOPIFY_ADMIN_TOKEN)`,
+        `Shopify Admin API returned HTTP ${response.status} with ${text ? "a non-JSON" : "an empty"} body (check SHOPIFY_STORE and the Shopify credentials)`,
       );
     }
 
     if (!response.ok) {
       const detail = typeof json.errors === "string" ? json.errors : JSON.stringify(json.errors || json);
-      throw new Error(`Shopify Admin API HTTP ${response.status}: ${detail}`);
+      if (response.status === 401) cachedToken = null; // fetch a fresh token next time
+      throw new Error(
+        `Shopify Admin API HTTP ${response.status}: ${detail} (store: ${shopDomain()}, auth: ${authPath()})`,
+      );
     }
 
     if (json.errors?.length) {
