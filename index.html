@@ -1114,7 +1114,8 @@
         <div id="customPicker" style="display: none; margin-top: 8px"></div>
 
         <label class="proinstall" id="proInstallRow" style="display: none">
-          <input type="checkbox" id="proInstall" checked onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
+          <input type="checkbox" id="proInstall" checked
+            onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
           <div>
             Professional install of the water shutoff valve
             <span>Required for the 30% water credit. Your agent confirms the
@@ -1683,8 +1684,17 @@
         line.merchandiseId = await resolveVariant(line._handle);
         delete line._handle;
       }
-      const d = await sfFetch(M_CART, { input });
-      const err = d.cartCreate.userErrors?.[0];
+      let d = await sfFetch(M_CART, { input });
+      let err = d.cartCreate.userErrors?.[0];
+      // Shopify rejects numbers it can't validate (e.g. 555 test numbers).
+      // The phone only prefills checkout, so retry without it rather than
+      // block the order; the customer can enter it on Shopify's page.
+      if (err && input.buyerIdentity.phone && /phone/i.test(err.message + " " + (err.field || []).join("."))) {
+        console.warn("Shopify rejected the phone number; creating the cart without it:", err.message);
+        delete input.buyerIdentity.phone;
+        d = await sfFetch(M_CART, { input });
+        err = d.cartCreate.userErrors?.[0];
+      }
       if (err) throw new Error(err.message);
 
       // Stock problems live in `warnings`, not `userErrors`, as of Shopify

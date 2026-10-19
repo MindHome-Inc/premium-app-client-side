@@ -7,11 +7,11 @@ const rateLimits = new Map();
 function checkRateLimit(ip) {
   const now = Date.now();
   const limit = rateLimits.get(ip);
-  
+
   // Allow 10 requests per minute per IP
   if (limit) {
     const { count, resetTime } = limit;
-    
+
     if (now < resetTime) {
       if (count >= 10) {
         return false; // Rate limit exceeded
@@ -24,7 +24,7 @@ function checkRateLimit(ip) {
   } else {
     rateLimits.set(ip, { count: 1, resetTime: now + 60000 });
   }
-  
+
   return true;
 }
 
@@ -39,9 +39,9 @@ exports.handler = async (event, context) => {
   }
 
   // Get client IP for rate limiting
-  const clientIp = event.headers['x-forwarded-for'] || 
-                   event.headers['client-ip'] || 
-                   'unknown';
+  const clientIp = event.headers['x-forwarded-for'] ||
+    event.headers['client-ip'] ||
+    'unknown';
 
   // Check rate limit
   if (!checkRateLimit(clientIp)) {
@@ -51,8 +51,8 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json',
         'Retry-After': '60'
       },
-      body: JSON.stringify({ 
-        error: 'Too many requests. Please try again in a minute.' 
+      body: JSON.stringify({
+        error: 'Too many requests. Please try again in a minute.'
       })
     };
   }
@@ -60,7 +60,7 @@ exports.handler = async (event, context) => {
   try {
     // Parse request body
     const { address } = JSON.parse(event.body);
-    
+
     // Validate input
     if (!address || typeof address !== 'string') {
       return {
@@ -81,7 +81,7 @@ exports.handler = async (event, context) => {
 
     // Get API key from environment variable (SECURE - never exposed!)
     const apiKey = process.env.GOOGLE_MAPS_API_KEY;
-    
+
     if (!apiKey) {
       console.error('GOOGLE_MAPS_API_KEY environment variable not set');
       return {
@@ -93,13 +93,13 @@ exports.handler = async (event, context) => {
 
     // Call Google Geocoding API
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
-    
+
     const response = await fetch(url);
     const data = await response.json();
-    
+
     // Log usage for monitoring (optional)
     console.log(`Geocoding request from ${clientIp}: ${address.substring(0, 50)}...`);
-    
+
     // Return response to client
     return {
       statusCode: 200,
@@ -116,8 +116,8 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 500,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        error: 'Failed to verify address. Please try again.' 
+      body: JSON.stringify({
+        error: 'Failed to verify address. Please try again.'
       })
     };
   }
