@@ -128,6 +128,7 @@
     .rail .seg {
       flex: 1;
       height: 5px;
+      padding: 0; /* .seg.done would otherwise pick up the confirmation's .done padding */
       border-radius: 99px;
       background: var(--line);
     }
@@ -891,6 +892,287 @@
       }
     }
 
+    /* ---------- Quote stage ---------- */
+    .grid3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 13px;
+    }
+
+    @media (max-width: 560px) {
+      .grid3 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .group {
+      font-weight: 600;
+      color: var(--navy);
+      font-size: 14px;
+      margin: 0 0 10px;
+    }
+
+    .readout {
+      background: var(--grad-soft);
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 10px 13px;
+    }
+
+    .readout b {
+      font-family: "Space Grotesk";
+      display: block;
+      color: var(--navy);
+      font-size: 16px;
+    }
+
+    .readout span {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .endorse {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 11px 13px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 9px;
+      font-size: 13.5px;
+      cursor: pointer;
+      background: #fff;
+    }
+
+    .endorse input {
+      margin-top: 3px;
+    }
+
+    .endorse span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .uwbanner {
+      border-radius: 14px;
+      padding: 15px 17px;
+      margin: 4px 0 18px;
+      border: 1.5px solid;
+      display: flex;
+      gap: 12px;
+    }
+
+    .uwbanner .ic {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .uwbanner h3 {
+      margin: 0 0 3px;
+      font-size: 15.5px;
+    }
+
+    .uwbanner p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .uwbanner ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      font-size: 13px;
+    }
+
+    .uwbanner.accept {
+      background: var(--save-soft);
+      border-color: var(--save);
+      color: #0a6b4b;
+    }
+
+    .uwbanner.refer {
+      background: #fff8ec;
+      border-color: #e7b65c;
+      color: var(--warn);
+    }
+
+    .uwbanner.decline {
+      background: #fdeceb;
+      border-color: #e08a83;
+      color: #a3261c;
+    }
+
+    .qhead {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .qhead .amt {
+      font-family: "Space Grotesk";
+      font-weight: 700;
+      font-size: 38px;
+      color: var(--navy);
+      letter-spacing: -1px;
+    }
+
+    .qhead span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .ws {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .ws td {
+      padding: 9px 12px;
+      border-top: 1px dashed var(--line);
+      vertical-align: top;
+    }
+
+    .ws tr:first-child td {
+      border-top: none;
+    }
+
+    .ws td.k {
+      color: var(--ink);
+    }
+
+    .ws td.k span {
+      display: block;
+      color: var(--muted);
+      font-size: 11.5px;
+    }
+
+    .ws td.f,
+    .ws td.v {
+      text-align: right;
+      white-space: nowrap;
+      font-family: "Space Grotesk";
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ws td.f {
+      color: var(--muted);
+    }
+
+    .ws tr.sub td {
+      background: #f8fafd;
+      font-weight: 600;
+    }
+
+    .ws tr.cr td.v {
+      color: var(--save);
+    }
+
+    .ws tr.total td {
+      background: var(--grad-soft);
+      font-weight: 700;
+      font-size: 14.5px;
+      border-top: 1.5px solid var(--line-2);
+    }
+
+    .wsnote {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin: 9px 2px 0;
+    }
+
+    .wsnote b {
+      color: var(--warn);
+      font-weight: 600;
+    }
+
+    .mh100 {
+      margin-top: 22px;
+      border-radius: 18px;
+      padding: 20px;
+      background: var(--card);
+      border: 1.5px solid var(--purple);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mh100::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--grad);
+    }
+
+    .mh100 h3 {
+      font-family: "Space Grotesk";
+      font-size: 19px;
+      margin: 6px 0 4px;
+      color: var(--navy);
+    }
+
+    .mh100 .math {
+      font-family: "Space Grotesk";
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 10px 0 2px;
+    }
+
+    .mh100 .math s {
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 17px;
+    }
+
+    .mh100 .math b {
+      color: var(--save);
+    }
+
+    .mh100 .crow {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0 10px;
+    }
+
+    .mh100 .cbox {
+      flex: 1;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .mh100 .cbox b {
+      display: block;
+      font-family: "Space Grotesk";
+      font-size: 17px;
+      color: var(--navy);
+    }
+
+    .mh100 .terms {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    @media (max-width: 560px) {
+      .mh100 .crow {
+        flex-direction: column;
+      }
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -924,39 +1206,22 @@
 
   <div class="rail" id="rail"></div>
   <div class="railcap">
-    <span id="capLeft">Protection</span><span id="capRight">Step 1 of 4</span>
+    <span id="capLeft">Property</span><span id="capRight">Stage 1 of 7</span>
   </div>
 
   <div class="wrap">
     <div class="col">
-      <!-- STEP 0 -->
+      <!-- STAGE 1 · PROPERTY -->
       <section class="step show" data-step="0">
-        <div class="eyebrow">Your quote is ready</div>
-        <h1>You qualify for up to 50% off your premium</h1>
+        <div class="eyebrow">Property</div>
+        <h1>Tell us about your home</h1>
         <p class="sub">
-          MindHome devices that actively prevent water and fire losses can
-          lower your home insurance premium. Add them now and your agent
-          applies the credit when your policy binds.
+          These facts rate your policy and decide whether we can offer it.
+          Everything is prefilled where we could find it, so just check it over.
         </p>
-        <div class="panelnote">
-          <span>💡</span>
-          <div>
-            Insurers reward <b>active mitigation</b>, not just alarms. A valve
-            that shuts off a leak, or an extinguisher that puts out a fire, is
-            what unlocks the credit — so the kit is built around devices that
-            act, not just notify.
-          </div>
-        </div>
 
         <div style="margin-bottom: 18px">
-          <div style="
-                font-weight: 600;
-                color: var(--navy);
-                font-size: 14px;
-                margin-bottom: 10px;
-              ">
-            Your name &amp; property
-          </div>
+          <div class="group">Your name &amp; property</div>
           <div class="grid2" style="margin-bottom: 13px">
             <div class="field">
               <label>First name</label><input id="hqFirst" value="Jordan" required oninput="syncHeroAndForm()" />
@@ -975,28 +1240,33 @@
         </div>
 
         <div style="margin-bottom: 18px">
-          <div style="
-                font-weight: 600;
-                color: var(--navy);
-                font-size: 14px;
-                margin-bottom: 10px;
-              ">
-            Your home details
-            <span class="prefill">edit to update your quote</span>
-          </div>
-          <div class="grid2" style="margin-bottom: 13px">
+          <div class="group">The building <span class="prefill">edit to update your quote</span></div>
+          <div class="grid3" style="margin-bottom: 13px">
+            <div class="field">
+              <label>Year built</label><input id="hqYearBuilt" type="number" min="1800" max="2026" value="1998" required
+                oninput="recalcPremium()" />
+            </div>
             <div class="field">
               <label>Square footage</label><input id="hqSqft" type="number" min="200" max="20000" step="10" value="2150"
                 required oninput="onSqftOrConstruction()" />
             </div>
             <div class="field">
-              <label>Year built</label><input id="hqYearBuilt" type="number" min="1800" max="2026" value="1998" required
-                oninput="recalcPremium()" />
+              <label>Stories</label>
+              <select id="hqStories" onchange="recalcPremium()">
+                <option value="1">1</option>
+                <option value="1.5">1.5</option>
+                <option value="2" selected>2</option>
+                <option value="3">3+</option>
+              </select>
             </div>
           </div>
-          <div class="grid2" style="margin-bottom: 13px">
+          <div class="grid3" style="margin-bottom: 13px">
             <div class="field">
-              <label>Construction type</label>
+              <label>Bathrooms</label><input id="hqBaths" type="number" min="1" max="12" step="0.5" value="2.5" required
+                oninput="recalcPremium()" />
+            </div>
+            <div class="field">
+              <label>Walls</label>
               <select id="hqConstruction" required onchange="onSqftOrConstruction()">
                 <option value="frame" selected>Frame</option>
                 <option value="masonry_veneer">Masonry veneer</option>
@@ -1005,7 +1275,46 @@
               </select>
             </div>
             <div class="field">
-              <label>Protection class (PC)</label>
+              <label>Finish quality</label>
+              <select id="hqFinish" onchange="recalcPremium()">
+                <option value="economy">Economy</option>
+                <option value="standard" selected>Standard</option>
+                <option value="custom">Custom</option>
+                <option value="premium">Premium</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid2" style="margin-bottom: 13px">
+            <div class="field">
+              <label>Roof material</label>
+              <select id="hqRoofMaterial" required onchange="recalcPremium()">
+                <option value="asphalt" selected>Asphalt shingle</option>
+                <option value="impact_resistant">Impact-resistant shingle</option>
+                <option value="metal">Metal</option>
+                <option value="tile">Tile</option>
+                <option value="wood_shake">Wood shake</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Roof year</label><input id="hqRoofYear" type="number" min="1900" max="2026" value="2014" required
+                oninput="recalcPremium()" />
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 18px">
+          <div class="group">Fire protection &amp; hazards</div>
+          <div class="grid3" style="margin-bottom: 13px">
+            <div class="field">
+              <label>Hydrant (feet)</label><input id="hqHydrantFt" type="number" min="0" max="50000" step="50" value="400"
+                required oninput="recalcPremium()" />
+            </div>
+            <div class="field">
+              <label>Fire station (miles)</label><input id="hqStationMi" type="number" min="0" max="100" step="0.1"
+                value="1.4" required oninput="recalcPremium()" />
+            </div>
+            <div class="field">
+              <label>Protection class <span class="prefill" id="pcNote"></span></label>
               <select id="hqPC" required onchange="recalcPremium()">
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -1020,42 +1329,162 @@
               </select>
             </div>
           </div>
-          <div class="grid2" style="margin-bottom: 13px">
+          <div class="grid3" style="margin-bottom: 13px">
             <div class="field">
-              <label>Roof year</label><input id="hqRoofYear" type="number" min="1900" max="2026" value="2014" required
-                oninput="recalcPremium()" />
+              <label>Wildfire risk</label>
+              <select id="hqWildfire" onchange="recalcPremium()">
+                <option value="low">Low</option>
+                <option value="moderate" selected>Moderate</option>
+                <option value="high">High</option>
+              </select>
             </div>
             <div class="field">
-              <label>Roof material</label>
-              <select id="hqRoofMaterial" required onchange="recalcPremium()">
-                <option value="asphalt" selected>Asphalt shingle</option>
-                <option value="impact_resistant">Impact-resistant shingle</option>
-                <option value="metal">Metal</option>
-                <option value="tile">Tile</option>
-                <option value="wood_shake">Wood shake</option>
+              <label>Wood stove</label>
+              <select id="hqWoodStove" onchange="recalcPremium()">
+                <option value="no" selected>No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Unfenced pool</label>
+              <select id="hqPool" onchange="recalcPremium()">
+                <option value="no" selected>No</option>
+                <option value="yes">Yes</option>
               </select>
             </div>
           </div>
-          <div class="field">
-            <label>Dwelling coverage (Coverage A)
-              <span class="prefill" id="covANote">estimated from square footage</span></label>
-            <input id="hqCovA" type="number" min="10000" max="10000000" step="1000" value="613000" required
-              oninput="onCovAInput()" />
+        </div>
+
+        <div style="margin-bottom: 18px">
+          <div class="group">Occupancy &amp; history</div>
+          <div class="grid2">
+            <div class="field">
+              <label>How is the home used?</label>
+              <select id="hqOccupancy" onchange="recalcPremium()">
+                <option value="primary" selected>Owner-occupied, primary home</option>
+                <option value="secondary">Secondary / seasonal home</option>
+                <option value="rental">Rented to tenants</option>
+                <option value="vacant">Vacant</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Losses in the last 5 years</label><input id="hqLosses" type="number" min="0" max="20" step="1"
+                value="0" required oninput="recalcPremium()" />
+            </div>
           </div>
         </div>
 
         <div class="nav">
           <button class="btn primary" onclick="if (validateRequiredIn(0)) go(1);">
-            See my protection options →
+            Continue to coverage →
           </button>
-          <button class="skip" onclick="if (validateRequiredIn(0)) go(4, true);">
+        </div>
+      </section>
+
+      <!-- STAGE 2 · COVERAGE -->
+      <section class="step" data-step="1">
+        <div class="eyebrow">Coverage</div>
+        <h1>Choose your coverage</h1>
+        <p class="sub">
+          Dwelling coverage starts from your rebuild estimate. Change anything
+          and the quote updates.
+        </p>
+
+        <div style="margin-bottom: 18px">
+          <div class="field" style="margin-bottom: 13px">
+            <label>Dwelling (Coverage A)
+              <span class="prefill" id="covANote">from your rebuild estimate</span></label>
+            <input id="hqCovA" type="number" min="10000" max="10000000" step="1000" value="613000" required
+              oninput="onCovAInput()" />
+          </div>
+          <div class="grid3">
+            <div class="readout"><b class="num" id="covB">$61,300</b><span>Other structures (B) · 10%</span></div>
+            <div class="readout"><b class="num" id="covC">$306,500</b><span>Personal property (C) · 50%</span></div>
+            <div class="readout"><b class="num" id="covD">$122,600</b><span>Loss of use (D) · 20%</span></div>
+          </div>
+        </div>
+
+        <div class="grid2" style="margin-bottom: 13px">
+          <div class="field">
+            <label>Personal liability</label>
+            <select id="hqLiability" onchange="recalcPremium()">
+              <option value="100000">$100,000</option>
+              <option value="300000" selected>$300,000</option>
+              <option value="500000">$500,000</option>
+            </select>
+          </div>
+          <div class="readout"><b class="num">$5,000</b><span>Medical payments to others</span></div>
+        </div>
+        <div class="grid2" style="margin-bottom: 18px">
+          <div class="field">
+            <label>All-other-perils deductible</label>
+            <select id="hqAopDed" onchange="recalcPremium()">
+              <option value="500">$500</option>
+              <option value="1000" selected>$1,000</option>
+              <option value="2500">$2,500</option>
+              <option value="5000">$5,000</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Wind/hail deductible <span class="prefill" id="whNote"></span></label>
+            <select id="hqWhDed" onchange="recalcPremium()">
+              <option value="1" selected>1% of Coverage A</option>
+              <option value="2">2% of Coverage A</option>
+              <option value="5">5% of Coverage A</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="group">Endorsements</div>
+        <label class="endorse"><input type="checkbox" class="endo" value="HO 04 20" onchange="recalcPremium()" />
+          <div>HO 04 20 · Extra dwelling coverage<span>Specified additional amount of insurance for Coverage A</span></div>
+        </label>
+        <label class="endorse"><input type="checkbox" class="endo" value="HO 04 95" onchange="recalcPremium()" />
+          <div>HO 04 95 · Water back-up<span>Water back-up and sump discharge or overflow</span></div>
+        </label>
+        <label class="endorse"><input type="checkbox" class="endo" value="HO 04 77" onchange="recalcPremium()" />
+          <div>HO 04 77 · Ordinance or law<span>Increased amount for code upgrades after a loss</span></div>
+        </label>
+        <label class="endorse"><input type="checkbox" class="endo" value="HO 04 93" onchange="recalcPremium()" />
+          <div>HO 04 93 · Roof at actual cash value<span>Wind or hail damage to the roof surface is paid at ACV.
+              Lowers your premium.</span></div>
+        </label>
+
+        <div class="nav">
+          <button class="btn ghost" onclick="go(0)">← Back</button>
+          <button class="btn primary" onclick="if (validateRequiredIn(1)) go(2);">
+            See my quote →
+          </button>
+        </div>
+      </section>
+
+      <!-- STAGE 3 · QUOTE -->
+      <section class="step" data-step="2">
+        <div class="eyebrow">Your quote</div>
+        <h1>Here's your premium, line by line</h1>
+        <div class="uwbanner" id="uwBanner"></div>
+        <div class="qhead">
+          <span class="amt num" id="qPremium">$3,193</span><span id="qPremiumSub">per year</span>
+        </div>
+        <table class="ws" id="worksheet"></table>
+        <div class="wsnote" id="wsNote"></div>
+
+        <!-- MH-100 offer: the insertion point that used to hold the "save 50%" teaser -->
+        <div class="mh100" id="mh100"></div>
+
+        <div class="nav">
+          <button class="btn ghost" onclick="go(1)">← Back</button>
+          <button class="btn primary" id="toProtect" onclick="go(3)">
+            Add protection →
+          </button>
+          <button class="skip" id="skipBtn" onclick="go(7, true)">
             No thanks, just submit my quote
           </button>
         </div>
       </section>
 
-      <!-- STEP 1 -->
-      <section class="step" data-step="1">
+      <!-- STAGE 4 · PROTECT (kit) -->
+      <section class="step" data-step="3">
         <div class="eyebrow">Choose your protection</div>
         <h1>Pick a kit — watch your savings update</h1>
         <p class="sub">
@@ -1114,8 +1543,7 @@
         <div id="customPicker" style="display: none; margin-top: 8px"></div>
 
         <label class="proinstall" id="proInstallRow" style="display: none">
-          <input type="checkbox" id="proInstall" checked
-            onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
+          <input type="checkbox" id="proInstall" checked onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
           <div>
             Professional install of the water shutoff valve
             <span>Required for the 30% water credit. Your agent confirms the
@@ -1124,15 +1552,15 @@
         </label>
 
         <div class="nav">
-          <button class="btn ghost" onclick="go(0)">← Back</button>
-          <button class="btn primary" id="toReview" onclick="go(2)" disabled>
+          <button class="btn ghost" onclick="go(2)">← Back to quote</button>
+          <button class="btn primary" id="toReview" onclick="go(4)" disabled>
             Continue →
           </button>
         </div>
       </section>
 
-      <!-- STEP 2 -->
-      <section class="step" data-step="2">
+      <!-- STAGE 4 · PROTECT (review & payment) -->
+      <section class="step" data-step="4">
         <div class="eyebrow">Review &amp; payment</div>
         <h1>Your protection plan</h1>
         <p class="sub">
@@ -1157,16 +1585,16 @@
           </div>
         </div>
         <div class="nav">
-          <button class="btn ghost" onclick="go(1)">← Back</button>
-          <button class="btn primary" onclick="go(3)">
-            Continue to shipping →
+          <button class="btn ghost" onclick="go(3)">← Back</button>
+          <button class="btn primary" onclick="go(5)">
+            Continue to shipping &amp; install →
           </button>
         </div>
       </section>
 
-      <!-- STEP 3 -->
-      <section class="step" data-step="3">
-        <div class="eyebrow">Where should we ship it</div>
+      <!-- STAGE 5 · INSTALL -->
+      <section class="step" data-step="5">
+        <div class="eyebrow">Shipping &amp; install</div>
         <h1>Confirm your details</h1>
         <p class="sub">
           Pulled from your quote — just check it over. Nothing to retype.
@@ -1179,6 +1607,7 @@
             credit at binding.
           </div>
         </div>
+        <div class="panelnote" id="installNote" style="display: none"></div>
         <div class="grid2" style="margin-bottom: 13px">
           <div class="field">
             <label>First name <span class="prefill">prefilled</span></label><input id="fFirst" required
@@ -1202,9 +1631,23 @@
         </div>
 
         <div class="nav">
-          <button class="btn ghost" onclick="go(2)">← Back</button>
+          <button class="btn ghost" onclick="go(4)">← Back</button>
+          <button class="btn primary" onclick="if (validateRequiredIn(5)) go(6);">
+            Continue to bind →
+          </button>
+        </div>
+      </section>
+
+      <!-- STAGE 6 · BIND -->
+      <section class="step" data-step="6">
+        <div class="eyebrow">Bind</div>
+        <h1 id="bindTitle">Review and bind your policy</h1>
+        <div class="uwbanner" id="bindBanner"></div>
+        <div id="bindSummary"></div>
+        <div class="nav">
+          <button class="btn ghost" onclick="go(5)">← Back</button>
           <button class="btn primary" id="placeBtn" onclick="placeOrder()">
-            Place order &amp; submit quote →
+            Place order &amp; bind →
           </button>
         </div>
         <p style="font-size: 11.5px; color: var(--muted); margin-top: 14px">
@@ -1216,11 +1659,11 @@
         </p>
       </section>
 
-      <!-- STEP 4 -->
-      <section class="step" data-step="4">
+      <!-- STAGE 7 · ISSUED -->
+      <section class="step" data-step="7">
         <div class="done">
           <div class="badge">✓</div>
-          <h1 style="margin-bottom: 4px">You're protected — and saving</h1>
+          <h1 style="margin-bottom: 4px" id="doneTitle">You're protected — and saving</h1>
           <p class="sub" style="margin: 0 auto" id="doneSub">
             Cart created and handed off to checkout. Your quote and protection
             plan are linked for your agent.
@@ -1288,7 +1731,8 @@
       <div class="hint" id="hint"></div>
       <div class="illus" id="illusNote">
         Illustrative rates, not filed factors. Credits are provisional at
-        binding (MH-100) and verified within 60 days.
+        binding (MH-100) and verified by the install visit or devices online
+        within 60 days.
       </div>
     </aside>
   </div>
@@ -1304,6 +1748,7 @@
   <div class="toast" id="toast"></div>
 
   <script src="rating/engine.js"></script>
+  <script src="rating/underwriting.js"></script>
   <script>
     /* ============================================================
          SHOPIFY STOREFRONT CONFIG  —  fill these two, ship it.
@@ -1421,8 +1866,18 @@
         construction: document.getElementById("hqConstruction").value,
         roofYear: num("hqRoofYear"),
         roofMaterial: document.getElementById("hqRoofMaterial").value,
-        protectionClass: num("hqPC"),
+        // A fire station over 8 miles away makes the home PC 10.
+        protectionClass: MHUnderwriting.effectiveProtectionClass(num("hqPC"), num("hqStationMi")),
         coverageA: covAEdited ? num("hqCovA") || null : null, // null → engine estimates
+        coverage: coverageSelection(),
+        // Recorded with the quote for the replacement-cost vendor; not rated yet.
+        property: {
+          stories: num("hqStories"),
+          baths: num("hqBaths"),
+          finishQuality: getVal("hqFinish", "standard"),
+          hydrantFeet: num("hqHydrantFt"),
+          stationMiles: num("hqStationMi"),
+        },
         // Pulled at quote time once vendors are chosen (Daniel's call).
         insuranceScore: null,
         lossHistory: null,
@@ -1450,6 +1905,255 @@
       recalcPremium();
     }
 
+    /* ---------- Coverage stage ---------- */
+    function coverageSelection() {
+      return {
+        liability: parseInt(getVal("hqLiability", "300000"), 10),
+        aopDeductible: parseInt(getVal("hqAopDed", "1000"), 10),
+        windHailDeductiblePct: parseInt(getVal("hqWhDed", "1"), 10),
+        endorsements: [...document.querySelectorAll(".endo:checked")].map((el) => el.value),
+      };
+    }
+
+    /* ---------- Underwriting (rating/underwriting.js) ----------
+         The decision is recomputed with every rating. state.uw holds the
+         latest result; a refer sets state.uw.referral.flag, which turns
+         Bind into "Submit to underwriter" and tags the Shopify cart so
+         the order is held 7 days. */
+    function uwFacts() {
+      const num = (id) => parseFloat(document.getElementById(id).value) || 0;
+      return {
+        occupancy: getVal("hqOccupancy", "primary"),
+        roofMaterial: getVal("hqRoofMaterial", ""),
+        roofYear: num("hqRoofYear"),
+        yearBuilt: num("hqYearBuilt"),
+        losses: num("hqLosses"),
+        protectionClass: num("hqPC"),
+        stationMiles: num("hqStationMi"),
+        wildfire: getVal("hqWildfire", "low"),
+        woodStove: getVal("hqWoodStove", "no") === "yes",
+        unfencedPool: getVal("hqPool", "no") === "yes",
+      };
+    }
+    function computeUw() {
+      if (!RATED) return state.uw;
+      try {
+        state.uw = MHUnderwriting.decide({ ...uwFacts(), coverageA: RATED.coverageA }, RATED.asOf);
+      } catch (e) { }
+      return state.uw;
+    }
+    const isReferral = () => !!(state.uw && state.uw.referral && state.uw.referral.flag);
+    const isDeclined = () => !!(state.uw && state.uw.decision === "decline");
+    function bindLabel() {
+      return isReferral() ? "Submit to underwriter →" : "Place order &amp; bind →";
+    }
+
+    /* ---------- uw.decision → integration log ----------
+         Same pattern as quote.rated: the underwrite function re-rates,
+         decides and logs the event; if it can't be reached the event is
+         built in the browser and marked source: "client". Fires once the
+         customer reaches the Quote stage, again when a fact changes after
+         that, and is forced on bind / submit. */
+    let uwTimer = null;
+    let lastUwKey = null;
+
+    function scheduleUwDecision() {
+      if (!state.quoteSeen) return;
+      clearTimeout(uwTimer);
+      uwTimer = setTimeout(emitUwDecision, 1200);
+    }
+
+    async function emitUwDecision(force) {
+      clearTimeout(uwTimer);
+      const input = ratingInput();
+      const facts = uwFacts();
+      const key = JSON.stringify([state.quoteRef, input, facts]);
+      if (!force && key === lastUwKey) return;
+      lastUwKey = key;
+      let ev;
+      try {
+        const res = await fetch("/.netlify/functions/underwrite", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ quoteRef: state.quoteRef, input, facts }),
+        });
+        ev = (await readFunctionJson(res, "underwrite")).event;
+        ev.source = "server";
+      } catch (e) {
+        const uw = computeUw();
+        if (!uw) return;
+        ev = MHUnderwriting.buildUwDecisionEvent(state.quoteRef, uw);
+        ev.source = "client";
+      }
+      window.MH_INTEGRATION_LOG.push(ev);
+      window.dispatchEvent(new CustomEvent("uw.decision", { detail: ev }));
+      return ev;
+    }
+
+    /* ---------- Quote stage rendering ---------- */
+    const usd = (n, cents) =>
+      "$" + Number(n).toLocaleString("en-US", {
+        minimumFractionDigits: cents ? 2 : 0,
+        maximumFractionDigits: cents ? 2 : 0,
+      });
+    const FACTOR_LABELS = {
+      construction: "Construction (walls)",
+      protectionClass: "Protection class",
+      homeAge: "Age of home",
+      roof: "Roof age × material",
+      insuranceScore: "Insurance score",
+      lossHistory: "Loss history (CLUE)",
+      aopDeductible: "All-other-perils deductible",
+      windHailDeductible: "Wind/hail deductible",
+    };
+    const pretty = (t) => String(t).replace(/_/g, " ");
+
+    function uwBannerHtml(uw, where) {
+      if (!uw) return "";
+      const reasons = uw.reasons.length
+        ? `<ul>${uw.reasons.map((r) => `<li>${r.message}${uw.decision === "decline" && r.outcome === "refer" ? " (would refer)" : ""}</li>`).join("")}</ul>`
+        : "";
+      if (uw.decision === "accept")
+        return `<span class="ic">✅</span><div><h3>Accepted</h3><p>This home meets our underwriting guidelines. You can bind ${where === "bind" ? "now" : "once you've chosen your protection"}.</p></div>`;
+      if (uw.decision === "refer")
+        return `<span class="ic">🔎</span><div><h3>Referred to an underwriter</h3><p>We can quote this home, but an underwriter reviews it before the policy is issued. At bind you'll submit to underwriter, and any device order is held for ${uw.referral.orderHoldDays} days while they review.</p>${reasons}</div>`;
+      return `<span class="ic">⛔</span><div><h3>Declined</h3><p>We can't offer a policy for this home right now.</p>${reasons}</div>`;
+    }
+
+    function renderQuoteStage() {
+      if (!RATED) return;
+      const r = RATED;
+      const uw = state.uw;
+
+      // Coverage stage readouts
+      document.getElementById("covB").textContent = usd(r.limits.B);
+      document.getElementById("covC").textContent = usd(r.limits.C);
+      document.getElementById("covD").textContent = usd(r.limits.D);
+      document.getElementById("whNote").textContent = usd(r.limits.windHailDeductible);
+      const effPc = MHUnderwriting.effectiveProtectionClass(getVal("hqPC", 3), getVal("hqStationMi", 0));
+      document.getElementById("pcNote").textContent =
+        effPc === 10 && +getVal("hqPC", 3) !== 10 ? "PC 10: station over 8 mi" : "";
+
+      // UW banner
+      const banner = document.getElementById("uwBanner");
+      banner.className = "uwbanner " + (uw ? uw.decision : "");
+      banner.innerHTML = uwBannerHtml(uw, "quote");
+
+      // Premium headline
+      document.getElementById("qPremium").textContent = usd(r.annualPremium);
+      document.getElementById("qPremiumSub").textContent = r.credits.pct
+        ? `per year with your ${r.credits.pct}% MH-100 credit (${usd(r.annualPremiumWithoutCredits)} without)`
+        : "per year";
+
+      // Worksheet: base, factors, credits, charges, fee as line items
+      let running = r.basePremium;
+      const rows = [
+        `<tr><td class="k">Coverage A (dwelling)<span>${r.coverageASource === "input" ? "your figure" : "rebuild estimate"}</span></td><td class="f"></td><td class="v">${usd(r.coverageA)}</td></tr>`,
+        `<tr><td class="k">Base premium<span>${usd(r.baseRatePer1kCovA, true)} per $1,000 of Coverage A</span></td><td class="f"></td><td class="v">${usd(r.basePremium, true)}</td></tr>`,
+      ];
+      for (const f of r.factors) {
+        running *= f.factor;
+        const label = f.name === "endorsement" ? f.code : FACTOR_LABELS[f.name] || f.name;
+        const basis = f.name === "endorsement" ? f.basis.replace(f.code + " ", "") : pretty(f.basis);
+        rows.push(`<tr><td class="k">${label}<span>${basis}</span></td><td class="f">× ${f.factor.toFixed(2)}</td><td class="v">${usd(running, true)}</td></tr>`);
+      }
+      rows.push(`<tr class="sub"><td class="k">Premium before credits</td><td class="f">× ${r.factorProduct.toFixed(4)}</td><td class="v">${usd(r.premiumBeforeCredits, true)}</td></tr>`);
+      if (r.credits.applied.length) {
+        for (const c of r.credits.applied)
+          rows.push(`<tr class="cr"><td class="k">MH-100 ${c.name} credit<span>provisional, verify by ${r.credits.verifyBy}</span></td><td class="f">−${c.pct}%</td><td class="v"></td></tr>`);
+        rows.push(`<tr class="cr"><td class="k">MH-100 credits${r.credits.capped ? ` (capped at ${r.credits.capPct}%)` : ""}</td><td class="f">−${r.credits.pct}%</td><td class="v">−${usd(r.credits.amount, true)}</td></tr>`);
+      } else {
+        rows.push(`<tr class="cr"><td class="k">MH-100 mitigation credits<span>none yet. See the offer below</span></td><td class="f">−0%</td><td class="v">$0.00</td></tr>`);
+      }
+      for (const c of r.flatCharges) {
+        const label = c.name === "endorsement" ? c.code : "Personal liability";
+        const basis = c.name === "endorsement" ? c.basis.replace(c.code + " ", "") : c.basis;
+        rows.push(`<tr><td class="k">${label}<span>${basis}</span></td><td class="f"></td><td class="v">${c.amount < 0 ? "−" : "+"}${usd(Math.abs(c.amount), true)}</td></tr>`);
+      }
+      rows.push(`<tr><td class="k">Policy fee<span>added after credits</span></td><td class="f"></td><td class="v">+${usd(r.policyFee, true)}</td></tr>`);
+      rows.push(`<tr class="total"><td class="k">Annual premium</td><td class="f"></td><td class="v">${usd(r.annualPremium)}</td></tr>`);
+      document.getElementById("worksheet").innerHTML = rows.join("");
+      document.getElementById("wsNote").innerHTML =
+        `Insurance score and CLUE are <b>not pulled yet</b> (vendors open, Daniel's call), so both rate at 1.00 and losses are self-reported. ` +
+        `AIF allocation: ${r.aif.entityName} at ${r.aif.feePct}% = ${usd(r.aif.fee, true)}, carved out of the premium, not added (<b>name and % are placeholders</b>, Daniel's call). ` +
+        `All factors are illustrative, not filed.`;
+
+      // MH-100 offer card (replaces the old "save 50%" teaser)
+      const card = document.getElementById("mh100");
+      if (isDeclined()) {
+        card.style.display = "none";
+      } else {
+        card.style.display = "";
+        const cfg = MHRating.RATING_CONFIG.credits;
+        let offer = null;
+        try {
+          offer = MHRating.rate({ ...ratingInput(), devices: { ...PKGS.bundle }, proInstall: true });
+        } catch (e) { }
+        if (offer) {
+          const save = offer.annualPremiumWithoutCredits - offer.annualPremium;
+          const cost = cartCost(PKGS.bundle);
+          const months = save > 0 ? Math.max(1, Math.round((cost / save) * 12)) : null;
+          card.innerHTML = `
+            <div class="eyebrow">MH-100 mitigation credit</div>
+            <h3>Cut your premium by up to ${cfg.combinedCapPct.value}%</h3>
+            <div style="font-size:13px;color:var(--muted)">With the Complete Bundle and a professionally installed valve:</div>
+            <div class="math num"><s>${usd(offer.annualPremiumWithoutCredits)}</s> → <b>${usd(offer.annualPremium)}/yr</b></div>
+            <div style="font-size:13px;color:var(--muted)">Save ${usd(save)} a year. The ${usd(cost, cost % 1)} of devices pays for itself in about ${months} month${months === 1 ? "" : "s"}.</div>
+            <div class="crow">
+              <div class="cbox"><b>${cfg.fire.pct}% fire credit</b>${cfg.fire.requires}</div>
+              <div class="cbox"><b>${cfg.water.pct}% water credit</b>${cfg.water.requires}</div>
+            </div>
+            <ul class="terms">
+              <li>Credits are capped at ${cfg.combinedCapPct.value}% combined and come off before the ${usd(MHRating.RATING_CONFIG.policyFee.value)} policy fee.</li>
+              <li>The credit is provisional at bind (endorsement ${cfg.endorsement}) and verified by the install visit or once your devices are online, within ${cfg.verifyWithinDays} days.</li>
+            </ul>
+            <div class="nav" style="margin-top:16px">
+              <button class="btn primary" onclick="pick('bundle'); go(3);">Add the Complete Bundle →</button>
+              <button class="btn ghost" onclick="go(3)">See other kits</button>
+            </div>`;
+        }
+      }
+      document.getElementById("toProtect").disabled = isDeclined();
+      document.getElementById("skipBtn").style.display = isDeclined() ? "none" : "";
+
+      renderInstallAndBind();
+    }
+
+    function renderInstallAndBind() {
+      const r = RATED;
+      const uw = state.uw;
+      const install = document.getElementById("installNote");
+      const hasValve = (state.cart.shutoff || 0) >= 1;
+      if (r.credits.applied.length) {
+        install.style.display = "";
+        install.innerHTML =
+          `<span>🛠️</span><div>${hasValve && state.proInstall ? "A licensed installer fits your water shutoff valve. " : ""}` +
+          `Your ${r.credits.pct}% MH-100 credit is provisional at bind and verified by ${hasValve && state.proInstall ? "that install visit or " : ""}` +
+          `your devices coming online, by <b>${r.credits.verifyBy}</b>.</div>`;
+      } else install.style.display = "none";
+
+      const bb = document.getElementById("bindBanner");
+      bb.className = "uwbanner " + (uw ? uw.decision : "");
+      bb.innerHTML = uwBannerHtml(uw, "bind");
+      document.getElementById("bindTitle").textContent = isReferral()
+        ? "Submit your application to an underwriter"
+        : "Review and bind your policy";
+      const dev = cartCost(state.cart);
+      const lines = [
+        ["Annual premium", usd(r.annualPremium) + "/yr"],
+        ["MH-100 credit", r.credits.pct ? `${r.credits.pct}% (−${usd(r.annualSavings)}/yr), provisional, verify by ${r.credits.verifyBy}` : "none"],
+        ["Coverage A", usd(r.coverageA)],
+        ["Devices", dev ? usd(dev, dev % 1) + " one-time" : "none"],
+      ];
+      if (isReferral())
+        lines.push(["Device order", `held ${uw.referral.orderHoldDays} days (until ${uw.referral.orderHoldUntil}) for underwriter review`]);
+      document.getElementById("bindSummary").innerHTML = lines
+        .map(([k, v]) => `<div class="lrow"><span class="k">${k}</span><span class="v num">${v}</span></div>`)
+        .join("");
+      const btn = document.getElementById("placeBtn");
+      if (!btn.disabled) btn.innerHTML = bindLabel();
+    }
+
     /* Re-rates from the Step 0 fields and the current cart, updates the
          quote display, then re-renders the ledger. */
     function recalcPremium() {
@@ -1463,6 +2167,7 @@
       if (lPremium) lPremium.textContent = "$" + PREMIUM.toLocaleString();
       render();
       scheduleQuoteRated();
+      scheduleUwDecision();
     }
 
     /* ---------- quote.rated → integration log ----------
@@ -1549,6 +2254,8 @@
       cart: {},
       fin: "once",
       proInstall: true,
+      uw: null, // latest underwriting decision; uw.referral.flag marks a refer
+      quoteSeen: false, // uw.decision starts firing once the Quote stage is shown
       quoteRef: getQuoteRefFromURL(),
       email: "",
     };
@@ -1637,6 +2344,17 @@
           { key: "est_annual_premium", value: "$" + (RATED ? RATED.annualPremium : "") },
           { key: "ship_to", value: getVal("fAddr", "") },
           { key: "source", value: "premium-app-bolton" },
+          { key: "uw_decision", value: state.uw ? state.uw.decision : "" },
+          // A referral holds the order 7 days for underwriter review. The
+          // Storefront API can't hold an order, so a Shopify Flow (or the
+          // fulfillment team) acts on these attributes.
+          ...(isReferral()
+            ? [
+              { key: "uw_referral", value: "true" },
+              { key: "order_hold_until", value: state.uw.referral.orderHoldUntil },
+              { key: "uw_reasons", value: state.uw.reasons.map((x) => x.code).join(",") },
+            ]
+            : []),
         ],
         lines: lineSpec().map(([k, q]) => ({
           _handle: HANDLES[k], // resolved → merchandiseId before send
@@ -1776,7 +2494,8 @@
     }
 
     async function placeOrder() {
-      if (!validateRequiredIn(3)) return;
+      if (!validateRequiredIn(5)) return;
+      if (isDeclined()) return;
 
       const btn = document.getElementById("placeBtn");
 
@@ -1790,7 +2509,7 @@
       btn.disabled = true;
       btn.innerHTML = '<span class="spin"></span> Creating secure checkout…';
 
-      await emitQuoteRated(true);
+      await Promise.all([emitQuoteRated(true), emitUwDecision(true)]);
 
       try {
         const discount = await createDiscount();
@@ -1814,7 +2533,7 @@
         console.error(e);
 
         btn.disabled = false;
-        btn.innerHTML = "Place order &amp; submit quote →";
+        btn.innerHTML = bindLabel();
 
         toast("Checkout error: " + e.message);
       }
@@ -1837,6 +2556,11 @@
         (s, [k, q]) => s + (CATALOG[k]?.price || 0) * q,
         0,
       );
+    }
+    /* What the customer pays for a cart: the bundle price only where the
+         store sells the bundle as one product, else the items. */
+    function cartCost(cart) {
+      return isBundle(cart) && HANDLES.bundle ? 599.99 : deviceCost(cart);
     }
     function isBundle(cart) {
       const b = PKGS.bundle,
@@ -2005,12 +2729,12 @@
       try {
         RATED = MHRating.rate(ratingInput()); // cart changes move the credits
       } catch (e) { }
+      computeUw();
       const u = unlocked(state.cart),
         pct = RATED ? RATED.credits.pct : creditPct(u),
         annualSave = RATED ? RATED.annualSavings : 0,
         net = RATED ? RATED.annualPremium : PREMIUM;
-      let dev = deviceCost(state.cart);
-      if (isBundle(state.cart)) dev = 599.99;
+      const dev = cartCost(state.cart);
       const hasItems = Object.values(state.cart).some((q) => q > 0);
 
       document.getElementById("bigSave").textContent =
@@ -2083,6 +2807,7 @@
       document.getElementById("toReview").disabled = !hasItems;
       document.getElementById("doneSave").textContent =
         `Up to $${annualSave.toLocaleString()}/yr off your homeowners premium`;
+      renderQuoteStage();
     }
 
     /* ---------- package pick ---------- */
@@ -2123,50 +2848,72 @@
         .forEach((o) => o.classList.toggle("sel", o.dataset.fin === f));
     }
 
-    /* ---------- nav ---------- */
-    const CAPS = ["Protection", "Choose kit", "Review", "Shipping", "Done"];
+    /* ---------- nav ----------
+         Screens (data-step) map onto the 7 stages of the flow. Protect
+         has two screens (kit, then review & payment). */
+    const STAGES = ["Property", "Coverage", "Quote", "Protect", "Install", "Bind", "Issued"];
+    const STEP_STAGE = [0, 1, 2, 3, 3, 4, 5, 6];
+    const LAST_STEP = 7;
     function buildRail() {
-      document.getElementById("rail").innerHTML = [0, 1, 2, 3]
-        .map((i) => `<div class="seg" id="seg${i}"></div>`)
+      document.getElementById("rail").innerHTML = STAGES
+        .map((_, i) => `<div class="seg" id="seg${i}"></div>`)
         .join("");
     }
+    /* The savings ledger (and its sticky bar on mobile) runs from Quote
+         through Bind. */
+    const ledgerShown = (s) => s >= 2 && s <= 6;
     function go(s, skipped) {
+      if (isDeclined() && s >= 3) return; // a declined quote stops at Quote
       if (skipped) {
         state.cart = {};
         state.pkg = null;
         render();
-        document.getElementById("doneSub").textContent =
-          `Quote ref ${state.quoteRef} submitted. A licensed agent will be in touch to finalize your policy.`;
+        document.getElementById("doneTitle").textContent = isReferral()
+          ? "Submitted to an underwriter"
+          : "Your quote is submitted";
+        document.getElementById("doneSub").textContent = isReferral()
+          ? `Quote ref ${state.quoteRef} is with an underwriter for review. A licensed agent will be in touch.`
+          : `Quote ref ${state.quoteRef} submitted. A licensed agent will be in touch to finalize your policy.`;
         document.getElementById("timeline").style.display = "none";
         emitQuoteRated(true);
-      } else if (s === 4) {
+        emitUwDecision(true);
+      } else if (s === LAST_STEP) {
         document.getElementById("timeline").style.display = "";
       }
-      if (s === 4) {
+      if (s === LAST_STEP) {
         const refDone = document.getElementById("refDone");
         if (refDone) refDone.textContent = state.quoteRef;
+      }
+      if (s === 2 && !state.quoteSeen) {
+        state.quoteSeen = true;
+        emitUwDecision();
       }
       state.step = s;
       document
         .querySelectorAll(".step")
         .forEach((el) => el.classList.toggle("show", +el.dataset.step === s));
-      for (let i = 0; i < 4; i++) {
+      const stage = STEP_STAGE[s];
+      for (let i = 0; i < STAGES.length; i++) {
         const seg = document.getElementById("seg" + i);
-        seg.className = "seg" + (i < s ? " done" : i === s ? " active" : "");
+        seg.className = "seg" + (i < stage ? " done" : i === stage ? " active" : "");
       }
-      const ss = Math.min(s, 4);
-      document.getElementById("capLeft").textContent = CAPS[ss];
+      document.getElementById("capLeft").textContent = STAGES[stage];
       document.getElementById("capRight").textContent =
-        s >= 4 ? "Complete" : "Step " + (s + 1) + " of 4";
-      document.getElementById("ledger").style.display = s >= 4 ? "none" : "";
+        s >= LAST_STEP ? "Complete" : "Stage " + (stage + 1) + " of " + STAGES.length;
+      document.getElementById("ledger").style.display = ledgerShown(s) ? "" : "none";
       document.querySelector(".mbar").style.display =
-        window.innerWidth <= 880 && s >= 1 && s <= 2 ? "flex" : "none";
+        window.innerWidth <= 880 && ledgerShown(s) ? "flex" : "none";
+      const mBtn = document.getElementById("mBtn");
+      mBtn.innerHTML = s === 6 ? bindLabel() : "Continue →";
+      mBtn.disabled = s === 2 && isDeclined();
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     function mobileNext() {
-      if (state.step === 1 && Object.values(state.cart).some((q) => q > 0))
-        go(2);
-      else if (state.step === 2) go(3);
+      if (state.step === 2) go(3);
+      else if (state.step === 3 && Object.values(state.cart).some((q) => q > 0)) go(4);
+      else if (state.step === 4) go(5);
+      else if (state.step === 5 && validateRequiredIn(5)) go(6);
+      else if (state.step === 6) placeOrder();
     }
 
     let toastT;
@@ -2188,7 +2935,7 @@
       const btn = document.getElementById("placeBtn");
       if (btn) {
         btn.disabled = false;
-        btn.innerHTML = "Place order &amp; submit quote →";
+        btn.innerHTML = bindLabel();
       }
     });
 

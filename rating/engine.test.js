@@ -99,6 +99,40 @@ test("quote.rated event carries premium, credits and inputs", () => {
   assert.equal(e.inputs.protectionClass, 3);
   assert.equal(e.inputs.insuranceScore.status, "not_pulled");
   assert.equal(e.inputs.lossHistory.status, "not_pulled");
-  assert.equal(e.factors.length, 6);
+  // 6 property factors + the AOP and wind/hail deductible factors
+  assert.equal(e.factors.length, 8);
+  assert.equal(e.limits.A, 613000);
   assert.ok(e.pendingDecisions.length >= 4);
+});
+
+test("default coverage selections leave the Boulder sample unchanged", () => {
+  const r = R.rate({
+    ...BOULDER,
+    coverage: { liability: 300000, aopDeductible: 1000, windHailDeductiblePct: 1, endorsements: [] },
+  });
+  assert.equal(r.annualPremium, 3193);
+  assert.deepEqual(
+    { B: r.limits.B, C: r.limits.C, D: r.limits.D, medPay: r.limits.medPay },
+    { B: 61300, C: 306500, D: 122600, medPay: 5000 },
+  );
+});
+
+test("HO 04 93 (roof ACV) lowers the premium; HO 04 20 and HO 04 77 raise it", () => {
+  const base = R.rate(BOULDER).annualPremium;
+  assert.ok(R.rate({ ...BOULDER, coverage: { endorsements: ["HO 04 93"] } }).annualPremium < base);
+  assert.ok(R.rate({ ...BOULDER, coverage: { endorsements: ["HO 04 20"] } }).annualPremium > base);
+  assert.ok(R.rate({ ...BOULDER, coverage: { endorsements: ["HO 04 77"] } }).annualPremium > base);
+});
+
+test("flat charges (liability, HO 04 95) are added after MH-100 credits", () => {
+  const input = { ...BOULDER, devices: COMPLETE_BUNDLE, proInstall: true };
+  const plain = R.rate(input);
+  const r = R.rate({ ...input, coverage: { liability: 500000, endorsements: ["HO 04 95"] } });
+  assert.equal(r.credits.amount, plain.credits.amount);
+  assert.equal(r.annualPremium, plain.annualPremium + 25 + 75);
+});
+
+test("unknown coverage options are rejected", () => {
+  assert.throws(() => R.rate({ ...BOULDER, coverage: { liability: 250000 } }), /liability/);
+  assert.throws(() => R.rate({ ...BOULDER, coverage: { endorsements: ["HO 99 99"] } }), /endorsement/);
 });

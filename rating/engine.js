@@ -133,6 +133,44 @@
       },
     },
 
+    /* Coverage selections from the Coverage stage. Defaults rate at 1.00 /
+       $0, so a quote with no selections matches the plan's sample home.
+       Factor items multiply the property premium (before MH-100 credits);
+       flat charges are added after credits, before the policy fee. */
+    coverage: {
+      /* Coverages B/C/D as a share of Coverage A (HO-3 defaults). */
+      limitsPctOfA: { B: 10, C: 50, D: 20 },
+      medPay: 5000,
+      liability: {
+        illustrative: true,
+        swap: "Filed Coverage E liability charges",
+        default: 300000,
+        flat: { 100000: -15, 300000: 0, 500000: 25 },
+      },
+      aopDeductible: {
+        illustrative: true,
+        swap: "Filed all-other-perils deductible relativities",
+        default: 1000,
+        table: { 500: 1.08, 1000: 1.0, 2500: 0.9, 5000: 0.82 },
+      },
+      windHailDeductiblePct: {
+        illustrative: true,
+        swap: "Filed wind/hail percentage deductible relativities (CO)",
+        default: 1,
+        table: { 1: 1.0, 2: 0.94, 5: 0.85 },
+      },
+      endorsements: {
+        illustrative: true,
+        swap: "Filed endorsement charges",
+        table: {
+          "HO 04 20": { name: "Specified additional amount of insurance for Cov A", factor: 1.04 },
+          "HO 04 95": { name: "Water back-up and sump discharge or overflow", flat: 75 },
+          "HO 04 77": { name: "Ordinance or law, increased amount", factor: 1.02 },
+          "HO 04 93": { name: "Actual cash value for windstorm or hail losses to roof surfacing", factor: 0.88 },
+        },
+      },
+    },
+
     /* Mitigation credits — provisional at bind as endorsement MH-100,
        verified within 60 days. */
     credits: {
@@ -232,6 +270,8 @@
    *   hazardGrades    { wildfire: "B", ... , source } | null
    *   devices         { ext, ting, shutoff, sensor, ... }
    *   proInstall      boolean — valve professionally installed
+   *   coverage        { liability, aopDeductible, windHailDeductiblePct,
+   *                     endorsements: ["HO 04 93", ...] } (optional; defaults)
    *   asOf            ISO date of the quote (defaults to now)
    */
   function rate(input, cfg) {
@@ -288,6 +328,36 @@
       { name: "insuranceScore", basis: scoreFactor.basis, factor: scoreFactor.factor, illustrative: f.insuranceScore.illustrative },
       { name: "lossHistory", basis: lossFactor.basis, factor: lossFactor.factor, illustrative: f.lossHistory.illustrative },
     ];
+
+    /* coverage selections */
+    const cov = cfg.coverage;
+    const sel = input.coverage || {};
+    const liability = Number(sel.liability || cov.liability.default);
+    const aopDed = Number(sel.aopDeductible || cov.aopDeductible.default);
+    const whPct = Number(sel.windHailDeductiblePct || cov.windHailDeductiblePct.default);
+    if (cov.liability.flat[liability] == null) throw new Error(`Unknown liability limit: ${liability}`);
+    if (cov.aopDeductible.table[aopDed] == null) throw new Error(`Unknown AOP deductible: ${aopDed}`);
+    if (cov.windHailDeductiblePct.table[whPct] == null) throw new Error(`Unknown wind/hail deductible: ${whPct}%`);
+    const endorsementCodes = [...new Set(sel.endorsements || [])];
+    for (const code of endorsementCodes)
+      if (!cov.endorsements.table[code]) throw new Error(`Unknown endorsement: ${code}`);
+
+    factors.push(
+      { name: "aopDeductible", basis: `$${aopDed.toLocaleString("en-US")} AOP deductible`, factor: cov.aopDeductible.table[aopDed], illustrative: cov.aopDeductible.illustrative },
+      { name: "windHailDeductible", basis: `${whPct}% wind/hail deductible`, factor: cov.windHailDeductiblePct.table[whPct], illustrative: cov.windHailDeductiblePct.illustrative },
+    );
+    const flatCharges = [];
+    if (cov.liability.flat[liability])
+      flatCharges.push({ name: "liability", basis: `$${liability / 1000}k liability`, amount: cov.liability.flat[liability], illustrative: cov.liability.illustrative });
+    for (const code of endorsementCodes) {
+      const e = cov.endorsements.table[code];
+      if (e.factor != null)
+        factors.push({ name: "endorsement", code, basis: `${code} ${e.name}`, factor: e.factor, illustrative: cov.endorsements.illustrative });
+      if (e.flat != null)
+        flatCharges.push({ name: "endorsement", code, basis: `${code} ${e.name}`, amount: e.flat, illustrative: cov.endorsements.illustrative });
+    }
+    const flatTotal = flatCharges.reduce((s, x) => s + x.amount, 0);
+
     const factorProduct = factors.reduce((p, x) => p * x.factor, 1);
     const premiumBeforeCredits = basePremium * factorProduct;
 
@@ -304,8 +374,8 @@
     const premiumAfterCredits = premiumBeforeCredits - creditAmount;
 
     const policyFee = cfg.policyFee.value;
-    const annualPremium = Math.round(premiumAfterCredits + policyFee);
-    const annualPremiumWithoutCredits = Math.round(premiumBeforeCredits + policyFee);
+    const annualPremium = Math.round(premiumAfterCredits + flatTotal + policyFee);
+    const annualPremiumWithoutCredits = Math.round(premiumBeforeCredits + flatTotal + policyFee);
 
     const aifFee = round2(premiumAfterCredits * (cfg.aif.feePct / 100));
 
@@ -338,7 +408,20 @@
         hints,
       },
       premiumAfterCredits: round2(premiumAfterCredits),
+      flatCharges,
       policyFee,
+      limits: {
+        A: coverageA,
+        B: Math.round((coverageA * cov.limitsPctOfA.B) / 100),
+        C: Math.round((coverageA * cov.limitsPctOfA.C) / 100),
+        D: Math.round((coverageA * cov.limitsPctOfA.D) / 100),
+        liability,
+        medPay: cov.medPay,
+        aopDeductible: aopDed,
+        windHailDeductiblePct: whPct,
+        windHailDeductible: Math.round((coverageA * whPct) / 100),
+        endorsements: endorsementCodes,
+      },
       annualPremium,
       annualPremiumWithoutCredits,
       annualSavings: annualPremiumWithoutCredits - annualPremium,
@@ -365,8 +448,10 @@
         factorProduct: result.factorProduct,
         premiumBeforeCredits: result.premiumBeforeCredits,
         premiumAfterCredits: result.premiumAfterCredits,
+        flatCharges: result.flatCharges,
         policyFee: result.policyFee,
       },
+      limits: result.limits,
       factors: result.factors,
       credits: result.credits,
       aif: result.aif,
@@ -384,6 +469,8 @@
         hazardGrades: input.hazardGrades || { status: "not_available", reason: "HeyCapto has no real-time API" },
         devices: input.devices || {},
         proInstall: !!input.proInstall,
+        coverage: input.coverage || {},
+        property: input.property || {},
       },
       pendingDecisions: pendingDecisions(),
     };
