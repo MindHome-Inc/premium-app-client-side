@@ -4,7 +4,7 @@
      Takes the property facts from the quote form and returns an
      annual premium plus the credit breakdown. Runs in the browser
      (loaded by index.html as window.MHRating) and in Node (the
-     /api/rate Netlify function and the tests require it).
+     rate Netlify function and the tests require it).
 
      ⚠ EVERY NUMBER IN RATING_CONFIG IS ILLUSTRATIVE.
      Nothing here is a filed factor. Each table carries

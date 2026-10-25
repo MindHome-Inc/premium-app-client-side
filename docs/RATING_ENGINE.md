@@ -1,7 +1,7 @@
 # Premium rating engine
 
 The quote form in `index.html` rates the home with `rating/engine.js`. The
-same file runs in the browser (`window.MHRating`), in the `/api/rate` Netlify
+same file runs in the browser (`window.MHRating`), in the `/.netlify/functions/rate` Netlify
 function, and in the tests.
 
 > **Every factor is illustrative.** Nothing in `RATING_CONFIG` is a filed
@@ -45,7 +45,7 @@ The illustrative tables were calibrated to reproduce these plan targets.
 
 ## `quote.rated` event
 
-The page posts the rating inputs to `/api/rate` (debounced, and again when the
+The page posts the rating inputs to `/.netlify/functions/rate` (debounced, and again when the
 quote is submitted). The function re-rates and writes one line to the Netlify
 function log:
 
@@ -87,8 +87,8 @@ site says about the open questions.
 ## Running it
 
 ```
-npm test   # engine + /api/rate function
+npm test   # engine + rate function
 ```
 
-To try the page locally with the function, use `netlify dev`, or any static
-server that routes `/api/rate` to `netlify/functions/rate.js`.
+To try the page locally with the function, use `netlify dev`. Opened any other
+way, the page falls back to rating in the browser (`source: "client"`).

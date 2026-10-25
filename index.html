@@ -2171,7 +2171,7 @@
     }
 
     /* ---------- quote.rated → integration log ----------
-         Posts the inputs to /api/rate, which re-rates server-side and
+         Posts the inputs to /.netlify/functions/rate, which re-rates server-side and
          writes the quote.rated event to the integration log (Netlify
          function logs). Debounced so typing doesn't flood the log, and
          skipped when nothing changed. If the function can't be reached
@@ -2196,7 +2196,7 @@
       lastQuoteRatedKey = key;
       let ev;
       try {
-        const res = await fetch("/api/rate", {
+        const res = await fetch("/.netlify/functions/rate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ quoteRef: state.quoteRef, input }),
