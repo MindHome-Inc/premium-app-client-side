@@ -128,7 +128,8 @@
     .rail .seg {
       flex: 1;
       height: 5px;
-      padding: 0; /* .seg.done would otherwise pick up the confirmation's .done padding */
+      padding: 0;
+      /* .seg.done would otherwise pick up the confirmation's .done padding */
       border-radius: 99px;
       background: var(--line);
     }
@@ -1306,8 +1307,8 @@
           <div class="group">Fire protection &amp; hazards</div>
           <div class="grid3" style="margin-bottom: 13px">
             <div class="field">
-              <label>Hydrant (feet)</label><input id="hqHydrantFt" type="number" min="0" max="50000" step="50" value="400"
-                required oninput="recalcPremium()" />
+              <label>Hydrant (feet)</label><input id="hqHydrantFt" type="number" min="0" max="50000" step="50"
+                value="400" required oninput="recalcPremium()" />
             </div>
             <div class="field">
               <label>Fire station (miles)</label><input id="hqStationMi" type="number" min="0" max="100" step="0.1"
@@ -1437,7 +1438,8 @@
 
         <div class="group">Endorsements</div>
         <label class="endorse"><input type="checkbox" class="endo" value="HO 04 20" onchange="recalcPremium()" />
-          <div>HO 04 20 · Extra dwelling coverage<span>Specified additional amount of insurance for Coverage A</span></div>
+          <div>HO 04 20 · Extra dwelling coverage<span>Specified additional amount of insurance for Coverage A</span>
+          </div>
         </label>
         <label class="endorse"><input type="checkbox" class="endo" value="HO 04 95" onchange="recalcPremium()" />
           <div>HO 04 95 · Water back-up<span>Water back-up and sump discharge or overflow</span></div>
@@ -1543,7 +1545,8 @@
         <div id="customPicker" style="display: none; margin-top: 8px"></div>
 
         <label class="proinstall" id="proInstallRow" style="display: none">
-          <input type="checkbox" id="proInstall" checked onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
+          <input type="checkbox" id="proInstall" checked
+            onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
           <div>
             Professional install of the water shutoff valve
             <span>Required for the 30% water credit. Your agent confirms the
