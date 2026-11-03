@@ -51,10 +51,8 @@ until the CLUE vendor is chosen.
 
 A declined quote shows the worksheet and banner but can't continue to Protect.
 A refer sets `state.uw.referral.flag`. Bind then reads "Submit to
-underwriter", and the Shopify cart carries `uw_decision`, `uw_referral`,
-`order_hold_until` (7 days out) and `uw_reasons`. The Storefront API can't
-hold an order itself, so a Shopify Flow or the fulfillment team has to act on
-those attributes.
+underwriter": no premium capture, no `policy.bound`, and the device order and
+install window are held 7 days. See [BIND_STAGE.md](BIND_STAGE.md).
 
 ## `uw.decision` event
 

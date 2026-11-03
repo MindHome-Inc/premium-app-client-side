@@ -71,7 +71,7 @@ These are placeholders, not guesses:
 | Is the 50% combined credit cap supportable in a CO filing (loss-cost support for MH-100)? | `credits.combinedCapPct` | 50 |
 | Credit-based insurance score vendor | `factors.insuranceScore` | not pulled, factor 1.00 |
 | CLUE vendor | `factors.lossHistory` | not pulled, factor 1.00 |
-| AIF entity name and fee % | `aif` | `[AIF ENTITY TBD]`, 20% |
+| AIF entity name and fee % | `aif` | "MindHome Reciprocal Management, LLC" (placeholder), 20% |
 
 Once vendors are picked, the quote flow fills `insuranceScore` and
 `lossHistory` in `ratingInput()` (index.html) and the filed tiers go in the

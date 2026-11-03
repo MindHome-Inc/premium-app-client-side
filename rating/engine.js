@@ -207,7 +207,7 @@
     aif: {
       illustrative: true,
       pendingDecision: "AIF entity name and AIF fee % (Daniel)",
-      entityName: "[AIF ENTITY TBD]",
+      entityName: "MindHome Reciprocal Management, LLC",
       feePct: 20,
     },
 

@@ -128,8 +128,7 @@
     .rail .seg {
       flex: 1;
       height: 5px;
-      padding: 0;
-      /* .seg.done would otherwise pick up the confirmation's .done padding */
+      padding: 0; /* .seg.done would otherwise pick up the confirmation's .done padding */
       border-radius: 99px;
       background: var(--line);
     }
@@ -269,13 +268,10 @@
       color: var(--muted);
     }
 
-    /* Sits on the card's top edge so it never covers the title or the
-       selection circle. */
     .opt .tag {
       position: absolute;
-      top: -11px;
+      top: 15px;
       right: 17px;
-      white-space: nowrap;
       font-size: 11.5px;
       font-weight: 600;
       color: var(--save);
@@ -1196,6 +1192,174 @@
     .toast.show {
       transform: translateX(-50%) translateY(0);
     }
+
+    /* bind form */
+    .bsec {
+      margin: 0 0 22px;
+    }
+
+    .bhelp {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+
+    .bhelp a {
+      color: var(--purple);
+    }
+
+    .ferr {
+      display: none;
+      font-size: 12px;
+      color: #a3261c;
+      margin-top: 5px;
+    }
+
+    .ferr.show {
+      display: block;
+    }
+
+    .field input.bad,
+    .field select.bad {
+      border-color: #d0574c;
+      background: #fffafa;
+    }
+
+    .seg2 {
+      display: flex;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .seg2 label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid var(--line);
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 14px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .seg2 label:has(input:checked) {
+      border-color: var(--purple);
+      background: var(--grad-soft);
+    }
+
+    .plans {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .plan {
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 13px;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .plan:has(input:checked) {
+      border-color: var(--purple);
+      background: var(--grad-soft);
+    }
+
+    .plan:has(input:disabled) {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .plan input {
+      margin-top: 3px;
+    }
+
+    .plan b {
+      display: block;
+      color: var(--navy);
+      font-size: 14px;
+    }
+
+    .plan span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .payfields {
+      display: grid;
+      gap: 11px;
+      margin-top: 12px;
+    }
+
+    .grid3b {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 11px;
+    }
+
+    .due {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 9px;
+    }
+
+    .due .charge {
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      background: #fff;
+    }
+
+    .due .charge .amt {
+      font-family: "Space Grotesk";
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .due .charge .who {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .due .charge .note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .ack {
+      cursor: pointer;
+    }
+
+    .ack .ph {
+      color: var(--warn);
+    }
+
+    input.sig {
+      font-family: "Brush Script MT", "Segoe Script", cursive;
+      font-size: 20px !important;
+    }
+
+    .bleft {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 10px 0 0;
+    }
+
+    @media (max-width: 560px) {
+      .plans,
+      .due,
+      .grid3b {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 
@@ -1310,8 +1474,8 @@
           <div class="group">Fire protection &amp; hazards</div>
           <div class="grid3" style="margin-bottom: 13px">
             <div class="field">
-              <label>Hydrant (feet)</label><input id="hqHydrantFt" type="number" min="0" max="50000" step="50"
-                value="400" required oninput="recalcPremium()" />
+              <label>Hydrant (feet)</label><input id="hqHydrantFt" type="number" min="0" max="50000" step="50" value="400"
+                required oninput="recalcPremium()" />
             </div>
             <div class="field">
               <label>Fire station (miles)</label><input id="hqStationMi" type="number" min="0" max="100" step="0.1"
@@ -1441,8 +1605,7 @@
 
         <div class="group">Endorsements</div>
         <label class="endorse"><input type="checkbox" class="endo" value="HO 04 20" onchange="recalcPremium()" />
-          <div>HO 04 20 · Extra dwelling coverage<span>Specified additional amount of insurance for Coverage A</span>
-          </div>
+          <div>HO 04 20 · Extra dwelling coverage<span>Specified additional amount of insurance for Coverage A</span></div>
         </label>
         <label class="endorse"><input type="checkbox" class="endo" value="HO 04 95" onchange="recalcPremium()" />
           <div>HO 04 95 · Water back-up<span>Water back-up and sump discharge or overflow</span></div>
@@ -1548,8 +1711,7 @@
         <div id="customPicker" style="display: none; margin-top: 8px"></div>
 
         <label class="proinstall" id="proInstallRow" style="display: none">
-          <input type="checkbox" id="proInstall" checked
-            onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
+          <input type="checkbox" id="proInstall" checked onchange="state.proInstall = this.checked; render(); scheduleQuoteRated();" />
           <div>
             Professional install of the water shutoff valve
             <span>Required for the 30% water credit. Your agent confirms the
@@ -1636,6 +1798,12 @@
           </div>
         </div>
 
+        <div class="field" id="installWinRow" style="display: none; margin-bottom: 13px">
+          <label for="fInstallWin">Preferred install window</label>
+          <select id="fInstallWin"></select>
+          <p class="bhelp">We hold this window for the valve install. Scheduling is confirmed by the installer.</p>
+        </div>
+
         <div class="nav">
           <button class="btn ghost" onclick="go(4)">← Back</button>
           <button class="btn primary" onclick="if (validateRequiredIn(5)) go(6);">
@@ -1649,55 +1817,174 @@
         <div class="eyebrow">Bind</div>
         <h1 id="bindTitle">Review and bind your policy</h1>
         <div class="uwbanner" id="bindBanner"></div>
-        <div id="bindSummary"></div>
+        <div id="bindSummary" style="margin-bottom: 22px"></div>
+
+        <form id="bindForm" novalidate autocomplete="on" oninput="onBindInput(event)" onchange="onBindInput(event)"
+          onfocusout="onBindBlur(event)" onsubmit="event.preventDefault()">
+          <div class="bsec">
+            <div class="group">Named insured</div>
+            <div class="readout">
+              <b id="bInsured">Jordan Maxwell</b>
+              <span id="bInsuredAddr">as on your quote</span>
+            </div>
+            <p class="bhelp">As on your quote. To change it, <a href="#" onclick="go(0); return false;">edit your property details</a>.</p>
+          </div>
+
+          <div class="bsec">
+            <div class="field">
+              <label for="bEffDate">Effective date</label>
+              <input id="bEffDate" name="effectiveDate" type="date" />
+              <div class="ferr" data-err="effectiveDate"></div>
+            </div>
+            <p class="bhelp" id="bEffHelp">Today through 60 days from today.</p>
+          </div>
+
+          <div class="bsec">
+            <div class="group">Is there a mortgage on this home?</div>
+            <div class="seg2">
+              <label><input type="radio" name="mortHas" value="no" /> No</label>
+              <label><input type="radio" name="mortHas" value="yes" /> Yes</label>
+            </div>
+            <div class="ferr" data-err="mortgagee.has"></div>
+            <div class="grid2" id="bMortFields" style="display: none; margin-top: 11px">
+              <div class="field">
+                <label for="bMortName">Mortgagee name</label>
+                <input id="bMortName" name="mortgagee.name" autocomplete="off" placeholder="e.g. First Western Bank" />
+                <div class="ferr" data-err="mortgagee.name"></div>
+              </div>
+              <div class="field">
+                <label for="bMortLoan">Loan number</label>
+                <input id="bMortLoan" name="mortgagee.loanNumber" autocomplete="off" />
+                <div class="ferr" data-err="mortgagee.loanNumber"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bsec">
+            <div class="group">Premium plan</div>
+            <div class="plans" id="bPlans"></div>
+            <div class="ferr" data-err="plan"></div>
+          </div>
+
+          <div class="bsec" id="bPaySec">
+            <div class="group">Payment</div>
+            <div class="seg2">
+              <label><input type="radio" name="payMethod" value="card" checked /> Card</label>
+              <label><input type="radio" name="payMethod" value="ach" /> Bank account (ACH)</label>
+            </div>
+            <div class="ferr" data-err="payment.method"></div>
+            <div id="bCard" class="payfields">
+              <div class="field">
+                <label for="bCardName">Name on card</label>
+                <input id="bCardName" name="payment.card.name" autocomplete="cc-name" />
+                <div class="ferr" data-err="payment.card.name"></div>
+              </div>
+              <div class="field">
+                <label for="bCardNum">Card number</label>
+                <input id="bCardNum" name="payment.card.number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 1234 1234 1234" />
+                <div class="ferr" data-err="payment.card.number"></div>
+              </div>
+              <div class="grid3b">
+                <div class="field">
+                  <label for="bCardExp">Expiry</label>
+                  <input id="bCardExp" name="payment.card.exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM/YY" />
+                  <div class="ferr" data-err="payment.card.exp"></div>
+                </div>
+                <div class="field">
+                  <label for="bCardCvc">Security code</label>
+                  <input id="bCardCvc" name="payment.card.cvc" inputmode="numeric" autocomplete="cc-csc" placeholder="CVC" />
+                  <div class="ferr" data-err="payment.card.cvc"></div>
+                </div>
+                <div class="field">
+                  <label for="bCardZip">Billing ZIP</label>
+                  <input id="bCardZip" name="payment.card.zip" inputmode="numeric" autocomplete="postal-code" />
+                  <div class="ferr" data-err="payment.card.zip"></div>
+                </div>
+              </div>
+            </div>
+            <div id="bAch" class="payfields" style="display: none">
+              <div class="field">
+                <label for="bAchName">Account holder</label>
+                <input id="bAchName" name="payment.ach.name" autocomplete="name" />
+                <div class="ferr" data-err="payment.ach.name"></div>
+              </div>
+              <div class="grid2">
+                <div class="field">
+                  <label for="bAchRouting">Routing number</label>
+                  <input id="bAchRouting" name="payment.ach.routing" inputmode="numeric" autocomplete="off" />
+                  <div class="ferr" data-err="payment.ach.routing"></div>
+                </div>
+                <div class="field">
+                  <label for="bAchType">Account type</label>
+                  <select id="bAchType" name="payment.ach.type">
+                    <option value="">Choose…</option>
+                    <option value="checking">Checking</option>
+                    <option value="savings">Savings</option>
+                  </select>
+                  <div class="ferr" data-err="payment.ach.type"></div>
+                </div>
+              </div>
+              <div class="grid2">
+                <div class="field">
+                  <label for="bAchAcct">Account number</label>
+                  <input id="bAchAcct" name="payment.ach.account" inputmode="numeric" autocomplete="off" />
+                  <div class="ferr" data-err="payment.ach.account"></div>
+                </div>
+                <div class="field">
+                  <label for="bAchAcct2">Confirm account number</label>
+                  <input id="bAchAcct2" name="payment.ach.accountConfirm" inputmode="numeric" autocomplete="off" />
+                  <div class="ferr" data-err="payment.ach.accountConfirm"></div>
+                </div>
+              </div>
+              <label class="endorse ack">
+                <input type="checkbox" name="payment.ach.authorized" />
+                <div>I authorize the charges shown under "Due today", and any later premium installments, to be debited from this account.</div>
+              </label>
+              <div class="ferr" data-err="payment.ach.authorized"></div>
+            </div>
+            <p class="bhelp">Sandbox: no money moves until the premium processor is chosen. Card and bank numbers stay in this page; only a token and the last 4 digits are sent.</p>
+          </div>
+
+          <div class="bsec">
+            <div class="group">Due today</div>
+            <div class="due" id="bDue"></div>
+            <p class="bhelp">Two separate charges. Your premium goes to the exchange's premium trust account; devices and install are sold by MindHome Inc.</p>
+          </div>
+
+          <div class="bsec">
+            <div class="group">Acknowledgements</div>
+            <div id="bAcks"></div>
+          </div>
+
+          <div class="bsec">
+            <div class="field">
+              <label for="bSig">Signature: type your full name</label>
+              <input id="bSig" name="signature" class="sig" autocomplete="off" />
+              <div class="ferr" data-err="signature"></div>
+            </div>
+            <p class="bhelp" id="bSigHelp">Typing your name signs the application and agreements above.</p>
+          </div>
+        </form>
+
         <div class="nav">
           <button class="btn ghost" onclick="go(5)">← Back</button>
-          <button class="btn primary" id="placeBtn" onclick="placeOrder()">
-            Place order &amp; bind →
+          <button class="btn primary" id="placeBtn" onclick="placeOrder()" disabled>
+            Bind policy →
           </button>
         </div>
-        <p style="font-size: 11.5px; color: var(--muted); margin-top: 14px">
-          Continuing creates a Shopify cart via the Storefront API and
-          redirects to secure checkout with your quote ref and credit
-          attached. PowerPay financing is available at checkout. Premium
-          credit is applied by a licensed agent at binding, subject to
-          underwriting and jurisdiction.
-        </p>
+        <p class="bleft" id="bLeft"></p>
+        <div class="ferr" data-err="payment" style="margin-top: 8px"></div>
       </section>
 
       <!-- STAGE 7 · ISSUED -->
       <section class="step" data-step="7">
         <div class="done">
           <div class="badge">✓</div>
-          <h1 style="margin-bottom: 4px" id="doneTitle">You're protected — and saving</h1>
-          <p class="sub" style="margin: 0 auto" id="doneSub">
-            Cart created and handed off to checkout. Your quote and protection
-            plan are linked for your agent.
-          </p>
-          <div class="timeline" id="timeline">
-            <div class="ti">
-              <span class="d"></span>
-              <div>
-                <b>Devices ship in 2–3 business days</b><br /><span style="color: var(--muted)">To 482 Marigold Ln ·
-                  tracking sent to your email</span>
-              </div>
-            </div>
-            <div class="ti">
-              <span class="d"></span>
-              <div>
-                <b>Agent reviews your application</b><br /><span style="color: var(--muted)">Quote ref
-                  <span id="refDone">HQ-4815</span>
-                  linked to your device order</span>
-              </div>
-            </div>
-            <div class="ti">
-              <span class="d"></span>
-              <div>
-                <b>Premium credit applied at binding</b><br /><span style="color: var(--muted)" id="doneSave">Up to
-                  $920/yr off your homeowners premium</span>
-              </div>
-            </div>
-          </div>
+          <h1 style="margin-bottom: 4px" id="doneTitle">Your policy is bound</h1>
+          <p class="sub" style="margin: 0 auto" id="doneSub"></p>
+          <!-- The full Issued screen (policy number, dec summary, timeline)
+               is the Issue policy ticket. This shows what Bind produced. -->
+          <div class="timeline" id="timeline"></div>
           <button class="btn primary" style="margin-top: 24px" onclick="go(0)">
             ↺ Run the demo again
           </button>
@@ -1755,6 +2042,7 @@
 
   <script src="rating/engine.js"></script>
   <script src="rating/underwriting.js"></script>
+  <script src="bind/bind.js"></script>
   <script>
     /* ============================================================
          SHOPIFY STOREFRONT CONFIG  —  fill these two, ship it.
@@ -1951,7 +2239,7 @@
     const isReferral = () => !!(state.uw && state.uw.referral && state.uw.referral.flag);
     const isDeclined = () => !!(state.uw && state.uw.decision === "decline");
     function bindLabel() {
-      return isReferral() ? "Submit to underwriter →" : "Place order &amp; bind →";
+      return isReferral() ? "Submit to underwriter →" : "Bind policy →";
     }
 
     /* ---------- uw.decision → integration log ----------
@@ -2147,17 +2435,16 @@
       const dev = cartCost(state.cart);
       const lines = [
         ["Annual premium", usd(r.annualPremium) + "/yr"],
-        ["MH-100 credit", r.credits.pct ? `${r.credits.pct}% (−${usd(r.annualSavings)}/yr), provisional, verify by ${r.credits.verifyBy}` : "none"],
+        ["MH-100 credit", r.credits.pct ? `${r.credits.pct}% (−${usd(r.annualSavings)}/yr), provisional, verify within ${MHRating.RATING_CONFIG.credits.verifyWithinDays} days of the effective date` : "none"],
         ["Coverage A", usd(r.coverageA)],
         ["Devices", dev ? usd(dev, dev % 1) + " one-time" : "none"],
       ];
       if (isReferral())
-        lines.push(["Device order", `held ${uw.referral.orderHoldDays} days (until ${uw.referral.orderHoldUntil}) for underwriter review`]);
+        lines.push(["Device order", `held ${uw.referral.orderHoldDays} days from submission (until ${MHBind.addDays(MHBind.todayIn(), uw.referral.orderHoldDays)}) for underwriter review`]);
       document.getElementById("bindSummary").innerHTML = lines
         .map(([k, v]) => `<div class="lrow"><span class="k">${k}</span><span class="v num">${v}</span></div>`)
         .join("");
-      const btn = document.getElementById("placeBtn");
-      if (!btn.disabled) btn.innerHTML = bindLabel();
+      if (state.step === 6) renderBindForm();
     }
 
     /* Re-rates from the Step 0 fields and the current cart, updates the
@@ -2499,50 +2786,321 @@
       );
     }
 
-    async function placeOrder() {
-      if (!validateRequiredIn(5)) return;
-      if (isDeclined()) return;
+    /* ---------- Bind (bind/bind.js) ----------
+         Bind consumes the Quote as shown: bindSnapshot() freezes RATED,
+         the underwriting decision and the device selection, and
+         MHBind / the bind function never re-rate or re-decide. Field
+         errors show next to each field once it has been touched, and
+         the Bind button enables only when nothing is left.
+         Live Shopify calls are out of scope until the port into
+         premium-app.netlify.app; the cart helpers above stay for that. */
+    const bindUi = { touched: new Set(), showAll: false, serverErrors: {}, submitting: false, ready: false };
 
+    function bindSnapshot() {
+      return MHBind.snapshotFromQuote(RATED, state.uw, {
+        quoteRef: state.quoteRef,
+        namedInsured: { first: getVal("hqFirst", "").trim(), last: getVal("hqLast", "").trim() },
+        propertyAddress: getVal("hqAddrSearch", "").trim(),
+        email: getVal("fEmail", ""),
+        phone: getVal("fPhone", ""),
+        devices: state.cart,
+        proInstall: state.proInstall,
+        installWindow: installWindowHeld() ? installWindowLabel() : null,
+        deviceCharge: { amount: cartCost(state.cart), financing: state.fin === "mo" ? "powerpay" : "once" },
+      });
+    }
+    const installWindowLabel = () => {
+      const sel = document.getElementById("fInstallWin");
+      return sel && sel.selectedIndex >= 0 ? sel.options[sel.selectedIndex].text : null;
+    };
+    const installWindowHeld = () => (state.cart.shutoff || 0) >= 1 && !!state.proInstall;
+
+    /* Install windows offered at Shipping & install: the next four weeks,
+         starting the week after next, mornings or afternoons. */
+    function fillInstallWindows() {
+      const sel = document.getElementById("fInstallWin");
+      if (!sel || sel.options.length) return;
+      const today = MHBind.todayIn();
+      const d = new Date(today + "T00:00:00Z");
+      const toMonday = (8 - d.getUTCDay()) % 7 || 7;
+      const fmt = (iso) => new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+      for (let w = 0; w < 4; w++) {
+        const monday = MHBind.addDays(today, toMonday + 7 + w * 7);
+        for (const part of ["mornings", "afternoons"])
+          sel.add(new Option(`Week of ${fmt(monday)} · ${part}`, `${monday} ${part}`));
+      }
+    }
+
+    function readBindApp() {
+      const f = document.getElementById("bindForm");
+      const v = (n) => (f.elements[n] ? f.elements[n].value : "");
+      const checked = (n) => (f.querySelector(`input[name="${n}"]:checked`) || {}).value;
+      const mort = checked("mortHas");
+      const method = checked("payMethod");
+      const acks = {};
+      f.querySelectorAll('input[name^="ack."]').forEach((el) => (acks[el.name.slice(4)] = el.checked));
+      return {
+        effectiveDate: v("effectiveDate"),
+        mortgagee: { has: mort ? mort === "yes" : null, name: v("mortgagee.name"), loanNumber: v("mortgagee.loanNumber") },
+        plan: checked("plan"),
+        payment:
+          method === "ach"
+            ? {
+              method,
+              ach: {
+                name: v("payment.ach.name"),
+                routing: v("payment.ach.routing"),
+                account: v("payment.ach.account"),
+                accountConfirm: v("payment.ach.accountConfirm"),
+                type: v("payment.ach.type"),
+                authorized: f.elements["payment.ach.authorized"].checked,
+              },
+            }
+            : {
+              method,
+              card: {
+                name: v("payment.card.name"),
+                number: v("payment.card.number"),
+                exp: v("payment.card.exp"),
+                cvc: v("payment.card.cvc"),
+                zip: v("payment.card.zip"),
+              },
+            },
+        acks,
+        signature: v("signature"),
+      };
+    }
+
+    /* First visit to Bind: date window, defaults, acknowledgements. */
+    function initBindForm() {
+      const today = MHBind.todayIn();
+      const win = MHBind.effectiveWindow(today);
+      const eff = document.getElementById("bEffDate");
+      eff.min = win.min;
+      eff.max = win.max;
+      document.getElementById("bEffHelp").textContent =
+        `Today (${fmtDate(win.min)}) through ${fmtDate(win.max)}, 60 days out.`;
+      if (bindUi.ready) return;
+      bindUi.ready = true;
+      eff.value = today;
+      const aif = MHBind.BIND_CONFIG.aif;
+      document.getElementById("bAcks").innerHTML = MHBind.BIND_CONFIG.acknowledgements
+        .map(
+          (a) => `<label class="endorse ack"><input type="checkbox" name="ack.${a.id}" /><div>${a.text}${a.id === "subscriber_aif"
+            ? ` Attorney-in-fact: ${aif.entityName}, fee ${aif.feePct}% of premium. <span class="ph">(Name and fee are placeholders.)</span>`
+            : ""
+            }</div></label><div class="ferr" data-err="acks.${a.id}" style="margin:-4px 0 9px"></div>`,
+        )
+        .join("");
+      const cardName = document.getElementById("bCardName");
+      const achName = document.getElementById("bAchName");
+      const insured = `${getVal("hqFirst", "")} ${getVal("hqLast", "")}`.trim();
+      if (!cardName.value) cardName.value = insured;
+      if (!achName.value) achName.value = insured;
+    }
+    function fmtDate(iso) {
+      return iso
+        ? new Date(iso + "T00:00:00Z").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })
+        : "";
+    }
+
+    function renderBindForm() {
+      if (!RATED || !state.uw) return;
+      const s = bindSnapshot();
+      const app = readBindApp();
+      const today = MHBind.todayIn();
+      const referral = isReferral();
+
+      document.getElementById("bInsured").textContent = `${s.namedInsured.first} ${s.namedInsured.last}`;
+      document.getElementById("bInsuredAddr").textContent = s.propertyAddress || "";
+      document.getElementById("bSigHelp").textContent =
+        `Type "${s.namedInsured.first} ${s.namedInsured.last}" exactly. Typing your name signs the ${referral ? "application you submit to an underwriter" : "application and agreements above"}.`;
+      document.getElementById("bMortFields").style.display = app.mortgagee.has ? "" : "none";
+      document.getElementById("bCard").style.display = app.payment.method === "card" ? "" : "none";
+      document.getElementById("bAch").style.display = app.payment.method === "ach" ? "" : "none";
+
+      // Plans, priced from the Quote's annual premium.
+      const effOk = app.effectiveDate && app.effectiveDate >= today && app.effectiveDate <= MHBind.effectiveWindow(today).max;
+      const opts = { bindDate: today, effectiveDate: effOk ? app.effectiveDate : today };
+      const plansEl = document.getElementById("bPlans");
+      const plan = app.plan || "full";
+      const sched = (id) => MHBind.premiumSchedule(s.annualPremium, id, opts);
+      const money = (n) => usd(n, n % 1 ? 1 : 0);
+      const blurb = {
+        full: () => `${money(s.annualPremium)} today`,
+        two_pay: () => {
+          const x = sched("two_pay");
+          return `${money(x.installments[0].amount)} today, ${money(x.installments[1].amount)} on ${fmtDate(x.installments[1].dueDate)}`;
+        },
+        ten_pay: () => {
+          const x = sched("ten_pay");
+          return `${money(x.installments[0].amount)} today, then 9 monthly. Includes a $${MHBind.BIND_CONFIG.plans.ten_pay.fee} fee each`;
+        },
+        mortgagee: () => "Billed to your mortgagee (escrow)",
+      };
+      plansEl.innerHTML = Object.entries(MHBind.BIND_CONFIG.plans)
+        .map(([id, p]) => {
+          const disabled = id === "mortgagee" && !app.mortgagee.has;
+          return `<label class="plan"><input type="radio" name="plan" value="${id}" ${id === plan && !disabled ? "checked" : ""} ${disabled ? "disabled" : ""}/><div><b>${p.label}</b><span>${disabled ? "Needs a mortgagee" : blurb[id]()}${referral && id !== "mortgagee" ? ", if approved" : ""}</span></div></label>`;
+        })
+        .join("");
+
+      // Due today: two separate charges, never added together.
+      const chosen = readBindApp().plan;
+      if (chosen) {
+        const x = sched(chosen);
+        const due = MHBind.dueToday(s, x);
+        const box = (c, title) =>
+          `<div class="charge"><div class="who">${title}</div><div class="amt num">${usd(c.amount, c.amount % 1 ? 1 : 0)}</div><div class="note">${c.payee} · ${c.note}</div></div>`;
+        document.getElementById("bDue").innerHTML = box(due.premium, "Premium") + box(due.device, "Devices & install");
+        document.getElementById("bPaySec").style.display = MHBind.paymentRequired(s, x) ? "" : "none";
+      } else {
+        document.getElementById("bDue").innerHTML = `<p class="bhelp">Choose a premium plan.</p>`;
+      }
+      renderBindErrors();
+    }
+
+    /* Shows each field's error once it's touched (or on a bind attempt),
+         and enables Bind only when nothing is left. */
+    function renderBindErrors() {
+      const s = bindSnapshot();
+      const errs = MHBind.validateApplication(readBindApp(), { snapshot: s, today: MHBind.todayIn(), paymentMode: "raw" });
+      const shown = { ...errs, ...bindUi.serverErrors };
+      document.querySelectorAll("#bindForm .ferr, [data-step='6'] > .ferr").forEach((el) => {
+        const key = el.dataset.err;
+        const msg = shown[key];
+        const on = !!msg && (bindUi.showAll || bindUi.touched.has(key) || key in bindUi.serverErrors);
+        el.textContent = on ? msg : "";
+        el.classList.toggle("show", on);
+        const input = document.querySelector(`#bindForm [name="${key}"]`);
+        if (input && input.type !== "checkbox" && input.type !== "radio") input.classList.toggle("bad", on);
+      });
+      const left = Object.keys(errs).length;
       const btn = document.getElementById("placeBtn");
+      if (!bindUi.submitting) {
+        btn.disabled = left > 0 || isDeclined();
+        btn.innerHTML = bindLabel();
+      }
+      const mBtn = document.getElementById("mBtn");
+      if (state.step === 6) mBtn.disabled = btn.disabled;
+      document.getElementById("bLeft").textContent = left
+        ? `${left} item${left === 1 ? "" : "s"} left before you can ${isReferral() ? "submit" : "bind"}.`
+        : "";
+      return errs;
+    }
 
-      if (!SHOPIFY.storefrontToken) {
-        toast(
-          "Demo mode — paste a Storefront token in SHOPIFY.storefrontToken to go live.",
-        );
+    function onBindInput(e) {
+      const name = e.target.name;
+      if (!name) return;
+      delete bindUi.serverErrors[name];
+      delete bindUi.serverErrors.payment;
+      if (e.type === "change" || e.target.type === "checkbox" || e.target.type === "radio")
+        bindUi.touched.add(name === "mortHas" ? "mortgagee.has" : name.startsWith("ack.") ? "acks." + name.slice(4) : name);
+      if (name === "payment.card.number") {
+        const d = e.target.value.replace(/\D/g, "").slice(0, 19);
+        e.target.value = d.replace(/(.{4})/g, "$1 ").trim();
+      }
+      if (name === "payment.card.exp" && e.type === "input" && /^\d{2}$/.test(e.target.value)) e.target.value += "/";
+      renderBindForm();
+    }
+    function onBindBlur(e) {
+      if (!e.target.name) return;
+      bindUi.touched.add(e.target.name);
+      renderBindErrors();
+    }
+
+    async function placeOrder() {
+      if (state.step !== 6 || bindUi.submitting || isDeclined()) return;
+      bindUi.showAll = true;
+      const errs = renderBindErrors();
+      if (Object.keys(errs).length) {
+        const first = document.querySelector("#bindForm .ferr.show");
+        if (first) first.scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
-
+      const btn = document.getElementById("placeBtn");
+      bindUi.submitting = true;
       btn.disabled = true;
-      btn.innerHTML = '<span class="spin"></span> Creating secure checkout…';
+      btn.innerHTML = `<span class="spin"></span> ${isReferral() ? "Submitting…" : "Binding…"}`;
 
       await Promise.all([emitQuoteRated(true), emitUwDecision(true)]);
 
+      const snapshot = bindSnapshot();
+      const raw = readBindApp();
+      const today = MHBind.todayIn();
+      const schedule = MHBind.premiumSchedule(snapshot.annualPremium, raw.plan, { bindDate: today, effectiveDate: raw.effectiveDate });
+      // Raw card / bank numbers never leave the page: tokenize first.
+      const application = { ...raw, payment: MHBind.paymentRequired(snapshot, schedule) ? MHBind.sandboxTokenize(raw.payment) : null };
+
+      let result = null,
+        source = "server";
       try {
-        const discount = await createDiscount();
-
-        //console.log("DISCOUNT RESPONSE", discount);
-
-        const discountCode = discount.discountCode; // extract the generated Shopify discount code
-        if (!discountCode) throw new Error("createDiscount returned no discount code");
-
-        //console.log("DISCOUNT CODE:", discountCode);
-
-        const checkoutUrl = await createCheckout();
-
-        //console.log("CHECKOUT URL:", checkoutUrl);
-
-        const separator = checkoutUrl.includes("?") ? "&" : "?"; // append discount code to checkout URL
-        const checkoutWithDiscount = `${checkoutUrl}${separator}discount=${encodeURIComponent(discountCode)}`;
-
-        window.location.href = checkoutWithDiscount;
+        let res = null,
+          data = null;
+        try {
+          res = await fetch("/.netlify/functions/bind", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ snapshot, application }),
+          });
+          data = JSON.parse(await res.text());
+        } catch (e) { }
+        if (!data) {
+          // Function unreachable (page opened from disk, no netlify dev):
+          // run the same sandbox bind in the browser.
+          source = "client";
+          result = await MHBind.runBind({ snapshot, application, meta: { userAgent: navigator.userAgent } });
+          if (!result.ok && result.errors) data = { errors: result.errors };
+          else if (!result.ok) data = { error: "The quote doesn't reconcile: " + result.problems.join("; ") };
+        }
+        if (data && data.errors) {
+          bindUi.serverErrors = data.errors;
+          throw new Error("Some fields need attention");
+        }
+        if (data && !result) {
+          if (!res.ok || data.error) throw new Error(data.error || `HTTP ${res.status}`);
+          result = data;
+        } else if (data && data.error) throw new Error(data.error);
       } catch (e) {
         console.error(e);
-
-        btn.disabled = false;
-        btn.innerHTML = bindLabel();
-
-        toast("Checkout error: " + e.message);
+        bindUi.submitting = false;
+        renderBindErrors();
+        toast((isReferral() ? "Couldn't submit: " : "Couldn't bind: ") + e.message);
+        return;
       }
+
+      for (const ev of result.events) {
+        ev.source = source;
+        window.MH_INTEGRATION_LOG.push(ev);
+        window.dispatchEvent(new CustomEvent(ev.type, { detail: ev }));
+      }
+      state.bindResult = result;
+      bindUi.submitting = false;
+      renderBindDone(result);
+      go(LAST_STEP);
+    }
+
+    /* What Bind produced. The full Issued screen is the Issue policy ticket. */
+    function renderBindDone(r) {
+      const bound = r.status === "bound";
+      document.getElementById("doneTitle").textContent = bound ? "Your policy is bound" : "Submitted to an underwriter";
+      document.getElementById("doneSub").textContent = bound
+        ? `Bind ref ${r.bindId}. Coverage starts ${fmtDate(r.effectiveDate)}. Your policy number and documents follow when the policy is issued.`
+        : `Bind ref ${r.bindId}. An underwriter reviews your application. Your premium is charged only if they approve, and your device order${r.install ? " and install window are" : " is"} held until ${fmtDate(r.holdUntil)}.`;
+      const charge = (c) => `${usd(c.amount, c.amount % 1 ? 1 : 0)} to ${c.payee}`;
+      const items = [
+        ["Premium today", charge(r.dueToday.premium) + ` (${r.dueToday.premium.note.toLowerCase()})`],
+        ["Devices & install today", charge(r.dueToday.device) + ` (${r.dueToday.device.note.toLowerCase()})`],
+        ["Premium plan", `${r.schedule.label}${bound ? "" : " if approved"}${r.schedule.installments.length > 1 ? `, next ${usd(r.schedule.installments[1].amount, 1)} on ${fmtDate(r.schedule.installments[1].dueDate)}` : ""}`],
+      ];
+      if (r.endorsement)
+        items.push([`MH-100 credit, ${r.endorsement.pct}% (provisional)`, `Verified by the install visit or devices online by ${fmtDate(r.endorsement.verifyBy)}`]);
+      if (r.order) items.push(["Device order", `${r.order.orderRef}, ${bound ? "released for fulfillment" : `on hold until ${fmtDate(r.holdUntil)}`}`]);
+      if (r.install) items.push(["Install window", `${r.install.window || "to be scheduled"}, ${bound ? "booked" : "held"}`]);
+      items.push(["Sandbox", "No money moved. Live once the premium processor and the Shopify port are in."]);
+      document.getElementById("timeline").innerHTML = items
+        .map(([k, v]) => `<div class="ti"><span class="d"></span><div><b>${k}</b><br /><span style="color: var(--muted)">${v}</span></div></div>`)
+        .join("");
     }
 
     /* ---------- credit math ---------- */
@@ -2811,8 +3369,6 @@
         rv.innerHTML = rows;
       }
       document.getElementById("toReview").disabled = !hasItems;
-      document.getElementById("doneSave").textContent =
-        `Up to $${annualSave.toLocaleString()}/yr off your homeowners premium`;
       renderQuoteStage();
     }
 
@@ -2886,9 +3442,9 @@
       } else if (s === LAST_STEP) {
         document.getElementById("timeline").style.display = "";
       }
-      if (s === LAST_STEP) {
-        const refDone = document.getElementById("refDone");
-        if (refDone) refDone.textContent = state.quoteRef;
+      if (s === 5) {
+        fillInstallWindows();
+        document.getElementById("installWinRow").style.display = installWindowHeld() ? "" : "none";
       }
       if (s === 2 && !state.quoteSeen) {
         state.quoteSeen = true;
@@ -2912,6 +3468,10 @@
       const mBtn = document.getElementById("mBtn");
       mBtn.innerHTML = s === 6 ? bindLabel() : "Continue →";
       mBtn.disabled = s === 2 && isDeclined();
+      if (s === 6) {
+        initBindForm();
+        renderBindForm();
+      }
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
     function mobileNext() {
@@ -2937,12 +3497,11 @@
          the button stays stuck disabled/"Redirecting…" because the page's
          JS never re-runs on a bfcache restore, it just reappears exactly
          as it looked at the moment we navigated away. */
+    /* Re-enables Bind if the browser restores this page from its
+         back/forward cache mid-submit. */
     window.addEventListener("pageshow", () => {
-      const btn = document.getElementById("placeBtn");
-      if (btn) {
-        btn.disabled = false;
-        btn.innerHTML = bindLabel();
-      }
+      bindUi.submitting = false;
+      if (state.step === 6) renderBindErrors();
     });
 
     buildRail();
