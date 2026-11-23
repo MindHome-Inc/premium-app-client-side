@@ -15,7 +15,7 @@ Code: `bind/bind.js` (shared by the page, the function and the tests),
 1. **Named insured** as on the quote (read-only; edit on Property).
 2. **Effective date**: today through +60 days (Mountain time).
 3. **Mortgagee**: yes/no, then name + loan number.
-4. **Premium plan**: pay in full, 2-pay, 10-pay ($6 fee per installment),
+4. **Premium plan**: pay in full, 2-pay, 10-pay ($6 fee once, with installment 1),
    mortgagee bill (only with a mortgagee).
 5. **Payment**: card or ACH. ACH checks the routing checksum, a matching
    account number and a debit authorization. Hidden when the mortgagee pays
@@ -49,7 +49,7 @@ at $1,611/yr; Due today is $1,611 premium (pay in full) and $921 devices.
 |---|---|---|
 | Pay in full | $1,611.00 | — |
 | 2-pay | $805.50 | $805.50 at effective + 6 months |
-| 10-pay | $167.10 ($161.10 + $6) | 9 × $167.10 monthly from the effective date |
+| 10-pay | $167.10 ($161.10 + $6 fee) | 9 × $161.10 monthly from the effective date |
 | Mortgagee bill | $0 | billed to the mortgagee |
 
 Uneven cents go on installment 1, so installments always add back to the
@@ -62,10 +62,11 @@ own processor ref) → `policy.bound` → `endorsement.attached` (MH-100, when a
 credit applies) → `subscriber.enrolled` → `fulfillment.released` (devices) →
 `install.booked` (pro-installed valve) → `evidence.sent` (mortgagee).
 
-Refer ("Submit to underwriter"): `application.signed` → `payment.captured`
-(device charge only; premium `not_captured_referral`) → `application.referred`
-with the device order and install window held 7 days from submission. No
-`policy.bound`, no fulfillment release.
+Refer ("Submit to underwriter"): `application.signed` → `application.referred`.
+Nothing is captured: the premium and the devices are charged only if an
+underwriter approves (`dueOnApproval` on the event). The device order and
+install window are held 7 days from submission. No `policy.bound`, no
+fulfillment release.
 
 If the device charge fails after the premium was captured, the premium is
 voided and the customer sees the error.

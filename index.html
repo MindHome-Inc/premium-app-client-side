@@ -2937,7 +2937,8 @@
         },
         ten_pay: () => {
           const x = sched("ten_pay");
-          return `${money(x.installments[0].amount)} today, then 9 monthly. Includes a $${MHBind.BIND_CONFIG.plans.ten_pay.fee} fee each`;
+          const p = MHBind.BIND_CONFIG.plans.ten_pay;
+          return `${money(x.installments[0].amount)} today, then 9 × ${money(x.installments[1].amount)} monthly. Includes a $${p.fee} fee ${p.feePer === "term" ? "once" : "each"}`;
         },
         mortgagee: () => "Billed to your mortgagee (escrow)",
       };
@@ -3089,7 +3090,7 @@
       document.getElementById("doneTitle").textContent = bound ? "Your policy is bound" : "Submitted to an underwriter";
       document.getElementById("doneSub").textContent = bound
         ? `Bind ref ${r.bindId}. Coverage starts ${fmtDate(r.effectiveDate)}. Your policy number and documents follow when the policy is issued.`
-        : `Bind ref ${r.bindId}. An underwriter reviews your application. Your premium is charged only if they approve, and your device order${r.install ? " and install window are" : " is"} held until ${fmtDate(r.holdUntil)}.`;
+        : `Bind ref ${r.bindId}. An underwriter reviews your application. Your premium and devices are charged only if they approve, and your device order${r.install ? " and install window are" : " is"} held until ${fmtDate(r.holdUntil)}.`;
       const charge = (c) => `${usd(c.amount, c.amount % 1 ? 1 : 0)} to ${c.payee}`;
       const items = [
         ["Premium today", charge(r.dueToday.premium) + ` (${r.dueToday.premium.note.toLowerCase()})`],

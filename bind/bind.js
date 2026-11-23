@@ -56,9 +56,10 @@
     plans: {
       full: { label: "Pay in full", installments: 1, intervalMonths: 0, fee: 0 },
       two_pay: { label: "2-pay", installments: 2, intervalMonths: 6, fee: 0 },
-      /* $6 per installment. If the fee is meant once per term, set
-         feePer to "term" (open question on the ticket). */
-      ten_pay: { label: "10-pay", installments: 10, intervalMonths: 1, fee: 6, feePer: "installment" },
+      /* $6 once per term, charged with installment 1 (the boss's
+         answer on Nov 23, still to be confirmed). For $6 on every
+         installment, set feePer to "installment". */
+      ten_pay: { label: "10-pay", installments: 10, intervalMonths: 1, fee: 6, feePer: "term" },
       mortgagee: { label: "Mortgagee bill", installments: 1, intervalMonths: 0, fee: 0, billedTo: "mortgagee" },
     },
     acknowledgements: [
@@ -164,7 +165,8 @@
    * What is charged today, as TWO separate charges that are never
    * added together: the premium (to the exchange's premium trust
    * account) and the devices/install (from MindHome Inc.).
-   * On a referral the premium is not captured.
+   * On a referral nothing is captured: the premium and the devices
+   * are charged only if an underwriter approves.
    */
   function dueToday(snapshot, schedule) {
     const referral = snapshot.uw.decision === "refer";
@@ -188,13 +190,13 @@
         kind: "device",
         payee: BIND_CONFIG.devicePayee.name,
         account: BIND_CONFIG.devicePayee.account,
-        amount: financed ? 0 : dc.amount || 0,
+        amount: financed || referral ? 0 : dc.amount || 0,
         note: !dc.amount
           ? "No devices"
           : financed
             ? "Financed with PowerPay"
             : referral
-              ? "Order held for underwriter review"
+              ? "Not charged until an underwriter approves; order held"
               : "Devices and install, one-time",
       },
     };
@@ -315,10 +317,11 @@
   const normName = (s) => String(s || "").trim().replace(/\s+/g, " ").toLowerCase();
 
   function paymentRequired(snapshot, schedule) {
-    const due = dueToday(snapshot, schedule);
-    // Premium installments after today still need a payment method,
-    // unless the mortgagee pays the premium.
-    return schedule.billedTo !== "mortgagee" || due.device.amount > 0;
+    // Premium installments still need a payment method unless the
+    // mortgagee pays the premium; so do devices, even on a referral,
+    // where they are charged on approval.
+    const dc = snapshot.deviceCharge || {};
+    return schedule.billedTo !== "mortgagee" || (dc.amount > 0 && dc.financing !== "powerpay");
   }
 
   /* Raw fields, checked in the browser before tokenizing. */
@@ -547,7 +550,8 @@
       }
       charges.push({ kind: "device", amount: due.device.amount, payee: due.device.payee, account: due.device.account, method: payment, processorRef: deviceCharge.ref, status: deviceCharge.status });
     } else if (hasDevices) {
-      charges.push({ kind: "device", amount: 0, payee: due.device.payee, status: s.deviceCharge && s.deviceCharge.financing === "powerpay" ? "financed_powerpay" : "none" });
+      const financed = s.deviceCharge && s.deviceCharge.financing === "powerpay";
+      charges.push({ kind: "device", amount: 0, payee: due.device.payee, status: financed ? "financed_powerpay" : referral ? "not_captured_referral" : "none" });
     }
     if (charges.some((c) => c.processorRef)) events.push({ ...base("payment.captured"), charges });
 
@@ -561,6 +565,7 @@
         reasons: s.uw.reasons,
         bindAction: s.uw.referral.bindAction || "Submit to underwriter",
         premium: { captured: false, schedule: schedule.plan, dueOnApproval: schedule.dueToday },
+        devices: { captured: false, dueOnApproval: s.deviceCharge && s.deviceCharge.financing !== "powerpay" ? s.deviceCharge.amount || 0 : 0 },
         deviceOrder: order && { orderRef: order.orderRef, status: "on_hold", holdUntil },
         installWindow: install && { ...install, status: "held" },
         fulfillmentReleased: false,

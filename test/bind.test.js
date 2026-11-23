@@ -91,7 +91,7 @@ test("MH-100 is attached as provisional, verified within 60 days of the effectiv
   assert.match(e.continuesWhile, /heartbeat/);
 });
 
-test("premium plans split $1,611 exactly; 10-pay adds $6 per installment", () => {
+test("premium plans split $1,611 exactly; 10-pay adds a one-time $6 fee", () => {
   const opts = { bindDate: TODAY, effectiveDate: "2026-11-10" };
   const two = B.premiumSchedule(1611, "two_pay", opts);
   assert.deepEqual(two.installments.map((i) => i.amount), [805.5, 805.5]);
@@ -99,8 +99,9 @@ test("premium plans split $1,611 exactly; 10-pay adds $6 per installment", () =>
   const ten = B.premiumSchedule(1611, "ten_pay", opts);
   assert.equal(ten.installments.length, 10);
   assert.equal(ten.dueToday, 167.1);
-  assert.equal(ten.fees, 60);
-  assert.equal(ten.totalPayable, 1671);
+  assert.deepEqual(ten.installments.slice(1).map((i) => i.amount), Array(9).fill(161.1));
+  assert.equal(ten.fees, 6);
+  assert.equal(ten.totalPayable, 1617);
   assert.equal(ten.installments.reduce((s, i) => s + Math.round(i.premium * 100), 0), 161100);
   const odd = B.premiumSchedule(1000, "ten_pay", opts); // uneven cents go on installment 1
   assert.equal(odd.installments.reduce((s, i) => s + Math.round(i.premium * 100), 0), 100000);
@@ -117,18 +118,21 @@ test("mortgagee bill: no premium charged today, device still charged separately"
   assert.deepEqual(cap.charges.map((c) => [c.kind, c.amount, c.status]), [["premium", 0, "billed_to_mortgagee"], ["device", 921, "captured"]]);
 });
 
-test("refer: submit to underwriter, no premium capture, no policy.bound, order + install held 7 days", async () => {
+test("refer: submit to underwriter, nothing charged, no policy.bound, order + install held 7 days", async () => {
   const s = snapshot({ facts: { woodStove: true, losses: 2 } });
   assert.equal(s.uw.decision, "refer");
   const r = await B.runBind({ snapshot: s, application: app() }, { now: NOW });
   assert.equal(r.status, "referred");
   const types = r.events.map((e) => e.type);
-  assert.deepEqual(types, ["application.signed", "payment.captured", "application.referred"]);
+  assert.deepEqual(types, ["application.signed", "application.referred"]);
+  assert.equal(r.dueToday.premium.amount, 0);
+  assert.equal(r.dueToday.device.amount, 0);
   assert.ok(!types.includes("policy.bound"));
   assert.ok(!types.includes("fulfillment.released"));
-  const cap = r.events.find((e) => e.type === "payment.captured");
-  assert.deepEqual(cap.charges.map((c) => [c.kind, c.amount, c.status]), [["premium", 0, "not_captured_referral"], ["device", 921, "captured"]]);
+  assert.deepEqual(r.charges.map((c) => [c.kind, c.amount, c.status]), [["premium", 0, "not_captured_referral"], ["device", 0, "not_captured_referral"]]);
   const ref = r.events.find((e) => e.type === "application.referred");
+  assert.equal(ref.premium.dueOnApproval, 1611);
+  assert.equal(ref.devices.dueOnApproval, 921);
   assert.equal(ref.deviceOrder.status, "on_hold");
   assert.equal(ref.deviceOrder.holdUntil, "2026-11-10");
   assert.equal(ref.installWindow.status, "held");
@@ -214,4 +218,12 @@ test("a failed device charge voids the premium charge", async () => {
   assert.equal(r.ok, false);
   assert.match(r.errors.payment, /card declined/);
   assert.deepEqual(voided, ["pi_1"]);
+});
+
+test("refer still asks for payment, so devices can be charged on approval", () => {
+  const s = snapshot({ facts: { woodStove: true } });
+  const sched = B.premiumSchedule(s.annualPremium, "mortgagee", { bindDate: TODAY, effectiveDate: TODAY });
+  assert.equal(B.paymentRequired(s, sched), true);
+  const noDevices = snapshot({ facts: { woodStove: true }, devices: {}, proInstall: false, deviceCharge: { amount: 0, financing: "once" } });
+  assert.equal(B.paymentRequired(noDevices, sched), false);
 });
